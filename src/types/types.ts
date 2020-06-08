@@ -4,6 +4,20 @@ declare global {
   }
 }
 
+export interface Speaker {
+  id: string
+  firstNameJp: string
+  familyNameJp: string
+  firstNameEn: string
+  familyNameEn: string
+  title: string
+  affiliation: string
+  profile: string
+  imageUrl: {
+    url: string
+  }
+}
+
 export interface LineUser {
   userId: string
   displayName: string
