@@ -5,23 +5,20 @@
         v-for="s in speakers"
           :key="s.id"
       )
-        v-avatar(
-          size="36px"
+        speaker-box(
+          :speaker="s"
         )
-          img(
-            :alt="s.familyNameJp"
-            :src="s.imageUrl.url"
-          )
-        h3 {{ s.familyNameJp }} {{ s.firstNameJp }}
-        div {{ s.affiliation }} {{ s.title }}
-        div {{ s.profile }}
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import { Speaker } from '~/types'
 
-@Component({})
+@Component({
+  components: {
+    SpeakerBox: () => import('@/components/SpeakerBox.vue')
+  }
+})
 export default class SpeakerListComponent extends Vue {
   @Prop({ type: Array, required: true }) readonly speakers!: Array<Speaker>
 }
