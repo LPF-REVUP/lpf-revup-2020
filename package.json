@@ -17,9 +17,11 @@
     "@nuxt/typescript-runtime": "^0.4.2",
     "@nuxtjs/axios": "^5.9.7",
     "@nuxtjs/dotenv": "^1.4.0",
+    "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.0.0-0",
     "consola": "^2.12.2",
     "microcms-client": "^0.0.8",
+    "moment": "^2.26.0",
     "nuxt": "^2.12.2",
     "nuxt-property-decorator": "^2.5.1"
   },

@@ -12,6 +12,10 @@
       speaker-list(
         :speakers="speakers"
       )
+    div
+      session-list(
+        :sessions="sessions"
+      )
 
 </template>
 
@@ -19,11 +23,12 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
-import { Speaker } from '~/types'
+import { Speaker, EventSession } from '~/types'
 
 @Component({
   components: {
-    SpeakerList: () => import('@/components/SpeakerList.vue')
+    SpeakerList: () => import('@/components/SpeakerList.vue'),
+    SessionList: () => import('@/components/SessionList.vue')
   }
 })
 export default class Index extends Vue {
@@ -40,8 +45,13 @@ export default class Index extends Vue {
     })
     const speakers = await client.getContents<Speaker>({ path: 'speakers' })
     consola.log('Speakers', speakers)
+    const sessions = await client.getContents<EventSession>({
+      path: 'sessions'
+    })
+    consola.log('Sessions', sessions)
     return {
-      speakers
+      speakers,
+      sessions
     }
   }
 }

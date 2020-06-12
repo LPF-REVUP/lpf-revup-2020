@@ -4,6 +4,16 @@ declare global {
   }
 }
 
+export interface Tag {
+  id: string
+  name: string
+}
+
+export interface Area {
+  id: string
+  name: string
+}
+
 export interface Speaker {
   id: string
   firstNameJp: string
@@ -16,6 +26,18 @@ export interface Speaker {
   imageUrl: {
     url: string
   }
+}
+
+export interface EventSession {
+  id: string
+  title: string
+  description: string
+  area: Area
+  startsAt: Date
+  endsAt: Date
+  applicationPage: string
+  speakers: Array<Speaker>
+  tags: Array<Tag>
 }
 
 export interface LineUser {

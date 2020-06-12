@@ -48,7 +48,7 @@ const nuxtConfig: Configuration = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/moment'],
   /*
    ** Nuxt.js modules
    */
@@ -56,9 +56,14 @@ const nuxtConfig: Configuration = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    ['@nuxtjs/moment', ['ja']],
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
+  moment: {
+    defaultTimezone: 'Asia/Tokyo',
+    locales: ['ja']
+  },
   /*
    ** dotEnv module configuration
    ** See https://github.com/nuxt-community/dotenv-module#options
