@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - development
+  repository_dispatch:
+      types: [microCMS_published_speakers]
 
 jobs:
   build:
