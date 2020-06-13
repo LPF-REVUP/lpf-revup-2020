@@ -35,3 +35,29 @@ jobs:
         with:
           args: deploy --dir=./dist --prod
           secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
+
+      # デプロイ成功時のSlack への通知
+      - name: Slack Notification on success
+        if: success()
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_CHANNEL: deploy-development
+          SLACK_ICON: https://avatars0.githubusercontent.com/u/44036562?s=100&v=4
+          SLACK_MESSAGE: 'Deploying to development site success! visit https://lpf-revup-dev.netlify.app/ :rocket:'
+          SLACK_TITLE: Deploying to development site success!
+          SLACK_USERNAME: GitHub Actions
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEPLOY_TO_DEVELOPMENT }}
+          SLACK_COLOR: good
+
+      # デプロイ失敗時のSlack への通知
+      - name: Slack Notification on failure
+        if: failure()
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_CHANNEL: deploy-development
+          SLACK_ICON: https://avatars0.githubusercontent.com/u/44036562?s=100&v=4
+          SLACK_MESSAGE: 'Deploying to development site failed... check deploy logs'
+          SLACK_TITLE: Deploying to development site failed...
+          SLACK_USERNAME: GitHub Actions
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEPLOY_TO_DEVELOPMENT }}
+          SLACK_COLOR: danger
