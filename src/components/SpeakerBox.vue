@@ -10,6 +10,14 @@
       span(
         v-html="speaker.profile"
       )
+    div
+      | セッション
+      ul
+        li(
+          v-for="session in speaker.sessions"
+          :key="session.id"
+        )
+          | {{ session.title }}
 </template>
 
 <script lang="ts">
@@ -29,7 +37,7 @@ export default class SpeakerBoxComponent extends Vue {
     // See microCMS image API
     // https://microcms.io/docs/image-api/introduction
     // https://docs.imgix.com/apis/url/mask/corner-radius
-    return `${this.speaker.imageUrl.url}?mask=corners&w=50&h=50&corner-radius=50,50,50,50`
+    return `${this.speaker.image.url}?mask=corners&w=50&h=50&corner-radius=50,50,50,50`
   }
 }
 </script>

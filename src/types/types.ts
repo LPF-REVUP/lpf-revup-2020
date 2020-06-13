@@ -14,6 +14,10 @@ export interface Area {
   name: string
 }
 
+export interface Image {
+  url: string
+}
+
 export interface Speaker {
   id: string
   firstNameJp: string
@@ -23,9 +27,8 @@ export interface Speaker {
   title: string
   affiliation: string
   profile: string
-  imageUrl: {
-    url: string
-  }
+  image: Image
+  sessions: Array<EventSession>
 }
 
 export interface EventSession {
@@ -38,19 +41,6 @@ export interface EventSession {
   applicationPage: string
   speakers: Array<Speaker>
   tags: Array<Tag>
-}
-
-export interface LineUser {
-  userId: string
-  displayName: string
-  pictureUrl?: string
-  statusMessage?: string
-}
-
-export interface User {
-  id: string
-  name: string
-  email: String
 }
 
 class BaseError extends Error {
