@@ -5,7 +5,7 @@ on:
     branches:
       - development
   repository_dispatch:
-      types: [microCMS_published_speakers]
+      types: [microCMS_published_speakers, microCMS_published_sessions]
 
 jobs:
   build:
