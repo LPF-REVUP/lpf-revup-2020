@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       fixed: false,
-      title: 'LIFF v2 Sample'
+      title: 'LPF REV UP 2020'
     }
   }
 }
