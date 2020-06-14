@@ -48,7 +48,7 @@ const nuxtConfig: Configuration = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/moment'],
   /*
    ** Nuxt.js modules
    */
@@ -56,9 +56,14 @@ const nuxtConfig: Configuration = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    ['@nuxtjs/moment', ['ja']],
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
+  moment: {
+    defaultTimezone: 'Asia/Tokyo',
+    locales: ['ja']
+  },
   /*
    ** dotEnv module configuration
    ** See https://github.com/nuxt-community/dotenv-module#options
@@ -69,7 +74,9 @@ const nuxtConfig: Configuration = {
   env: {
     API_BASE_URL: process.env.API_BASE_URL || 'http://127.0.0.1:3000',
     BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
-    LIFF_ID: process.env.LIFF_ID || 'DUMMY_LIFF_ID'
+    LIFF_ID: process.env.LIFF_ID || 'DUMMY_LIFF_ID',
+    MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
+    MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
   },
   /*
    ** Axios module configuration

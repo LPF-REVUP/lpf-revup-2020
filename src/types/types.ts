@@ -4,17 +4,57 @@ declare global {
   }
 }
 
-export interface LineUser {
-  userId: string
-  displayName: string
-  pictureUrl?: string
-  statusMessage?: string
-}
-
-export interface User {
+export interface Tag {
   id: string
   name: string
-  email: String
+}
+
+export interface Area {
+  id: string
+  name: string
+}
+
+export interface Image {
+  url: string
+}
+
+export interface Speaker {
+  id: string
+  firstNameJp: string
+  familyNameJp: string
+  firstNameEn: string
+  familyNameEn: string
+  title: string
+  affiliation: string
+  profile: string
+  image: Image
+  sessions: Array<EventSession>
+}
+
+export interface EventSession {
+  id: string
+  title: string
+  description: string
+  area: Area
+  startsAt: Date
+  endsAt: Date
+  applicationPage: string
+  speakers: Array<Speaker>
+  tags: Array<Tag>
+}
+
+export enum RankEnum {
+  SILVER = 'SILVER',
+  GOLD = 'GOLD',
+  PLATINUM = 'PLATINUM'
+}
+
+export interface Sponsor {
+  id: string
+  name: string
+  link: string
+  image: Image
+  rank: RankEnum
 }
 
 class BaseError extends Error {
