@@ -1,11 +1,11 @@
-name: deploy development branch to netlify
+name: Deploy development site files to Netlify
 
 on:
   push:
     branches:
       - development
   repository_dispatch:
-      types: [microCMS_published_speakers, microCMS_published_sessions]
+      types: [microCMS_published_speakers, microCMS_published_sessions, microCMS_published_sponsors]
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
       - name: Generate site files
         run: yarn generate
 
-      - name: Deploy to netlify
+      - name: Deploy to Netlify
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -46,7 +46,7 @@ jobs:
           SLACK_CHANNEL: deploy-development
           SLACK_ICON: https://avatars0.githubusercontent.com/u/44036562?s=100&v=4
           SLACK_MESSAGE: 'Deploying to development site success! visit https://lpf-revup-dev.netlify.app/ :rocket:'
-          SLACK_TITLE: Deploying to development site success!
+          SLACK_TITLE: SUCCESS!! Deploy to development site
           SLACK_USERNAME: GitHub Actions
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEPLOY_TO_DEVELOPMENT }}
           SLACK_COLOR: good
@@ -59,7 +59,7 @@ jobs:
           SLACK_CHANNEL: deploy-development
           SLACK_ICON: https://avatars0.githubusercontent.com/u/44036562?s=100&v=4
           SLACK_MESSAGE: 'Deploying to development site failed... check deploy logs'
-          SLACK_TITLE: Deploying to development site failed...
+          SLACK_TITLE: FAILED... Deploy to development site
           SLACK_USERNAME: GitHub Actions
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEPLOY_TO_DEVELOPMENT }}
           SLACK_COLOR: danger
