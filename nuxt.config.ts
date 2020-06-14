@@ -41,10 +41,7 @@ const nuxtConfig: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    { src: '~/plugins/axios.js' },
-    { src: '~/plugins/liff', ssr: false }
-  ],
+  plugins: [],
   /*
    ** Nuxt.js dev-modules
    */
@@ -72,19 +69,8 @@ const nuxtConfig: Configuration = {
     path: process.cwd()
   },
   env: {
-    API_BASE_URL: process.env.API_BASE_URL || 'http://127.0.0.1:3000',
-    BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
-    LIFF_ID: process.env.LIFF_ID || 'DUMMY_LIFF_ID',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
     MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
-  },
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {
-    baseURL: process.env.API_BASE_URL || 'http://api.example.com',
-    browserBaseURL: process.env.API_BASE_URL || 'http://api.example.com'
   },
   /*
    ** vuetify module configuration
