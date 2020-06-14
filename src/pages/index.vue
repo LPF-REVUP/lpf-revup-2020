@@ -16,14 +16,21 @@
       session-list(
         :sessions="sessions"
       )
-
+    div
+      h2 Sponsors
+      ul
+        li(
+          v-for="s in sponsors"
+          :key="s.id"
+        )
+          | {{ s.name }} < {{ s.rank }} >
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
-import { Speaker, EventSession } from '~/types'
+import { Speaker, EventSession, Sponsor } from '~/types'
 
 @Component({
   components: {
@@ -36,22 +43,31 @@ export default class Index extends Vue {
 
   async asyncData() {
     consola.log('asyncData called!!')
-    await console.log('MC_API_BASE_URL', process.env.MC_API_BASE_URL)
-    await console.log('MC_API_KEY', process.env.MC_API_KEY)
+    console.log('MC_API_BASE_URL', process.env.MC_API_BASE_URL)
+    console.log('MC_API_KEY', process.env.MC_API_KEY)
+    // Create microCMS API Client
     const client = createClient({
       baseUrl: process.env.MC_API_BASE_URL || '',
       contentType: 'application/json; charset=utf-8',
       X_API_KEY: process.env.MC_API_KEY || ''
     })
+    // Get Speaker contents
     const speakers = await client.getContents<Speaker>({ path: 'speakers' })
     consola.log('Speakers', speakers)
+    // Get Session contents
     const sessions = await client.getContents<EventSession>({
       path: 'sessions'
     })
     consola.log('Sessions', sessions)
+    // Get Sponsor contents
+    const sponsors = await client.getContents<Sponsor>({
+      path: 'sponsors'
+    })
+    consola.log('Sponsors', sponsors)
     return {
       speakers,
-      sessions
+      sessions,
+      sponsors
     }
   }
 }

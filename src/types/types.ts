@@ -43,6 +43,20 @@ export interface EventSession {
   tags: Array<Tag>
 }
 
+export enum RankEnum {
+  SILVER = 'SILVER',
+  GOLD = 'GOLD',
+  PLATINUM = 'PLATINUM'
+}
+
+export interface Sponsor {
+  id: string
+  name: string
+  link: string
+  image: Image
+  rank: RankEnum
+}
+
 class BaseError extends Error {
   constructor(message?: string) {
     super(message)
