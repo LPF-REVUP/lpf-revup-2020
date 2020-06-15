@@ -29,14 +29,11 @@ jobs:
       - name: Generate site files
         run: yarn generate
 
-      - name: Deploy to Netlify
-        uses: netlify/actions/cli@master
+        - name: Deploy to Netlify
+        run: npx netlify-cli deploy --dir=./dist
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}
-        with:
-          args: deploy --dir=./dist --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
 
       # デプロイ成功時のSlack への通知
       - name: Slack Notification on success
