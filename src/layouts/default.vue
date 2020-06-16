@@ -8,8 +8,7 @@
       v-btn.black--text(text small) SPONSORS
       v-btn.registration-button.white-text(tile dark color="#777676") 受付/REGISTRATION
     v-content
-      v-container
-        nuxt
+      nuxt
     v-footer(padless)
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
