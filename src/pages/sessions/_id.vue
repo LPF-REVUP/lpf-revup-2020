@@ -69,7 +69,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
-import { createClient } from 'microcms-client/lib/client'
+// import { createClient } from 'microcms-client/lib/client'
+import axios from 'axios'
 import consola from 'consola'
 import { EventSession, Speaker, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
@@ -94,16 +95,24 @@ export default class EventSessionPage extends Vue {
     const { params } = context
     consola.log('Session ID', params.id)
     // Create microCMS API Client
-    const client = createClient({
-      baseUrl: process.env.MC_API_BASE_URL || '',
-      contentType: 'application/json; charset=utf-8',
-      X_API_KEY: process.env.MC_API_KEY || ''
-    })
+    const { data } = await axios.get(
+      `${process.env.MC_API_BASE_URL}sessions/${params.id}`,
+      {
+        headers: { 'X-API-KEY': process.env.MC_API_KEY }
+      }
+    )
+    consola.log('API RESULT', data)
+    // const client = createClient({
+    //   baseUrl: process.env.MC_API_BASE_URL || '',
+    //   contentType: 'application/json; charset=utf-8',
+    //   X_API_KEY: process.env.MC_API_KEY || ''
+    // })
     // Get Session contents
-    const session = await client.getContent<EventSession>({
-      path: 'sessions',
-      contentId: params.id
-    })
+    // const session = await client.getContent<EventSession>({
+    //   path: 'sessions',
+    //   contentId: params.id
+    // })
+    const session: EventSession = data
     consola.log('Session', session)
     const speakers: Array<Speaker> = session.speakers
     consola.log('Speakers', speakers)
