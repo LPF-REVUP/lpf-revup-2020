@@ -107,13 +107,13 @@ export default class EventSessionPage extends Vue {
     consola.log('Session', session)
     const speakers: Array<Speaker> = session.speakers
     consola.log('Speakers', speakers)
-    let connpassEventId: string = ''
-    if (session.applicationPage) {
-      // URL からConnpass Eevent ID を抽出する
-      const url = new URL(session.applicationPage)
-      connpassEventId = url.pathname.split('/')[2]
-      consola.log('connpassEventId', connpassEventId)
-    }
+    const connpassEventId: string = ''
+    // if (session.applicationPage) {
+    //   // URL からConnpass Eevent ID を抽出する
+    //   const url = new URL(session.applicationPage)
+    //   connpassEventId = url.pathname.split('/')[2]
+    //   consola.log('connpassEventId', connpassEventId)
+    // }
     return {
       session,
       speakers,
