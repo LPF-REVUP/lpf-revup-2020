@@ -71,6 +71,7 @@ const nuxtConfig: Configuration = {
     path: process.cwd()
   },
   env: {
+    BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
     MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
   },
