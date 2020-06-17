@@ -1,6 +1,8 @@
 import { Configuration } from '@nuxt/types'
 
 import colors from 'vuetify/es5/util/colors'
+
+import axios from 'axios'
 require('dotenv').config()
 
 const nuxtConfig: Configuration = {
@@ -71,6 +73,26 @@ const nuxtConfig: Configuration = {
   env: {
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
     MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
+  },
+  /*
+   * Generating page and routes
+   */
+  generate: {
+    routes() {
+      console.log('MC_API_URL', `${process.env.MC_API_BASE_URL}sessions`)
+      const sessions = axios
+        .get(`${process.env.MC_API_BASE_URL}sessions`, {
+          headers: { 'X-API-KEY': process.env.MC_API_KEY }
+        })
+        .then(res => {
+          return res.data.contents.map((session: { id: string }) => {
+            return '/sessions/' + session.id
+          })
+        })
+      return Promise.all([sessions]).then(values => {
+        return values.join().split(',')
+      })
+    }
   },
   /*
    ** vuetify module configuration
