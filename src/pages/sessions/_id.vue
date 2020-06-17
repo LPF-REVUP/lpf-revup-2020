@@ -31,6 +31,9 @@
           div.ma-2.mt-4
             v-btn(
               color="primary"
+              link
+              :href="session.applicationPage"
+              target="_blank"
             )
               | このセッションに申し込む
       v-card-text
@@ -49,6 +52,7 @@
         div(style="display:flex;")
           //- Share buttons
           div.mt-2(style="margin-left:auto;")
+            span.mr-4 SHARE
             //- Facebook
             span.mr-2
               a(:href="getFacebookShareUrl()" rel="nofollow" target="_blank")
@@ -64,20 +68,30 @@
             //- TODO Share Target Picker
             span.mr-2
               v-icon(large) icon-line
+      v-card-text(
+        v-if="relatedSessions.length > 0"
+      )
+        v-divider.mt-4.mb-4
+        div
+          h3.mb-2 その他のセッション
+          div
+            session-list(
+              :sessions="relatedSessions"
+            )
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
-// import { createClient } from 'microcms-client/lib/client'
 import axios from 'axios'
 import consola from 'consola'
-import { EventSession, Speaker, Tag } from '~/types'
+import { EventSession, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
 
 @Component({
   components: {
-    SpeakerItem: () => import('@/components/SpeakerItem.vue')
+    SpeakerItem: () => import('@/components/SpeakerItem.vue'),
+    SessionList: () => import('@/components/SessionList.vue')
   }
 })
 export default class EventSessionPage extends Vue {
@@ -94,38 +108,47 @@ export default class EventSessionPage extends Vue {
     consola.log('asyncData called!!')
     const { params } = context
     consola.log('Session ID', params.id)
-    // Create microCMS API Client
+    // Get Session info
     const { data } = await axios.get(
       `${process.env.MC_API_BASE_URL}sessions/${params.id}`,
       {
         headers: { 'X-API-KEY': process.env.MC_API_KEY }
       }
     )
-    consola.log('API RESULT', data)
-    // const client = createClient({
-    //   baseUrl: process.env.MC_API_BASE_URL || '',
-    //   contentType: 'application/json; charset=utf-8',
-    //   X_API_KEY: process.env.MC_API_KEY || ''
-    // })
-    // Get Session contents
-    // const session = await client.getContent<EventSession>({
-    //   path: 'sessions',
-    //   contentId: params.id
-    // })
     const session: EventSession = data
     consola.log('Session', session)
-    const speakers: Array<Speaker> = session.speakers
-    consola.log('Speakers', speakers)
-    const connpassEventId: string = ''
-    // if (session.applicationPage) {
-    //   // URL からConnpass Eevent ID を抽出する
-    //   const url = new URL(session.applicationPage)
-    //   connpassEventId = url.pathname.split('/')[2]
-    //   consola.log('connpassEventId', connpassEventId)
-    // }
+    // Get related sessions
+    let query = `filters=area[equals]${session.area.id}`
+    // Create filter to get related sessions
+    session.tags.map((tag: Tag) => {
+      const q = `tags[contains]${tag.id}`
+      query = `${query}[or]${q}`
+      return q
+    })
+    consola.log('Related sessions query', query)
+    const { data: relatedData } = await axios.get(
+      `${process.env.MC_API_BASE_URL}sessions?${query}`,
+      {
+        headers: { 'X-API-KEY': process.env.MC_API_KEY }
+      }
+    )
+    const relatedSessions: Array<EventSession> = relatedData.contents.filter(
+      (s: EventSession) => {
+        return s.id !== params.id
+      }
+    )
+    consola.log('Related sessions', relatedSessions)
+    // Get connpass event ID
+    let connpassEventId: string = ''
+    if (session.applicationPage) {
+      // URL からConnpass Eevent ID を抽出する
+      const url = new URL(session.applicationPage)
+      connpassEventId = url.pathname.split('/')[2]
+      consola.log('connpassEventId', connpassEventId)
+    }
     return {
       session,
-      speakers,
+      relatedSessions,
       connpassEventId
     }
   }

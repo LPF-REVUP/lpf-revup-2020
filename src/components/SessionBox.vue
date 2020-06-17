@@ -35,7 +35,7 @@ export default class SpeakerBoxComponent extends Vue {
   }
 
   getSessionPageLink() {
-    return `sessions/${this.session.id}/`
+    return `/sessions/${this.session.id}/`
   }
 
   getDisplayDateTime(dt: Date) {
