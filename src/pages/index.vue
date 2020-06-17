@@ -1,29 +1,36 @@
 <template lang="pug">
-  v-layout(
-    column
-    justify-center
-    align-center
-  )
-    v-flex(
-      xs12
-      sm8
-      md6
+  div
+    v-container.main-picture.white--text(fluid)
+      v-row(justify="center")
+        div メイン画像が入ります
+    v-container.notification(fluid)
+      v-row(justify="center")
+        div 重要なお知らせお知らせがある場合に表示されます
+    v-layout(
+      column
+      justify-center
+      align-center
     )
-      speaker-list(
-        :speakers="speakers"
+      v-flex(
+        xs12
+        sm8
+        md6
       )
-    div
-      session-list(
-        :sessions="sessions"
-      )
-    div
-      h2 Sponsors
-      ul
-        li(
-          v-for="s in sponsors"
-          :key="s.id"
+        speaker-list(
+          :speakers="speakers"
         )
-          | {{ s.name }} < {{ s.rank }} >
+      div
+        session-list(
+          :sessions="sessions"
+        )
+      div
+        h2 Sponsors
+        ul
+          li(
+            v-for="s in sponsors"
+            :key="s.id"
+          )
+            | {{ s.name }} < {{ s.rank }} >
 </template>
 
 <script lang="ts">
@@ -74,6 +81,9 @@ export default class Index extends Vue {
 </script>
 
 <style lang="stylus">
-.bg_red
-  background-color #FF0000
+.main-picture
+  background linear-gradient(247.38deg, #C4C4C4 0%, #5F5F5F 100%);
+  height 600px
+.notification
+  background-color #F0F0F0
 </style>
