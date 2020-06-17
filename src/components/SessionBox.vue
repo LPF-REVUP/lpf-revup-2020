@@ -2,7 +2,7 @@
   v-container
     div
       h3
-        a(:href="getSessionPageLink()")
+        nuxt-link(:to="getSessionPageLink()")
           | {{ session.title }}
       div {{ getDisplayDateTime(session.startsAt) }} to {{ getDisplayDateTime(session.endsAt) }}
       span(
@@ -35,7 +35,7 @@ export default class SpeakerBoxComponent extends Vue {
   }
 
   getSessionPageLink() {
-    return `/sessions/${this.session.id}/`
+    return `sessions/${this.session.id}/`
   }
 
   getDisplayDateTime(dt: Date) {
