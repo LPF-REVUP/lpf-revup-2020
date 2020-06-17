@@ -1,7 +1,9 @@
 <template lang="pug">
   v-container
     div
-      h3 {{ session.title }}
+      h3
+        a(:href="getSessionPageLink()")
+          | {{ session.title }}
       div {{ getDisplayDateTime(session.startsAt) }} to {{ getDisplayDateTime(session.endsAt) }}
       span(
         v-html="session.description"
@@ -30,6 +32,10 @@ export default class SpeakerBoxComponent extends Vue {
 
   getDisplayTagId(tag: Tag) {
     return `#${tag.id}`
+  }
+
+  getSessionPageLink() {
+    return `/sessions/${this.session.id}/`
   }
 
   getDisplayDateTime(dt: Date) {
