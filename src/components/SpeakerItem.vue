@@ -3,13 +3,11 @@
     v-container
       v-row(justify="space-between")
         v-col()
-          v-avatar(
-            size="62"
-            tile
+          v-img(
+            width="100"
+            height="100"
+            :src="speaker.image.url"
           )
-            v-img(
-              :src="speaker.image.url"
-            )
         v-col.text-center.pl-0
           div {{ fullName }}
           div {{ speaker.affiliation }} {{ speaker.title }}

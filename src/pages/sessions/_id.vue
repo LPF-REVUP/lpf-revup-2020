@@ -45,6 +45,25 @@
           speaker-item(
             :speaker="s"
           )
+      v-card-text
+        div(style="display:flex;")
+          //- Share buttons
+          div.mt-2(style="margin-left:auto;")
+            //- Facebook
+            span.mr-2
+              a(:href="getFacebookShareUrl()" rel="nofollow" target="_blank")
+                v-icon(large) mdi-facebook
+            //- Twitter
+            span.mr-2
+              a(:href="getTwitterShareUrl()" rel="nofollow" target="_blank")
+                v-icon(large) mdi-twitter
+            //- Hatena bookmark
+            span.mr-2
+              a(:href="getHatenaShareUrl()" rel="nofollow" target="_blank")
+                v-icon(large) icon-hatenabookmark
+            //- TODO Share Target Picker
+            span.mr-2
+              v-icon(large) icon-line
 </template>
 
 <script lang="ts">
@@ -53,6 +72,7 @@ import { Context } from '@nuxt/types'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
 import { EventSession, Speaker, Tag } from '~/types'
+import '@/assets/icomoon/style.css'
 
 @Component({
   components: {
@@ -115,9 +135,27 @@ export default class EventSessionPage extends Vue {
   }
 
   getDisplaySessionTimePeriod(startsAt: Date, endsAt: Date) {
-    return `${this.$moment(startsAt).format('MMMDo H:mm')} - ${this.$moment(
+    return `${this.$moment(startsAt).format('M月D日 H:mm')} - ${this.$moment(
       endsAt
     ).format('H:mm')}`
+  }
+
+  getPermanentLink() {
+    return `${process.env.BASE_URL}/sessions/${this.session.id}/`
+  }
+
+  getFacebookShareUrl() {
+    return `http://www.facebook.com/share.php?u=${this.getPermanentLink()}`
+  }
+
+  getTwitterShareUrl() {
+    const shareText = `${this.session.title}`
+    return `https://twitter.com/share?url=${this.getPermanentLink()}&via=linedc_jp&related=linedc_jp&hashtags=linedc&text=${shareText}`
+  }
+
+  getHatenaShareUrl() {
+    const shareText = `${this.session.title}`
+    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.getPermanentLink()}&title=${shareText}`
   }
 }
 </script>
