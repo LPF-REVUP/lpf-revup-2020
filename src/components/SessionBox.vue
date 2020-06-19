@@ -1,45 +1,41 @@
 <template lang="pug">
-  v-container
-    div
-      h3
-        nuxt-link(:to="getSessionPageLink()")
-          | {{ session.title }}
-      div {{ getDisplayDateTime(session.startsAt) }} to {{ getDisplayDateTime(session.endsAt) }}
-      span(
-        v-html="session.description"
-      )
-      ul
-        li(
-          v-for="speaker in session.speakers"
-          :key="speaker.id"
-        )
-          | {{ speaker.familyNameJp }} {{ speaker.firstNameJp }}
-      ul
-        li(
-          v-for="tag in session.tags"
-          :key="tag.id"
-        )
-          | {{ getDisplayTagId(tag) }}
+  v-card.mx-auto(
+    outlined
+  )
+    v-card-title
+      nuxt-link(:to="getSessionPageLink()")
+        h5.session_text {{ session.title }}
+    v-card-text
+      div
+        span.group.mr-2.session_text.caption
+          v-icon.mr-1(small) mdi-calendar-month
+          | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
+        span.group.mr-2.session_text.caption
+          v-icon.mr-1(small) mdi-account
+          | 申込者数
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { EventSession, Tag } from '~/types'
+import { EventSession } from '~/types'
 
 @Component({})
 export default class SpeakerBoxComponent extends Vue {
   @Prop({ type: Object, required: true }) readonly session!: EventSession
 
-  getDisplayTagId(tag: Tag) {
-    return `#${tag.id}`
-  }
-
   getSessionPageLink() {
     return `/sessions/${this.session.id}/`
   }
 
-  getDisplayDateTime(dt: Date) {
-    return this.$moment(dt).format('YYYY/MM/DD HH:mm')
+  getDisplaySessionTimePeriod(startsAt: Date, endsAt: Date) {
+    return `${this.$moment(startsAt).format('M月D日 H:mm')} - ${this.$moment(
+      endsAt
+    ).format('H:mm')}`
   }
 }
 </script>
+
+<style lang="stylus">
+.session_text
+  color #666666
+</style>

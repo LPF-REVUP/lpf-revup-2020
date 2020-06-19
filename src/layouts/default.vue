@@ -1,7 +1,8 @@
 <template lang="pug">
   v-app
     v-app-bar(fixed app flat color="white")
-      v-toolbar-title.black--text {{title}}
+      v-toolbar-title.black--text
+        nuxt-link(to="/") {{title}}
       v-spacer
       v-btn.black--text(text small) SPEAKERS
       v-btn.black--text(text small) SCHEDULE
