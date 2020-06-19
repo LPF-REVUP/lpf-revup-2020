@@ -16,7 +16,7 @@
             v-for="tag in session.tags"
             :key="tag.id"
           )
-            v-icon(left) mdi-tag
+            v-icon.mr-1(left small) mdi-tag
             | {{ getDisplayTagName(tag) }}
           div
             span.group.ma-2.session_header_text
@@ -37,11 +37,11 @@
             )
               | このセッションに申し込む
       v-card-text
-        span.ma-2(
+        span.mt-2(
           v-html="session.description"
         )
       v-card-text
-        div.mt-2(
+        div(
           v-for="s in session.speakers"
             :key="s.id"
         )
@@ -75,7 +75,7 @@
         div
           h3.mb-2 その他のセッション
           div
-            session-list(
+            related-session-list(
               :sessions="relatedSessions"
             )
 </template>
@@ -91,11 +91,12 @@ import '@/assets/icomoon/style.css'
 @Component({
   components: {
     SpeakerItem: () => import('@/components/SpeakerItem.vue'),
-    SessionList: () => import('@/components/SessionList.vue')
+    RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
   }
 })
 export default class EventSessionPage extends Vue {
   session!: EventSession
+  connpassEventId!: string
 
   validate(context: Context) {
     consola.log('validate called!!')
