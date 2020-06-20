@@ -4,6 +4,12 @@ declare global {
   }
 }
 
+export interface HeadInfo {
+  title?: string
+  description?: string
+  ogImagePath?: string
+}
+
 export interface Tag {
   id: string
   name: string

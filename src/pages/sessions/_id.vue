@@ -19,7 +19,7 @@
             v-icon.mr-1(left small) mdi-tag
             | {{ getDisplayTagName(tag) }}
           v-container.ma-0.pa-0
-            v-row(dense justify="left" align="center")
+            v-row(dense justify="start" align="center")
               v-col(cols="8" sm="6" md="2" lg="2")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-calendar-month
@@ -85,11 +85,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
 import axios from 'axios'
 import consola from 'consola'
-import { EventSession, Tag } from '~/types'
+import HeadMixin from '~/mixins/HeadMixin'
+import { HeadInfo, EventSession, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
 
 @Component({
@@ -98,7 +99,7 @@ import '@/assets/icomoon/style.css'
     RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
   }
 })
-export default class EventSessionPage extends Vue {
+export default class EventSessionPage extends mixins(HeadMixin) {
   session!: EventSession
   connpassEventId!: string
 
@@ -107,6 +108,13 @@ export default class EventSessionPage extends Vue {
     const { params } = context
     consola.log('Session ID', params.id)
     return params.id
+  }
+
+  public headInfo(): HeadInfo {
+    return {
+      title: `${this.session.title} | Session`,
+      description: `${this.session.description}`
+    }
   }
 
   async asyncData(context: Context) {
