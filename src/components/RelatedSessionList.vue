@@ -1,10 +1,11 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container.ma-0.pa-0(fluid)
     v-row(dense)
       v-col(
         v-for="s in sessions"
           :key="s.id"
-          cols="4"
+          cols="12"
+          sm="4"
       )
         session-box(
           :session="s"

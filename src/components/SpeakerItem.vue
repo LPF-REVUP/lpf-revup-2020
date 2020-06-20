@@ -1,19 +1,19 @@
 <template lang="pug">
-  v-container(fluid)
-    v-card.mx-auto(
+  v-container.ma-0.pa-0(fluid)
+    v-card.pa-1(
       outlined
     )
       v-row(dense align="center" justify="center")
-        v-col(cols="2")
-          div
+        v-col(cols="12" sm="12" md="2")
+          v-row(justify="center")
             img(
               :alt="speaker.familyNameJp"
               :src="speakerAvatarImageUrl"
             )
-        v-col(cols="2")
-          h3.speaker_text {{ fullName }}
-          div.speaker_text {{ speaker.affiliation }} {{ speaker.title }}
-        v-col(cols="8")
+        v-col(cols="12" sm="12" md="2")
+          h3.text-center.speaker_text {{ fullName }}
+          div.text-center.speaker_text {{ speaker.affiliation }} {{ speaker.title }}
+        v-col(cols="12" sm="12" md="8")
           span.speaker_text(
             v-html="speaker.profile"
           )

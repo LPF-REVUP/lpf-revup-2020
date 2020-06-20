@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.mx-auto(
+  v-card.ma-0.pa-0(
     outlined
   )
     v-card-title

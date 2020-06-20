@@ -7,9 +7,9 @@
       v-card-text.session_header
         div
           //- Title
-          h1.mb-2.session_header_text {{ session.title }}
+          h2.session_header_text {{ session.title }}
           //- Tag
-          v-chip.ma-2(
+          v-chip.ma-2.mt-4(
             label
             text-color="white"
             color="secondary"
@@ -18,17 +18,21 @@
           )
             v-icon.mr-1(left small) mdi-tag
             | {{ getDisplayTagName(tag) }}
-          div
-            span.group.ma-2.session_header_text
-              v-icon.mr-1(color="white") mdi-calendar-month
-              | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
-            span.group.ma-2.session_header_text
-              v-icon.mr-1(color="white") mdi-map-marker
-              | {{ session.area.name }}
-            span.group.ma-2.session_header_text
-              v-icon.mr-1(color="white") mdi-account
-              | TODO 申込者数
-          div.ma-2.mt-4
+          v-container.ma-0.pa-0
+            v-row(dense justify="left" align="center")
+              v-col(cols="8" sm="6" md="2" lg="2")
+                span.session_header_text
+                  v-icon.mr-1(color="white") mdi-calendar-month
+                  | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
+              v-col(cols="4" sm="2" md="1" lg="1")
+                span.session_header_text
+                  v-icon.mr-1(color="white") mdi-map-marker
+                  | {{ session.area.name }}
+              v-col(cols="6" sm="4"  md="2" lg="1")
+                span.session_header_text
+                  v-icon.mr-1(color="white") mdi-account
+                  | TODO 申込者数
+          div.ma-0.mt-4
             v-btn(
               color="primary"
               link
