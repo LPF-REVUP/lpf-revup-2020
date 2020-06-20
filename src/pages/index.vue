@@ -34,10 +34,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, mixins } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
-import { Speaker, EventSession, Sponsor } from '~/types'
+import HeadMixin from '~/mixins/HeadMixin'
+import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
 
 @Component({
   components: {
@@ -45,8 +46,12 @@ import { Speaker, EventSession, Sponsor } from '~/types'
     SessionList: () => import('@/components/SessionList.vue')
   }
 })
-export default class Index extends Vue {
+export default class Index extends mixins(HeadMixin) {
   speakers = []
+
+  public headInfo(): HeadInfo {
+    return {}
+  }
 
   async asyncData() {
     consola.log('asyncData called!!')
