@@ -24,14 +24,14 @@
         session-list(
           :sessions="sessions"
         )
-      div
-        h2 Sponsors
-        ul
-          li(
-            v-for="s in sponsors"
-            :key="s.id"
-          )
-            | {{ s.name }} < {{ s.rank }} >
+      v-flex(
+        xs12
+        sm8
+        md6
+      )
+        sponsor-List(
+          :sponsors="sponsors"
+        )
 </template>
 
 <script lang="ts">
@@ -44,7 +44,8 @@ import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
 @Component({
   components: {
     SpeakerList: () => import('@/components/SpeakerList.vue'),
-    SessionList: () => import('@/components/SessionList.vue')
+    SessionList: () => import('@/components/SessionList.vue'),
+    SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
 export default class Index extends mixins(HeadMixin) {
