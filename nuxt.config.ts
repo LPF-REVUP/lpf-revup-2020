@@ -1,7 +1,12 @@
 import { Configuration } from '@nuxt/types'
 
 import colors from 'vuetify/es5/util/colors'
+
+import axios from 'axios'
 require('dotenv').config()
+
+const siteTitle = 'LPF REV UP 2020'
+const twitterId: string = '@line_dc_jp'
 
 const nuxtConfig: Configuration = {
   mode: 'universal',
@@ -10,8 +15,7 @@ const nuxtConfig: Configuration = {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: siteTitle,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -19,7 +23,11 @@ const nuxtConfig: Configuration = {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
-      }
+      },
+      // Twitter Card
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:site', content: twitterId },
+      { name: 'twitter:creator', content: twitterId }
     ],
     script: [
       { src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' },
@@ -28,7 +36,20 @@ const nuxtConfig: Configuration = {
           'https://cdnjs.cloudflare.com/ajax/libs/vConsole/3.3.4/vconsole.min.js'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'shortcut icon', href: '/favicon.ico' }
+    ]
+  },
+  manifest: {
+    name: siteTitle,
+    lang: 'ja',
+    short_name: siteTitle,
+    title: siteTitle,
+    description:
+      '新しいプラットフォームの登場による人々の生活の劇的な変化、そしてそれを実現する開発者が活躍できる世界の到来',
+    theme_color: '#ffffff',
+    background_color: '#ffffff'
   },
   /*
    ** Customize the progress-bar color
@@ -69,8 +90,29 @@ const nuxtConfig: Configuration = {
     path: process.cwd()
   },
   env: {
+    BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
     MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
+  },
+  /*
+   * Generating page and routes
+   */
+  generate: {
+    routes() {
+      console.log('MC_API_URL', `${process.env.MC_API_BASE_URL}sessions`)
+      const sessions = axios
+        .get(`${process.env.MC_API_BASE_URL}sessions`, {
+          headers: { 'X-API-KEY': process.env.MC_API_KEY }
+        })
+        .then(res => {
+          return res.data.contents.map((session: { id: string }) => {
+            return '/sessions/' + session.id
+          })
+        })
+      return Promise.all([sessions]).then(values => {
+        return values.join().split(',')
+      })
+    }
   },
   /*
    ** vuetify module configuration

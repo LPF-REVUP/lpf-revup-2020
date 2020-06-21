@@ -1,15 +1,15 @@
 <template lang="pug">
   v-app
     v-app-bar(fixed app flat color="white")
-      v-toolbar-title.black--text {{title}}
+      v-toolbar-title.black--text
+        nuxt-link(to="/") {{title}}
       v-spacer
       v-btn.black--text(text small) SPEAKERS
       v-btn.black--text(text small) SCHEDULE
       v-btn.black--text(text small) SPONSORS
       v-btn.registration-button.white-text(tile dark color="#777676") 受付/REGISTRATION
     v-content
-      v-container
-        nuxt
+      nuxt
     v-footer(padless)
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
