@@ -35,6 +35,8 @@ export interface Speaker {
   profile: string
   image: Image
   sessions: Array<EventSession>
+  twitter: string
+  facebook: string
 }
 
 export interface EventSession {

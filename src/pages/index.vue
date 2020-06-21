@@ -18,6 +18,7 @@
       )
         speaker-list(
           :speakers="speakers"
+          :sessions="sessions"
         )
       div
         session-list(
