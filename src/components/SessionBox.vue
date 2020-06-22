@@ -3,13 +3,13 @@
     outlined
   )
     v-card-title
-      nuxt-link(:to="getSessionPageLink()")
+      nuxt-link(:to="sessionPageLink")
         h5.session_text {{ session.title }}
     v-card-text
       div
         span.group.mr-2.session_text.caption
           v-icon.mr-1(small) mdi-calendar-month
-          | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
+          | {{ displaySessionTimePeriod }}
         span.group.mr-2.session_text.caption
           v-icon.mr-1(small) mdi-account
           | 申込者数
@@ -23,14 +23,14 @@ import { EventSession } from '~/types'
 export default class SpeakerBoxComponent extends Vue {
   @Prop({ type: Object, required: true }) readonly session!: EventSession
 
-  getSessionPageLink() {
+  get sessionPageLink() {
     return `/sessions/${this.session.id}/`
   }
 
-  getDisplaySessionTimePeriod(startsAt: Date, endsAt: Date) {
-    return `${this.$moment(startsAt).format('M月D日 H:mm')} - ${this.$moment(
-      endsAt
-    ).format('H:mm')}`
+  get displaySessionTimePeriod() {
+    return `${this.$moment(this.session.startsAt).format(
+      'M月D日 H:mm'
+    )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 }
 </script>

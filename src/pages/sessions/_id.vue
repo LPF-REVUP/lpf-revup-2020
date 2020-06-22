@@ -17,13 +17,13 @@
             :key="tag.id"
           )
             v-icon.mr-1(left small) mdi-tag
-            | {{ getDisplayTagName(tag) }}
+            | {{ tag.name }}
           v-container.ma-0.pa-0
             v-row(dense justify="start" align="center")
               v-col(cols="8" sm="6" md="2" lg="2")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-calendar-month
-                  | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
+                  | {{ displaySessionTimePeriod }}
               v-col(cols="4" sm="2" md="1" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-map-marker
@@ -59,15 +59,15 @@
             span.mr-4 SHARE
             //- Facebook
             span.mr-2
-              a(:href="getFacebookShareUrl()" rel="nofollow" target="_blank")
+              a(:href="facebookShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) mdi-facebook
             //- Twitter
             span.mr-2
-              a(:href="getTwitterShareUrl()" rel="nofollow" target="_blank")
+              a(:href="twitterShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) mdi-twitter
             //- Hatena bookmark
             span.mr-2
-              a(:href="getHatenaShareUrl()" rel="nofollow" target="_blank")
+              a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) icon-hatenabookmark
             //- TODO Share Target Picker
             span.mr-2
@@ -102,6 +102,7 @@ import '@/assets/icomoon/style.css'
 export default class EventSessionPage extends mixins(HeadMixin) {
   session!: EventSession
   connpassEventId!: string
+  pageLink!: string
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -159,39 +160,34 @@ export default class EventSessionPage extends mixins(HeadMixin) {
       connpassEventId = url.pathname.split('/')[2]
       consola.log('connpassEventId', connpassEventId)
     }
+    // Page link
+    const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
     return {
       session,
       relatedSessions,
-      connpassEventId
+      connpassEventId,
+      pageLink
     }
   }
 
-  getDisplayTagName(tag: Tag) {
-    return `#${tag.name}`
+  get displaySessionTimePeriod() {
+    return `${this.$moment(this.session.startsAt).format(
+      'M月D日 H:mm'
+    )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
-  getDisplaySessionTimePeriod(startsAt: Date, endsAt: Date) {
-    return `${this.$moment(startsAt).format('M月D日 H:mm')} - ${this.$moment(
-      endsAt
-    ).format('H:mm')}`
+  get facebookShareUrl() {
+    return `http://www.facebook.com/share.php?u=${this.pageLink}`
   }
 
-  getPermanentLink() {
-    return `${process.env.BASE_URL}/sessions/${this.session.id}/`
-  }
-
-  getFacebookShareUrl() {
-    return `http://www.facebook.com/share.php?u=${this.getPermanentLink()}`
-  }
-
-  getTwitterShareUrl() {
+  get twitterShareUrl() {
     const shareText = `${this.session.title}`
-    return `https://twitter.com/share?url=${this.getPermanentLink()}&via=linedc_jp&related=linedc_jp&hashtags=linedc&text=${shareText}`
+    return `https://twitter.com/share?url=${this.pageLink}&via=linedc_jp&related=linedc_jp&hashtags=linedc&text=${shareText}`
   }
 
-  getHatenaShareUrl() {
+  get hatenaShareUrl() {
     const shareText = `${this.session.title}`
-    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.getPermanentLink()}&title=${shareText}`
+    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.pageLink}&title=${shareText}`
   }
 }
 </script>
