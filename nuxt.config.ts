@@ -8,6 +8,13 @@ require('dotenv').config()
 const siteTitle = 'LPF REV UP 2020'
 const twitterId: string = '@line_dc_jp'
 
+const scripts = [{ src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' }]
+if (process.env.NODE_ENV === 'development') {
+  scripts.push({
+    src: 'https://cdnjs.cloudflare.com/ajax/libs/vConsole/3.3.4/vconsole.min.js'
+  })
+}
+
 const nuxtConfig: Configuration = {
   mode: 'universal',
   srcDir: 'src',
@@ -29,13 +36,7 @@ const nuxtConfig: Configuration = {
       { name: 'twitter:site', content: twitterId },
       { name: 'twitter:creator', content: twitterId }
     ],
-    script: [
-      { src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' },
-      {
-        src:
-          'https://cdnjs.cloudflare.com/ajax/libs/vConsole/3.3.4/vconsole.min.js'
-      }
-    ],
+    script: scripts,
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'shortcut icon', href: '/favicon.ico' }
