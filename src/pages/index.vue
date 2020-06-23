@@ -32,15 +32,22 @@
         sponsor-List(
           :sponsors="sponsors"
         )
+        v-btn.white-text(
+          tile dark color="primary"
+          @click="showShareTargetPicker"
+          v-if="liffInitialized"
+        ) SHARE
 </template>
 
 <script lang="ts">
-import { Component, mixins } from 'nuxt-property-decorator'
+import { Component, mixins, State } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
+import { Profile } from '@line/bot-sdk'
 import HeadMixin from '~/mixins/HeadMixin'
+import LiffMixin from '~/mixins/LiffMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
-import { initLiff } from '~/plugins/liff'
+// import { isLiffApiAvailable, shareTargetPicker } from '~/plugins/liff'
 
 @Component({
   components: {
@@ -49,8 +56,9 @@ import { initLiff } from '~/plugins/liff'
     SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
-export default class Index extends mixins(HeadMixin) {
-  liffInitialized: boolean = false
+export default class Index extends mixins(HeadMixin, LiffMixin) {
+  @State liffInitialized!: boolean
+  @State lineProfile!: Profile
   speakers = []
 
   public headInfo(): HeadInfo {
@@ -87,11 +95,20 @@ export default class Index extends mixins(HeadMixin) {
     }
   }
 
-  async mounted() {
-    if (this.liffInitialized === false) {
-      const pageLiffId = process.env.LIFF_ID || ''
-      this.liffInitialized = await initLiff(pageLiffId)
+  mounted() {
+    this.initializeLiff()
+    this.showLiffInfo()
+  }
+
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    if (!this.lineProfile) {
+      await this.loginWithLiff()
     }
+    // if (isLiffApiAvailable('shareTargetPicker')) {
+    //   const result = await shareTargetPicker()
+    //   consola.log('shareTargetPicker', result)
+    // }
   }
 }
 </script>
