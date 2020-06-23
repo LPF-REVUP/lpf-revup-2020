@@ -40,6 +40,7 @@ import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
+import { initLiff } from '~/plugins/liff'
 
 @Component({
   components: {
@@ -49,6 +50,7 @@ import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
   }
 })
 export default class Index extends mixins(HeadMixin) {
+  liffInitialized: boolean = false
   speakers = []
 
   public headInfo(): HeadInfo {
@@ -82,6 +84,13 @@ export default class Index extends mixins(HeadMixin) {
       speakers,
       sessions,
       sponsors
+    }
+  }
+
+  async mounted() {
+    if (this.liffInitialized === false) {
+      const pageLiffId = process.env.LIFF_ID || ''
+      this.liffInitialized = await initLiff(pageLiffId)
     }
   }
 }

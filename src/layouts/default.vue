@@ -22,10 +22,32 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import consola from 'consola'
 
 @Component({})
 export default class extends Vue {
   title = 'LPF REV UP 2020'
+
+  mounted() {
+    if (process.env.NODE_ENV === 'development') this.initVconsole()
+  }
+
+  initVconsole() {
+    // vConsoleをイニシャライズ
+    consola.log('Initializing vConsole')
+    /* eslint no-unused-vars: 0 */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const vconsole = new window.VConsole({
+      defaultPlugins: ['system', 'network', 'element', 'storage'],
+      maxLogNumber: 1000,
+      onReady() {
+        consola.log('vConsole is ready.')
+      },
+      onClearLog() {
+        consola.log('vConsole on clearLog')
+      }
+    })
+  }
 }
 </script>
 
