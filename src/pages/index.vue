@@ -98,7 +98,7 @@ export default class Index extends mixins(HeadMixin, LiffMixin) {
   }
 
   async mounted() {
-    this.initializeLiff()
+    await this.initializeLiff()
     this.showLiffInfo()
     await this.loadLineProfile()
     consola.log('mounted in index.vue', await appStateStore.lineProfile)
