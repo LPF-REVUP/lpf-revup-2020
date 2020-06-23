@@ -7,7 +7,14 @@
       v-btn.black--text(text small) SPEAKERS
       v-btn.black--text(text small) SCHEDULE
       v-btn.black--text(text small) SPONSORS
-      v-btn.registration-button.white-text(tile dark color="#777676") 受付/REGISTRATION
+      v-btn.registration-button.white-text(
+        v-if="!lineProfile"
+        tile dark color="#777676"
+      ) 受付/REGISTRATION
+      v-btn.registration-button.white-text(
+        v-if="lineProfile"
+        tile dark color="primary"
+      ) {{ lineProfile.displayName }}
     v-content
       nuxt
     v-footer(padless)
@@ -23,10 +30,17 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import consola from 'consola'
+import { Profile } from '@line/bot-sdk'
+import { appStateStore } from '~/store'
 
 @Component({})
 export default class extends Vue {
   title = 'LPF REV UP 2020'
+
+  get lineProfile(): Profile | null {
+    consola.log('getLineProfile called', appStateStore.lineProfile)
+    return appStateStore.lineProfile
+  }
 
   mounted() {
     if (process.env.NODE_ENV === 'development') this.initVconsole()

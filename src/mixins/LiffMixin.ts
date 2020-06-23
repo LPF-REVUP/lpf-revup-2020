@@ -1,41 +1,61 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Action, State } from 'nuxt-property-decorator'
 // import { Profile } from '@line/bot-sdk'
 import consola from 'consola'
+import { Profile } from '@line/bot-sdk'
+import { appStateStore } from '~/store'
 import {
   initLiff,
   getLiffVersion,
   getOS,
   isInClient,
-  liffLogin
+  liffLogin,
+  isLineLoggedIn,
+  getLineProfile
 } from '~/plugins/liff'
 
 @Component
 export default class LiffMixin extends Vue {
-  @Action liffInitializeCompleted: any
-  @State liffInitialized!: boolean
-
   public async initializeLiff(): Promise<void> {
     consola.log('initializeLiff called!')
-    if (this.liffInitialized === false) {
+    if (!appStateStore.liffInitialized) {
       const pageLiffId = process.env.LIFF_ID || ''
       const result = await initLiff(pageLiffId)
       if (result) {
-        this.liffInitializeCompleted()
+        appStateStore.initializeLiffCompleted()
       }
     }
   }
 
   public async loginWithLiff() {
-    await liffLogin()
+    if (!isLineLoggedIn()) {
+      await liffLogin()
+    } else {
+      const profile: Profile = await getLineProfile()
+      consola.log('got Profile in loginWithLiff', profile)
+      appStateStore.loggedInByLineLogin(profile)
+    }
+  }
+
+  public async loadLineProfile() {
+    if (
+      appStateStore.liffInitialized &&
+      isLineLoggedIn() &&
+      !appStateStore.lineProfile
+    ) {
+      // getProfile
+      const profile: Profile = await getLineProfile()
+      consola.log('got Profile in loadLineProfile', profile)
+      appStateStore.loggedInByLineLogin(profile)
+    }
   }
 
   public showLiffInfo() {
-    if (this.liffInitialized) {
+    if (appStateStore.liffInitialized) {
       consola.log('getLiffVersion', getLiffVersion())
       consola.log('getOS', getOS())
       consola.log('isInClient', isInClient())
+      consola.log('isLineLoggedIn', isLineLoggedIn())
     }
   }
 }

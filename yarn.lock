@@ -5438,7 +5438,7 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-liff-type@^2.0.8:
+liff-type@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/liff-type/-/liff-type-2.1.3.tgz#e9c0bdd208f28ef9529d1e7a0501e258fe4ee1b6"
   integrity sha512-bIXT/9jElSvu11Eyc9ftC/MWwEErB1O1yjR7iPbKV6eEc4HTfEmJ32zKs+Z2sO7/kDYTAxR2qK344wsOWeyOig==
@@ -9227,6 +9227,11 @@ vuex-module-decorators@^0.16.1:
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/vuex-module-decorators/-/vuex-module-decorators-0.16.1.tgz#9e651d507057b07a1b52f0f65dfae97b9095f00f"
   integrity sha512-Zz8HF2rMoDYf78uOBbWCq8wGFFo7YyNWc10Yj2eScKxVoRMla9HnFpiqvI3Dm0cLyOnBBklCn1AFUys62BZGAw==
+
+vuex-module-decorators@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/vuex-module-decorators/-/vuex-module-decorators-0.17.0.tgz#b170006f55f579f95415d7181fe5854830473d87"
+  integrity sha512-EFzrR3oyRMTHwpIgYzhW0BVKD71+FBs2U5Mn/ZQwlsaPyROZexDXTZTSYOYeuwg0kqQsK/YBkG4sQ8B4jmVMPg==
 
 vuex@^3.1.3, vuex@^3.2.0:
   version "3.4.0"
