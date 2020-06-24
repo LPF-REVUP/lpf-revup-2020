@@ -28,7 +28,6 @@ export default class SpeakerListComponent extends Vue {
   @Prop({ type: Array, required: true }) readonly sessions!: Array<EventSession>
 
   getSessionsBySpeaker(s: Speaker): Array<EventSession> {
-    console.log('choge', s.id, this.sessions)
     return this.sessions.filter(session =>
       session.speakers.map(speaker => speaker.id).includes(s.id)
     )

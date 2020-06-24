@@ -32,6 +32,11 @@
         sponsor-List(
           :sponsors="sponsors"
         )
+        //- v-btn.white-text(
+        //-   tile dark color="primary"
+        //-   @click="showShareTargetPicker"
+        //-   v-if="isLiffInitialized"
+        //- ) SHARE
 </template>
 
 <script lang="ts">
@@ -39,7 +44,9 @@ import { Component, mixins } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
+import LiffMixin from '~/mixins/LiffMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
+import { appStateStore } from '~/store'
 
 @Component({
   components: {
@@ -48,7 +55,7 @@ import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
     SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
-export default class Index extends mixins(HeadMixin) {
+export default class Index extends mixins(HeadMixin, LiffMixin) {
   speakers = []
 
   public headInfo(): HeadInfo {
@@ -82,6 +89,26 @@ export default class Index extends mixins(HeadMixin) {
       speakers,
       sessions,
       sponsors
+    }
+  }
+
+  get isLiffInitialized() {
+    consola.log('isLiffInitialized', appStateStore.liffInitialized)
+    return appStateStore.liffInitialized
+  }
+
+  async mounted() {
+    consola.log('mounted in index.vue', await appStateStore.lineProfile)
+  }
+
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    if (!appStateStore.lineProfile) {
+      consola.log('lineProfile is not found in appStateStore')
+      await this.loginWithLiff()
+    } else {
+      consola.log('User is logged in!!', appStateStore.lineProfile.displayName)
+      // TODO show shareTargetPicker
     }
   }
 }
