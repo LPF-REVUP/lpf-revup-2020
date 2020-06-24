@@ -97,6 +97,7 @@ const nuxtConfig: Configuration = {
     BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     USE_VCONSOLE: process.env.USE_VCONSOLE || '',
     LIFF_ID: process.env.LIFF_ID || '',
+    BOT_FRIENDSHIP_URL: process.env.BOT_FRIENDSHIP_URL || '',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
     MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
   },

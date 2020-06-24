@@ -2,7 +2,6 @@
   v-container
     v-card.mx-auto(
       max-width="100%"
-
     )
       v-card-text.session_header
         div

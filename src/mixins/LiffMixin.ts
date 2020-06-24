@@ -11,7 +11,9 @@ import {
   isInClient,
   liffLogin,
   isLineLoggedIn,
-  getLineProfile
+  getLineProfile,
+  getFriendship,
+  openWindow
 } from '~/plugins/liff'
 
 @Component
@@ -37,12 +39,16 @@ export default class LiffMixin extends Vue {
     }
   }
 
-  public async loadLineProfile() {
-    if (
-      appStateStore.liffInitialized &&
-      isLineLoggedIn() &&
-      !appStateStore.lineProfile
-    ) {
+  canUseLiffApi(): boolean {
+    let result: boolean = false
+    if (appStateStore.liffInitialized && isLineLoggedIn()) {
+      result = true
+    }
+    return result
+  }
+
+  public async loadLineProfile(): Promise<void> {
+    if (this.canUseLiffApi() && !appStateStore.lineProfile) {
       // getProfile
       const profile: Profile = await getLineProfile()
       consola.log('got Profile in loadLineProfile', profile)
@@ -50,7 +56,19 @@ export default class LiffMixin extends Vue {
     }
   }
 
-  public showLiffInfo() {
+  public async hasFriendshipWithBot(): Promise<boolean> {
+    let result = false
+    if (this.canUseLiffApi()) {
+      result = await getFriendship()
+    }
+    return result
+  }
+
+  public openWindow(url: string, external: boolean): void {
+    openWindow(url, external)
+  }
+
+  public showLiffInfo(): void {
     if (appStateStore.liffInitialized) {
       consola.log('getLiffVersion', getLiffVersion())
       consola.log('getOS', getOS())

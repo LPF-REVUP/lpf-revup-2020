@@ -32,11 +32,11 @@
         sponsor-List(
           :sponsors="sponsors"
         )
-        v-btn.white-text(
-          tile dark color="primary"
-          @click="showShareTargetPicker"
-          v-if="isLiffInitialized"
-        ) SHARE
+        //- v-btn.white-text(
+        //-   tile dark color="primary"
+        //-   @click="showShareTargetPicker"
+        //-   v-if="isLiffInitialized"
+        //- ) SHARE
 </template>
 
 <script lang="ts">
@@ -98,9 +98,6 @@ export default class Index extends mixins(HeadMixin, LiffMixin) {
   }
 
   async mounted() {
-    await this.initializeLiff()
-    this.showLiffInfo()
-    await this.loadLineProfile()
     consola.log('mounted in index.vue', await appStateStore.lineProfile)
   }
 

@@ -1,4 +1,9 @@
-import { LiffContextData, LIFFErrorObject, scanCodeResult } from 'liff-type'
+import {
+  LiffContextData,
+  LIFFErrorObject,
+  scanCodeResult,
+  Friendship
+} from 'liff-type'
 import { Profile } from '@line/bot-sdk'
 import consola from 'consola'
 import { LiffError } from '@/types'
@@ -28,6 +33,21 @@ export function getLineProfile(): Promise<Profile> {
       })
       .catch((error: LIFFErrorObject) => {
         consola.warn('liff.getProfile failed', error)
+        throw new LiffError(error.code, error.message)
+      })
+  })
+}
+
+export function getFriendship(): Promise<boolean> {
+  return new Promise(resolve => {
+    window.liff
+      .getFriendship()
+      .then((friendship: Friendship) => {
+        consola.log('liff.getFriendship success!', friendship)
+        resolve(friendship.friendFlag)
+      })
+      .catch((error: LIFFErrorObject) => {
+        consola.warn('liff.getFriendship failed', error)
         throw new LiffError(error.code, error.message)
       })
   })

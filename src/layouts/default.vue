@@ -7,15 +7,56 @@
       v-btn.black--text(text small) SPEAKERS
       v-btn.black--text(text small) SCHEDULE
       v-btn.black--text(text small) SPONSORS
-      v-btn.registration-button.white-text(
-        v-if="!profile"
+      v-btn.registration-button.white-text.mr-2(
         tile dark color="#777676"
       ) 受付/REGISTRATION
-      v-btn.registration-button.white-text(
+      v-btn.ml-2(
+        v-if="!profile"
+        @click="loginWithLineLogin()"
+        tile dark color="#777676"
+      ) LINE Login
+      v-btn.ml-2.mr-2(
         v-if="profile"
-        tile dark color="primary"
-      ) {{ profile.displayName }}
+        fab small dark color="primary"
+        @click="openFriendshipDialg()"
+      )
+        v-avatar
+          v-img(
+            :src="profile.pictureUrl"
+            :alt="profile.displayName"
+          )
     v-content
+      //- show Friendship with bot dialog
+      v-dialog(
+        v-model="showMyPageDialog"
+        max-width="512"
+      )
+        v-card
+          v-card-title.headline Friendship with Bot
+          v-card-title
+            div.text-h5
+              p こちらのアカウントでLPF REV UP 2020 について、セッション・コンテンツ情報のアップデートなどをお知らせしていきます。
+              p また、イベント後も情報発信する予定です。開催までお楽しみにお待ち下さい。
+          v-card-actions
+            v-spacer
+            div(v-if="hasFriendship === false")
+              v-btn(
+                color="primary"
+                @click="openBeFriendWithBotWindow()"
+              ) 友だち追加する
+            div(v-else)
+              | 友だち登録済みです
+            v-spacer
+          v-card-actions
+            v-spacer
+            v-btn(
+              tile dark
+              color="secondary"
+              outlined
+              @click="showMyPageDialog = false"
+            )
+              | OK
+            v-spacer
       nuxt
     v-footer(padless)
       v-card.flex(flat tile)
@@ -28,14 +69,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Watch, mixins } from 'nuxt-property-decorator'
 import consola from 'consola'
 import { Profile } from '@line/bot-sdk'
 import { appStateStore } from '~/store'
+import LiffMixin from '~/mixins/LiffMixin'
 
 @Component({})
-export default class extends Vue {
-  title = 'LPF REV UP 2020'
+export default class extends mixins(LiffMixin) {
+  title: string = 'LPF REV UP 2020'
+  showMyPageDialog: boolean = false
+  hasFriendship: boolean = false
   protected profile: Profile | null = appStateStore.lineProfile
 
   get lineProfile(): Profile | null {
@@ -43,18 +87,58 @@ export default class extends Vue {
     return appStateStore.lineProfile
   }
 
+  /**
+   * LINE ログイン状態を監視する
+   * ログイン状態であればヘッダーにあるログインボタンを変更する
+   */
   @Watch('lineProfile')
   watchLineProfile(lineProfile: Profile) {
     return (this.profile = lineProfile)
   }
 
-  mounted() {
-    if (process.env.NODE_ENV === 'development') this.initVconsole()
+  async mounted() {
+    // TODO LIFF login あたりの実装は整理したい
+    this.initVconsole()
+    await this.initializeLiff()
+    this.showLiffInfo()
+    await this.loadLineProfile()
+    consola.log(
+      'mounted in layouts/default.vue',
+      await appStateStore.lineProfile
+    )
   }
 
+  async loginWithLineLogin() {
+    consola.log('loginWithLineLogin called')
+    if (!appStateStore.lineProfile) {
+      consola.log('lineProfile is not found in appStateStore')
+      await this.loginWithLiff()
+    } else {
+      consola.log('User is logged in!!', appStateStore.lineProfile.displayName)
+    }
+  }
+
+  async openFriendshipDialg(): Promise<void> {
+    this.hasFriendship = await this.hasFriendshipWithBot()
+    consola.log('friendship', this.hasFriendship)
+    this.showMyPageDialog = true
+  }
+
+  openBeFriendWithBotWindow(): void {
+    const url: string = process.env.BOT_FRIENDSHIP_URL || ''
+    this.openWindow(url, true)
+  }
+
+  // vConsole を初期化する
   initVconsole() {
-    // vConsoleをイニシャライズ
     consola.log('Initializing vConsole')
+    if (
+      // 開発モードか、vConsole を利用する設定になっている場合のみvConsole を起動する
+      process.env.NODE_ENV !== 'development' &&
+      process.env.USE_VCONSOLE !== 'true'
+    ) {
+      return
+    }
     /* eslint no-unused-vars: 0 */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const vconsole = new window.VConsole({
