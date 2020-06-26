@@ -20,6 +20,7 @@ if (
 
 const nuxtConfig: Configuration = {
   mode: 'universal',
+  target: 'static',
   srcDir: 'src',
   /*
    ** Headers of the page
