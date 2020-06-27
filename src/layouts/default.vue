@@ -25,7 +25,7 @@
             :src="profile.pictureUrl"
             :alt="profile.displayName"
           )
-    v-content
+    v-main
       //- show Friendship with bot dialog
       v-dialog(
         v-model="showMyPageDialog"
