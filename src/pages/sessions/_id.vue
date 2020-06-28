@@ -89,6 +89,7 @@ import { Context } from '@nuxt/types'
 import axios from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
+import ShareMixin from '~/mixins/ShareMixin'
 import { HeadInfo, EventSession, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
 
@@ -98,7 +99,7 @@ import '@/assets/icomoon/style.css'
     RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
   }
 })
-export default class EventSessionPage extends mixins(HeadMixin) {
+export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
   session!: EventSession
   connpassEventId!: string
   pageLink!: string
@@ -117,6 +118,14 @@ export default class EventSessionPage extends mixins(HeadMixin) {
       title: `${this.session.title} | Session`,
       description: `${this.session.description}`
     }
+  }
+
+  get url(): string {
+    return this.pageLink
+  }
+
+  get shareText(): string {
+    return this.session.title
   }
 
   async asyncData(context: Context) {
@@ -175,20 +184,6 @@ export default class EventSessionPage extends mixins(HeadMixin) {
     return `${this.$moment(this.session.startsAt).format(
       'M月D日 H:mm'
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
-  }
-
-  get facebookShareUrl() {
-    return `http://www.facebook.com/share.php?u=${this.pageLink}`
-  }
-
-  get twitterShareUrl() {
-    const shareText = `${this.session.title}`
-    return `https://twitter.com/share?url=${this.pageLink}&via=linedc_jp&related=linedc_jp&hashtags=linedc&text=${shareText}`
-  }
-
-  get hatenaShareUrl() {
-    const shareText = `${this.session.title}`
-    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.pageLink}&title=${shareText}`
   }
 
   async mounted() {

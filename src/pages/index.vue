@@ -32,6 +32,23 @@
         sponsor-List(
           :sponsors="sponsors"
         )
+      span SHARE
+      v-row.ma-5
+        //- Facebook
+        span.mr-2
+          a(:href="facebookShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) mdi-facebook
+        //- Twitter
+        span.mr-2
+          a(:href="twitterShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) mdi-twitter
+        //- Hatena bookmark
+        span.mr-2
+          a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) icon-hatenabookmark
+        //- TODO Share Target Picker
+        span.mr-2
+          v-icon(large) icon-line
         //- v-btn.white-text(
         //-   tile dark color="primary"
         //-   @click="showShareTargetPicker"
@@ -45,6 +62,7 @@ import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
+import ShareMixin from '~/mixins/ShareMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
 import { appStateStore } from '~/store'
 
@@ -55,11 +73,19 @@ import { appStateStore } from '~/store'
     SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
-export default class Index extends mixins(HeadMixin, LiffMixin) {
+export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   speakers = []
 
   public headInfo(): HeadInfo {
     return {}
+  }
+
+  get url(): string {
+    return process.env.BASE_URL || ''
+  }
+
+  get shareText(): string {
+    return 'LPF REV UP 2020' // TODO 文言を決定し変更する
   }
 
   async asyncData() {
