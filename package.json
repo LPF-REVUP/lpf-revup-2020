@@ -5,7 +5,7 @@
   "author": "sumihiro3",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
+    "dev": "concurrently --kill-others \"nuxt-ts\" \"netlify-lambda serve functions/src\"",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts build && nuxt-ts export && netlify-lambda build functions/src",
     "start": "nuxt-ts start",
@@ -35,6 +35,7 @@
     "@nuxtjs/eslint-config-typescript": "^1.0.2",
     "@nuxtjs/vuetify": "^1.0.0",
     "@types/aws-lambda": "^8.10.57",
+    "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-loader": "^3.0.4",
