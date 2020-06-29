@@ -81,8 +81,14 @@ const nuxtConfig: Configuration = {
     '@nuxtjs/pwa',
     ['@nuxtjs/moment', ['ja']],
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/proxy'
   ],
+  proxy: {
+    '/.netlify/functions/connpass': {
+      target: 'http://localhost:9000'
+    },
+  },
   moment: {
     defaultTimezone: 'Asia/Tokyo',
     locales: ['ja']

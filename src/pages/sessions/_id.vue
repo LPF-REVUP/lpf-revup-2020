@@ -30,7 +30,7 @@
               v-col(cols="6" sm="4"  md="2" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-account
-                  | TODO 申込者数
+                  | {{ applicants }}/{{ limit }}人
           div.ma-0.mt-4
             v-btn(
               color="primary"
@@ -103,6 +103,8 @@ export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
   session!: EventSession
   connpassEventId!: string
   pageLink!: string
+  applicants = 0
+  limit = 0
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -182,6 +184,19 @@ export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
     return `${this.$moment(this.session.startsAt).format(
       'M月D日 H:mm'
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
+  }
+
+  async mounted() {
+    consola.log('getting connpass event info', this.connpassEventId)
+    const axiosResponse = await axios.get('/.netlify/functions/connpass', {
+      params: {
+        event_id: this.connpassEventId
+      }
+    })
+    const event = axiosResponse.data.events[0]
+    this.applicants = event.accepted + event.waiting
+    this.limit = event.limit
+    consola.log(this.applicants, this.limit, event)
   }
 }
 </script>
