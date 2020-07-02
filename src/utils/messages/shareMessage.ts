@@ -1,15 +1,28 @@
-import { FlexMessage, FlexBubble, FlexBox, FlexText } from '@line/bot-sdk'
+import {
+  FlexMessage,
+  FlexBubble,
+  FlexBox,
+  FlexText,
+  FlexButton,
+  URIAction
+} from '@line/bot-sdk'
 import * as lodash from 'lodash'
 const _ = lodash
 
-function generateShareMessage(message: string): FlexMessage {
+function generateShareMessage(message: string, url?: string): FlexMessage {
+  if (!url) {
+    url = process.env.BASE_URL
+  }
   const bubble = _.cloneDeep(messageBubble)
   const box: FlexBox = bubble.body!.contents[1] as FlexBox
   const text: FlexText = box.contents[0] as FlexText
   text.text! = message
+  const button = bubble.footer!.contents[0] as FlexButton
+  const action = button.action as URIAction
+  action.uri = url!
   return {
     type: 'flex',
-    altText: 'LPF REV UP 2020',
+    altText: message,
     contents: bubble
   }
 }

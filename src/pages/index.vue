@@ -48,12 +48,13 @@
             v-icon(large) icon-hatenabookmark
         //- TODO Share Target Picker
         span.mr-2
-          v-icon(large) icon-line
-          v-btn.white-text(
-            tile dark color="primary"
+          v-btn(
+            fab dark depressed
+            color="#888888"
             @click="showShareTargetPicker"
-            v-if="isLiffInitialized"
-          ) SHARE
+            small
+          )
+            v-icon(large) icon-line
 </template>
 
 <script lang="ts">
