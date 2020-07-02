@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 // import { Profile } from '@line/bot-sdk'
 import consola from 'consola'
-import { Profile } from '@line/bot-sdk'
+import { Profile, FlexMessage } from '@line/bot-sdk'
 import { appStateStore } from '~/store'
 import {
   initLiff,
@@ -13,7 +13,8 @@ import {
   isLineLoggedIn,
   getLineProfile,
   getFriendship,
-  openWindow
+  openWindow,
+  shareTargetPicker
 } from '~/plugins/liff'
 
 @Component
@@ -66,6 +67,16 @@ export default class LiffMixin extends Vue {
 
   public openWindow(url: string, external: boolean): void {
     openWindow(url, external)
+  }
+
+  public async openShareTargetPicker(message: FlexMessage): Promise<boolean> {
+    let result = false
+    if (!isLineLoggedIn()) {
+      await liffLogin()
+    } else {
+      result = await shareTargetPicker(message)
+    }
+    return result
   }
 
   public showLiffInfo(): void {

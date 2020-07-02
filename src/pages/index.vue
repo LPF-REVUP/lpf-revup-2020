@@ -49,22 +49,24 @@
         //- TODO Share Target Picker
         span.mr-2
           v-icon(large) icon-line
-        //- v-btn.white-text(
-        //-   tile dark color="primary"
-        //-   @click="showShareTargetPicker"
-        //-   v-if="isLiffInitialized"
-        //- ) SHARE
+          v-btn.white-text(
+            tile dark color="primary"
+            @click="showShareTargetPicker"
+            v-if="isLiffInitialized"
+          ) SHARE
 </template>
 
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
+import { FlexMessage } from '@line/bot-sdk'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
 import { appStateStore } from '~/store'
+import { generateShareMessage } from '~/utils/messages/shareMessage'
 
 @Component({
   components: {
@@ -123,19 +125,12 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
     return appStateStore.liffInitialized
   }
 
-  async mounted() {
-    consola.log('mounted in index.vue', await appStateStore.lineProfile)
-  }
-
   async showShareTargetPicker() {
     consola.log('showShareTargetPicker called')
-    if (!appStateStore.lineProfile) {
-      consola.log('lineProfile is not found in appStateStore')
-      await this.loginWithLiff()
-    } else {
-      consola.log('User is logged in!!', appStateStore.lineProfile.displayName)
-      // TODO show shareTargetPicker
-    }
+    const message =
+      '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
+    const shareMessage: FlexMessage = generateShareMessage(message)
+    await this.openShareTargetPicker(shareMessage)
   }
 }
 </script>

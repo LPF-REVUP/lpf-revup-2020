@@ -4,7 +4,7 @@ import {
   scanCodeResult,
   Friendship
 } from 'liff-type'
-import { Profile } from '@line/bot-sdk'
+import { Profile, FlexMessage } from '@line/bot-sdk'
 import consola from 'consola'
 import { LiffError } from '@/types'
 
@@ -131,18 +131,34 @@ export function scanCode(): Promise<string | null> {
   })
 }
 
-export function shareTargetPicker(): Promise<boolean> {
+export function shareTargetPicker(message: FlexMessage): Promise<boolean> {
   return new Promise(resolve => {
     window.liff
-      .shareTargetPicker([
-        {
-          type: 'text',
-          text: 'Hello, World! from shareTargetPicker'
+      .shareTargetPicker([message])
+      .then((res: any) => {
+        let result = false
+        const [majorVer, minorVer] = (window.liff.getLineVersion() || '').split(
+          '.'
+        )
+        const lineVersionString = `LINE APP VERSION: ${majorVer}.${minorVer}`
+        if (res) {
+          // succeeded in sending a message through TargetPicker
+          consola.log(`[${res.status}] Message sent!`, lineVersionString)
+          result = true
+        } else if (parseInt(majorVer) === 10 && parseInt(minorVer) < 11) {
+          // LINE 10.3.0 - 10.10.0
+          // Old LINE will access here regardless of user's action
+          console.log(
+            'TargetPicker was opened at least. Whether succeeded to send message is unclear',
+            lineVersionString
+          )
+          result = true
+        } else {
+          // LINE 10.11.0 -
+          // sending message canceled
+          console.log('TargetPicker was closed!', lineVersionString)
         }
-      ])
-      .then(() => {
-        consola.log('ShareTargetPicker was launched')
-        resolve(true)
+        resolve(result)
       })
       .catch((error: LIFFErrorObject) => {
         consola.warn('Failed to launch ShareTargetPicker', error)
