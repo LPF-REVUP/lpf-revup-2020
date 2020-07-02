@@ -70,7 +70,13 @@
                 v-icon(large) icon-hatenabookmark
             //- TODO Share Target Picker
             span.mr-2
-              v-icon(large) icon-line
+              v-btn(
+                fab dark depressed
+                color="#888888"
+                @click="showShareTargetPicker"
+                small
+              )
+                v-icon(large) icon-line
       v-card-text(
         v-if="relatedSessions.length > 0"
       )
@@ -86,12 +92,15 @@
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
+import { FlexMessage } from '@line/bot-sdk'
 import axios from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
+import LiffMixin from '~/mixins/LiffMixin'
 import { HeadInfo, EventSession, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
+import { generateShareMessage } from '~/utils/messages/shareMessage'
 
 @Component({
   components: {
@@ -99,7 +108,11 @@ import '@/assets/icomoon/style.css'
     RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
   }
 })
-export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
+export default class EventSessionPage extends mixins(
+  HeadMixin,
+  ShareMixin,
+  LiffMixin
+) {
   session!: EventSession
   connpassEventId!: string
   pageLink!: string
@@ -197,6 +210,14 @@ export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
     this.applicants = event.accepted + event.waiting
     this.limit = event.limit
     consola.log(this.applicants, this.limit, event)
+  }
+
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    const message = this.shareText
+    const url = this.pageLink
+    const shareMessage: FlexMessage = generateShareMessage(message, url)
+    await this.openShareTargetPicker(shareMessage)
   }
 }
 </script>
