@@ -32,14 +32,42 @@
         sponsor-List(
           :sponsors="sponsors"
         )
+      span SHARE
+      v-row.ma-5
+        //- Facebook
+        span.mr-2
+          a(:href="facebookShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) mdi-facebook
+        //- Twitter
+        span.mr-2
+          a(:href="twitterShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) mdi-twitter
+        //- Hatena bookmark
+        span.mr-2
+          a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+            v-icon(large) icon-hatenabookmark
+        //- TODO Share Target Picker
+        span.mr-2
+          v-btn(
+            fab dark depressed
+            color="#888888"
+            @click="showShareTargetPicker"
+            small
+          )
+            v-icon(large) icon-line
 </template>
 
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
+import { FlexMessage } from '@line/bot-sdk'
 import HeadMixin from '~/mixins/HeadMixin'
+import LiffMixin from '~/mixins/LiffMixin'
+import ShareMixin from '~/mixins/ShareMixin'
 import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
+import { appStateStore } from '~/store'
+import { generateShareMessage } from '~/utils/messages/shareMessage'
 
 @Component({
   components: {
@@ -48,11 +76,19 @@ import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
     SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
-export default class Index extends mixins(HeadMixin) {
+export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   speakers = []
 
   public headInfo(): HeadInfo {
     return {}
+  }
+
+  get url(): string {
+    return process.env.BASE_URL!
+  }
+
+  get shareText(): string {
+    return 'LPF REV UP 2020' // TODO 文言を決定し変更する
   }
 
   async asyncData() {
@@ -83,6 +119,23 @@ export default class Index extends mixins(HeadMixin) {
       sessions,
       sponsors
     }
+  }
+
+  get isLiffInitialized() {
+    consola.log('isLiffInitialized', appStateStore.liffInitialized)
+    return appStateStore.liffInitialized
+  }
+
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    // TODO 文言は仮
+    const message =
+      '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
+    const shareMessage: FlexMessage = generateShareMessage(
+      message,
+      this.getPermanentLink()
+    )
+    await this.openShareTargetPicker(shareMessage)
   }
 }
 </script>

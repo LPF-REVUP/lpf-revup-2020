@@ -2,7 +2,6 @@
   v-container
     v-card.mx-auto(
       max-width="100%"
-
     )
       v-card-text.session_header
         div
@@ -17,13 +16,13 @@
             :key="tag.id"
           )
             v-icon.mr-1(left small) mdi-tag
-            | {{ getDisplayTagName(tag) }}
+            | {{ tag.name }}
           v-container.ma-0.pa-0
             v-row(dense justify="start" align="center")
               v-col(cols="8" sm="6" md="2" lg="2")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-calendar-month
-                  | {{ getDisplaySessionTimePeriod(session.startsAt, session.endsAt) }}
+                  | {{ displaySessionTimePeriod }}
               v-col(cols="4" sm="2" md="1" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-map-marker
@@ -31,7 +30,7 @@
               v-col(cols="6" sm="4"  md="2" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-account
-                  | TODO 申込者数
+                  | {{ applicants }}/{{ limit }}人
           div.ma-0.mt-4
             v-btn(
               color="primary"
@@ -59,19 +58,25 @@
             span.mr-4 SHARE
             //- Facebook
             span.mr-2
-              a(:href="getFacebookShareUrl()" rel="nofollow" target="_blank")
+              a(:href="facebookShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) mdi-facebook
             //- Twitter
             span.mr-2
-              a(:href="getTwitterShareUrl()" rel="nofollow" target="_blank")
+              a(:href="twitterShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) mdi-twitter
             //- Hatena bookmark
             span.mr-2
-              a(:href="getHatenaShareUrl()" rel="nofollow" target="_blank")
+              a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
                 v-icon(large) icon-hatenabookmark
             //- TODO Share Target Picker
             span.mr-2
-              v-icon(large) icon-line
+              v-btn(
+                fab dark depressed
+                color="#888888"
+                @click="showShareTargetPicker"
+                small
+              )
+                v-icon(large) icon-line
       v-card-text(
         v-if="relatedSessions.length > 0"
       )
@@ -87,11 +92,15 @@
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
+import { FlexMessage } from '@line/bot-sdk'
 import axios from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
+import ShareMixin from '~/mixins/ShareMixin'
+import LiffMixin from '~/mixins/LiffMixin'
 import { HeadInfo, EventSession, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
+import { generateShareMessage } from '~/utils/messages/shareMessage'
 
 @Component({
   components: {
@@ -99,9 +108,16 @@ import '@/assets/icomoon/style.css'
     RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
   }
 })
-export default class EventSessionPage extends mixins(HeadMixin) {
+export default class EventSessionPage extends mixins(
+  HeadMixin,
+  ShareMixin,
+  LiffMixin
+) {
   session!: EventSession
   connpassEventId!: string
+  pageLink!: string
+  applicants = 0
+  limit = 0
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -115,6 +131,14 @@ export default class EventSessionPage extends mixins(HeadMixin) {
       title: `${this.session.title} | Session`,
       description: `${this.session.description}`
     }
+  }
+
+  get url(): string {
+    return this.pageLink
+  }
+
+  get shareText(): string {
+    return this.session.title
   }
 
   async asyncData(context: Context) {
@@ -159,39 +183,45 @@ export default class EventSessionPage extends mixins(HeadMixin) {
       connpassEventId = url.pathname.split('/')[2]
       consola.log('connpassEventId', connpassEventId)
     }
+    // Page link
+    const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
     return {
       session,
       relatedSessions,
-      connpassEventId
+      connpassEventId,
+      pageLink
     }
   }
 
-  getDisplayTagName(tag: Tag) {
-    return `#${tag.name}`
+  get displaySessionTimePeriod() {
+    return `${this.$moment(this.session.startsAt).format(
+      'M月D日 H:mm'
+    )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
-  getDisplaySessionTimePeriod(startsAt: Date, endsAt: Date) {
-    return `${this.$moment(startsAt).format('M月D日 H:mm')} - ${this.$moment(
-      endsAt
-    ).format('H:mm')}`
+  async mounted() {
+    consola.log('getting connpass event info', this.connpassEventId)
+    const axiosResponse = await axios.get('/.netlify/functions/connpass', {
+      params: {
+        event_id: this.connpassEventId
+      }
+    })
+    const event = axiosResponse.data.events[0]
+    this.applicants = event.accepted + event.waiting
+    this.limit = event.limit
+    consola.log(this.applicants, this.limit, event)
   }
 
-  getPermanentLink() {
-    return `${process.env.BASE_URL}/sessions/${this.session.id}/`
-  }
-
-  getFacebookShareUrl() {
-    return `http://www.facebook.com/share.php?u=${this.getPermanentLink()}`
-  }
-
-  getTwitterShareUrl() {
-    const shareText = `${this.session.title}`
-    return `https://twitter.com/share?url=${this.getPermanentLink()}&via=linedc_jp&related=linedc_jp&hashtags=linedc&text=${shareText}`
-  }
-
-  getHatenaShareUrl() {
-    const shareText = `${this.session.title}`
-    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.getPermanentLink()}&title=${shareText}`
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    // TODO 文言は仮
+    const message = this.shareText
+    const shareMessage: FlexMessage = generateShareMessage(
+      message,
+      this.getPermanentLink()
+    )
+    // ログイン後のリダイレクトURL はLINE ログインチャネルのコールバックURL に登録しておく必要がある
+    await this.openShareTargetPicker(shareMessage, this.pageLink)
   }
 }
 </script>

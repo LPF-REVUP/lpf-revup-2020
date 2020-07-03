@@ -30,7 +30,7 @@ jobs:
         run: yarn generate
 
       - name: Deploy to Netlify
-        run: npx netlify-cli deploy --prod --dir=./dist
+        run: npx netlify-cli deploy --prod --dir=./dist --functions=./functions/dist
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}
