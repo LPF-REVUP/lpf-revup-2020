@@ -214,10 +214,14 @@ export default class EventSessionPage extends mixins(
 
   async showShareTargetPicker() {
     consola.log('showShareTargetPicker called')
+    // TODO 文言は仮
     const message = this.shareText
-    const url = this.pageLink
-    const shareMessage: FlexMessage = generateShareMessage(message, url)
-    await this.openShareTargetPicker(shareMessage)
+    const shareMessage: FlexMessage = generateShareMessage(
+      message,
+      this.getPermanentLink()
+    )
+    // ログイン後のリダイレクトURL はLINE ログインチャネルのコールバックURL に登録しておく必要がある
+    await this.openShareTargetPicker(shareMessage, this.pageLink)
   }
 }
 </script>
