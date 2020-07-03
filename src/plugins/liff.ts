@@ -86,6 +86,7 @@ export function getLiffContext(): LiffContextData {
 }
 
 export function liffLogin(redirectUri?: string) {
+  consola.log('Redirect URL after login', redirectUri)
   return window.liff.login({
     redirectUri
   })
@@ -93,6 +94,10 @@ export function liffLogin(redirectUri?: string) {
 
 export function liffLogout() {
   return window.liff.logout()
+}
+
+export function getPermanentLink(): string {
+  return window.liff.permanentLink.createUrl()
 }
 
 export function openWindow(url: string, external?: boolean) {

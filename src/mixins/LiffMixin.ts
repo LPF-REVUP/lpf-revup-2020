@@ -13,6 +13,7 @@ import {
   isLineLoggedIn,
   getLineProfile,
   getFriendship,
+  getPermanentLink,
   openWindow,
   shareTargetPicker
 } from '~/plugins/liff'
@@ -69,10 +70,13 @@ export default class LiffMixin extends Vue {
     openWindow(url, external)
   }
 
-  public async openShareTargetPicker(message: FlexMessage): Promise<boolean> {
+  public async openShareTargetPicker(
+    message: FlexMessage,
+    redirectUrl?: string
+  ): Promise<boolean> {
     let result = false
     if (!isLineLoggedIn()) {
-      await liffLogin()
+      await liffLogin(redirectUrl)
     } else {
       result = await shareTargetPicker(message)
     }
@@ -85,6 +89,7 @@ export default class LiffMixin extends Vue {
       consola.log('getOS', getOS())
       consola.log('isInClient', isInClient())
       consola.log('isLineLoggedIn', isLineLoggedIn())
+      consola.log('getPermanentLink', getPermanentLink())
     }
   }
 }
