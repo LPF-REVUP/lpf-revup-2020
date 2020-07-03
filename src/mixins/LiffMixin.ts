@@ -66,6 +66,10 @@ export default class LiffMixin extends Vue {
     return result
   }
 
+  public getPermanentLink(): string {
+    return getPermanentLink()
+  }
+
   public openWindow(url: string, external: boolean): void {
     openWindow(url, external)
   }

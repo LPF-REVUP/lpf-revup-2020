@@ -131,7 +131,10 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
     // TODO 文言は仮
     const message =
       '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
-    const shareMessage: FlexMessage = generateShareMessage(message, this.url)
+    const shareMessage: FlexMessage = generateShareMessage(
+      message,
+      this.getPermanentLink()
+    )
     await this.openShareTargetPicker(shareMessage)
   }
 }
