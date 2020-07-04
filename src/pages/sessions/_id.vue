@@ -30,7 +30,7 @@
               v-col(cols="6" sm="4"  md="2" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-account
-                  | {{ applicants }}/{{ limit }}人
+                  | {{ applicantsMessage }}
           div.ma-0.mt-4
             v-btn(
               color="primary"
@@ -103,8 +103,7 @@ export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
   session!: EventSession
   connpassEventId!: string
   pageLink!: string
-  applicants = 0
-  limit = 0
+  applicantsMessage = '取得中'
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -188,15 +187,19 @@ export default class EventSessionPage extends mixins(HeadMixin, ShareMixin) {
 
   async mounted() {
     consola.log('getting connpass event info', this.connpassEventId)
-    const axiosResponse = await axios.get('/.netlify/functions/connpass', {
-      params: {
-        event_id: this.connpassEventId
-      }
-    })
-    const event = axiosResponse.data.events[0]
-    this.applicants = event.accepted + event.waiting
-    this.limit = event.limit
-    consola.log(this.applicants, this.limit, event)
+    try {
+      const axiosResponse = await axios.get('/.netlify/functions/connpass', {
+        params: {
+          event_id: this.connpassEventId
+        }
+      })
+      const event = axiosResponse.data.events[0]
+      const applicantCount = event.accepted + event.waiting
+      this.applicantsMessage = applicantCount + '/' + event.limit + '人'
+    } catch (error) {
+      consola.error(error)
+      this.applicantsMessage = '取得できませんでした'
+    }
   }
 }
 </script>
