@@ -61,11 +61,19 @@
 import { Component, mixins } from 'nuxt-property-decorator'
 import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
+import axios, { AxiosResponse } from 'axios'
+import qs from 'qs'
 import { FlexMessage } from '@line/bot-sdk'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
 import ShareMixin from '~/mixins/ShareMixin'
-import { HeadInfo, Speaker, EventSession, Sponsor } from '~/types'
+import {
+  HeadInfo,
+  Speaker,
+  EventSession,
+  ConnpassResponse,
+  Sponsor
+} from '~/types'
 import { appStateStore } from '~/store'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 
@@ -77,7 +85,8 @@ import { generateShareMessage } from '~/utils/messages/shareMessage'
   }
 })
 export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
-  speakers = []
+  speakers: Array<Speaker> = []
+  sessions: Array<EventSession> = []
 
   public headInfo(): HeadInfo {
     return {}
@@ -109,6 +118,9 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
       path: 'sessions'
     })
     consola.log('Sessions', sessions)
+    sessions.forEach(s => {
+      s.applicantsMessage = '取得中'
+    })
     // Get Sponsor contents
     const sponsors = await client.getContents<Sponsor>({
       path: 'sponsors'
@@ -119,6 +131,49 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
       sessions,
       sponsors
     }
+  }
+
+  async mounted() {
+    consola.log('getting connpass event info')
+    try {
+      const connpassEventIds = this.sessions.map(
+        s => new URL(s.applicationPage).pathname.split('/')[2]
+      )
+      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
+        '/.netlify/functions/connpass',
+        {
+          params: {
+            count: connpassEventIds.length,
+            event_id: connpassEventIds
+          },
+          paramsSerializer: params =>
+            qs.stringify(params, { arrayFormat: 'repeat' })
+        }
+      )
+      consola.log('ConnpassResponse', connpassResponse)
+
+      this.sessions.forEach(eventSession => {
+        const url = new URL(eventSession.applicationPage)
+        const connpasEventId = url.pathname.split('/')[2]
+        const connpassEvent = connpassResponse.data.events.find(
+          connpassEvent => connpasEventId === connpassEvent.event_id.toString()
+        )
+        if (connpassEvent) {
+          const applicantCount = connpassEvent.accepted + connpassEvent.waiting
+          eventSession.applicantsMessage = connpassEvent.limit
+            ? applicantCount + '/' + connpassEvent.limit + '人'
+            : applicantCount + '人'
+        } else {
+          eventSession.applicantsMessage = '取得できませんでした'
+        }
+      })
+    } catch (error) {
+      consola.error(error)
+      this.sessions.forEach(s => {
+        s.applicantsMessage = '取得できませんでした'
+      })
+    }
+    consola.log('updated sessions', this.sessions)
   }
 
   get isLiffInitialized() {
