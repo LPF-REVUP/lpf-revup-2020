@@ -21,7 +21,7 @@
           :sessions="sessions"
         )
       div
-        session-list(
+        timetable(
           :sessions="sessions"
         )
       v-flex(
@@ -80,7 +80,7 @@ import { generateShareMessage } from '~/utils/messages/shareMessage'
 @Component({
   components: {
     SpeakerList: () => import('@/components/SpeakerList.vue'),
-    SessionList: () => import('@/components/SessionList.vue'),
+    Timetable: () => import('@/components/Timetable.vue'),
     SponsorList: () => import('@/components/SponsorList.vue')
   }
 })
