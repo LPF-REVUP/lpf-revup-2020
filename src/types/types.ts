@@ -50,6 +50,19 @@ export interface EventSession {
   applicationPage: string
   speakers: Array<Speaker>
   tags: Array<Tag>
+  applicantsMessage: string
+}
+
+export interface ConnpassEvent {
+  event_id: number
+  accepted: number
+  waiting: number
+  limit: number
+}
+
+export interface ConnpassResponse {
+  results_returned: number
+  events: ConnpassEvent[]
 }
 
 export enum RankEnum {

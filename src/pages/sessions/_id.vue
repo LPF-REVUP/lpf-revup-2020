@@ -93,12 +93,12 @@
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
 import { FlexMessage } from '@line/bot-sdk'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import { HeadInfo, EventSession, Tag } from '~/types'
+import { HeadInfo, EventSession, ConnpassResponse, Tag } from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 
@@ -201,14 +201,19 @@ export default class EventSessionPage extends mixins(
   async mounted() {
     consola.log('getting connpass event info', this.connpassEventId)
     try {
-      const axiosResponse = await axios.get('/.netlify/functions/connpass', {
-        params: {
-          event_id: this.connpassEventId
+      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
+        '/.netlify/functions/connpass',
+        {
+          params: {
+            event_id: this.connpassEventId
+          }
         }
-      })
-      const event = axiosResponse.data.events[0]
-      const applicantCount = event.accepted + event.waiting
-      this.applicantsMessage = applicantCount + '/' + event.limit + '人'
+      )
+      const connpassEvent = connpassResponse.data.events[0]
+      const applicantCount = connpassEvent.accepted + connpassEvent.waiting
+      this.applicantsMessage = connpassEvent.limit
+        ? applicantCount + '/' + connpassEvent.limit + '人'
+        : applicantCount + '人'
     } catch (error) {
       consola.error(error)
       this.applicantsMessage = '取得できませんでした'
