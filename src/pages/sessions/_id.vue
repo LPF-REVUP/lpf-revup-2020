@@ -44,10 +44,16 @@
           v-html="session.description"
         )
       v-card-text
+        //- Show Session's SpeakerDeck slide
         div.mt-2(
-          v-if="speakerDeckInfo"
-          v-html="speakerDeckInfo.html"
+          v-if="speakerDeckDataId"
         )
+          script.speakerdeck-embed(
+            async
+            :data-id="speakerDeckDataId"
+            data-ratio="1.77777777777778"
+            src="//speakerdeck.com/assets/embed.js"
+          )
       v-card-text
         div(
           v-for="s in session.speakers"
@@ -128,7 +134,7 @@ export default class EventSessionPage extends mixins(
   connpassEventId!: string
   pageLink!: string
   applicantsMessage = '取得中'
-  speakerDeckInfo: SpeakerDeckInfo | null = null
+  speakerDeckDataId: string | null = null
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -234,7 +240,7 @@ export default class EventSessionPage extends mixins(
         ? applicantCount + '/' + connpassEvent.limit + '人'
         : applicantCount + '人'
     } catch (error) {
-      consola.error(error)
+      consola.error('Could not get connpass event info', error)
       this.applicantsMessage = '取得できませんでした'
     }
   }
@@ -252,10 +258,22 @@ export default class EventSessionPage extends mixins(
       )
       const deckInfo: SpeakerDeckInfo = sdResponse.data
       consola.log('Speaker Deck info', deckInfo)
-      this.speakerDeckInfo = deckInfo
+      this.speakerDeckDataId = this.extractSpeakerDeckDataId(deckInfo)
     } catch (error) {
-      consola.error(error)
+      consola.error('Could not get SpeakerDeck info', error)
     }
+  }
+
+  extractSpeakerDeckDataId(deck: SpeakerDeckInfo) {
+    // Extract data-id from embed html source
+    const group: RegExpMatchArray | null = deck.html.match(
+      /\/\/speakerdeck.com\/player\/([a-zA-Z0-9]{6,})/
+    )
+    let result: string | null = null
+    if (group) {
+      result = group[1]
+    }
+    return result
   }
 
   async showShareTargetPicker() {

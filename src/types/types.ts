@@ -63,6 +63,12 @@ export interface ConnpassEvent {
   limit: number
 }
 
+export interface ConnpassResponse {
+  // eslint-disable-next-line camelcase
+  results_returned: number
+  events: ConnpassEvent[]
+}
+
 export interface SpeakerDeckInfo {
   type: string
   version: number
@@ -78,12 +84,6 @@ export interface SpeakerDeckInfo {
   html: string
   width: number
   height: number
-}
-
-export interface ConnpassResponse {
-  // eslint-disable-next-line camelcase
-  results_returned: number
-  events: ConnpassEvent[]
 }
 
 export enum RankEnum {
