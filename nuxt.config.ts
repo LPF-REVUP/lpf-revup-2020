@@ -85,7 +85,7 @@ const nuxtConfig: Configuration = {
     '@nuxtjs/proxy'
   ],
   proxy: {
-    '/.netlify/functions': {
+    '/.netlify/functions/connpass': {
       target: 'http://localhost:9000'
     }
   },
@@ -106,7 +106,9 @@ const nuxtConfig: Configuration = {
     LIFF_ID: process.env.LIFF_ID || '',
     BOT_FRIENDSHIP_URL: process.env.BOT_FRIENDSHIP_URL || '',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
-    MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
+    MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY',
+    SD_OEMBED_API_PROXY_URL:
+      process.env.SD_OEMBED_API_PROXY_URL || 'http://localhost:9000'
   },
   /*
    * Generating page and routes
