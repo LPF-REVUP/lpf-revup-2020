@@ -46,9 +46,9 @@
       v-card-text
         //- Show Session's SpeakerDeck slide
         div.mt-2(
-          v-if="speakerDeckDataId"
         )
           script.speakerdeck-embed(
+            v-if="loaded"
             async
             :data-id="speakerDeckDataId"
             data-ratio="1.77777777777778"
@@ -134,6 +134,7 @@ export default class EventSessionPage extends mixins(
   connpassEventId!: string
   pageLink!: string
   applicantsMessage = '取得中'
+  loaded: boolean = false
   speakerDeckDataId: string | null = null
 
   validate(context: Context) {
@@ -216,6 +217,8 @@ export default class EventSessionPage extends mixins(
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
+  async fetch() {}
+
   async mounted() {
     await this.getConnpassEventInfo()
     if (this.session.documentUrl) {
@@ -246,7 +249,7 @@ export default class EventSessionPage extends mixins(
   }
 
   async getSpeakerDeckInfo() {
-    consola.log('getting Speaker Deck event info', this.connpassEventId)
+    consola.log('getting Speaker Deck event info', this.session.documentUrl)
     try {
       const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
         '/.netlify/functions/speakerDeck',
@@ -258,6 +261,7 @@ export default class EventSessionPage extends mixins(
       )
       const deckInfo: SpeakerDeckInfo = sdResponse.data
       consola.log('Speaker Deck info', deckInfo)
+      this.loaded = true
       this.speakerDeckDataId = this.extractSpeakerDeckDataId(deckInfo)
     } catch (error) {
       consola.error('Could not get SpeakerDeck info', error)
