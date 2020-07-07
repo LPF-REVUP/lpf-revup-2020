@@ -44,6 +44,16 @@
           v-html="session.description"
         )
       v-card-text
+        //- Show the Session's SpeakerDeck slide
+        iframe.deck_frame(
+          v-if="speakerDeckDisplaySource"
+          frameborder="0"
+          :src="speakerDeckDisplaySource"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+        )
+      v-card-text
         div(
           v-for="s in session.speakers"
             :key="s.id"
@@ -98,7 +108,13 @@ import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import { HeadInfo, EventSession, ConnpassResponse, Tag } from '~/types'
+import {
+  HeadInfo,
+  EventSession,
+  ConnpassResponse,
+  Tag,
+  SpeakerDeckInfo
+} from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 
@@ -117,6 +133,8 @@ export default class EventSessionPage extends mixins(
   connpassEventId!: string
   pageLink!: string
   applicantsMessage = '取得中'
+  loaded: boolean = false
+  speakerDeckDataId: string | null = null
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -184,11 +202,38 @@ export default class EventSessionPage extends mixins(
     }
     // Page link
     const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
+    // SpeakerDeck
+    let speakerDeckDisplaySource = null
+    if (session.documentUrl) {
+      consola.log('getting Speaker Deck event info', session.documentUrl)
+      try {
+        const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
+          process.env.SD_OEMBED_API_PROXY_URL!,
+          {
+            params: {
+              url: session.documentUrl
+            }
+          }
+        )
+        const deckInfo: SpeakerDeckInfo = sdResponse.data
+        consola.log('Speaker Deck info', deckInfo)
+        // Extract deck display source
+        const group: RegExpMatchArray | null = deckInfo.html.match(
+          /\/\/speakerdeck.com\/player\/([a-zA-Z0-9]{6,})/
+        )
+        if (group) {
+          speakerDeckDisplaySource = group[0]
+        }
+      } catch (error) {
+        consola.error('Could not get SpeakerDeck info', error)
+      }
+    }
     return {
       session,
       relatedSessions,
       connpassEventId,
-      pageLink
+      pageLink,
+      speakerDeckDisplaySource
     }
   }
 
@@ -199,6 +244,10 @@ export default class EventSessionPage extends mixins(
   }
 
   async mounted() {
+    await this.getConnpassEventInfo()
+  }
+
+  async getConnpassEventInfo() {
     consola.log('getting connpass event info', this.connpassEventId)
     try {
       const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
@@ -215,7 +264,7 @@ export default class EventSessionPage extends mixins(
         ? applicantCount + '/' + connpassEvent.limit + '人'
         : applicantCount + '人'
     } catch (error) {
-      consola.error(error)
+      consola.error('Could not get connpass event info', error)
       this.applicantsMessage = '取得できませんでした'
     }
   }
@@ -239,4 +288,13 @@ export default class EventSessionPage extends mixins(
   background-color #666666
 .session_header_text
   color #FFFFFF
+.deck_frame
+  border: 0px
+  background: padding-box rgba(0, 0, 0, 0.1)
+  margin: 0px
+  padding: 0px
+  border-radius: 6px
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px
+  width: calc(80px + 66vw)
+  height: calc((80px + 66vw) / 1.77777777778)
 </style>

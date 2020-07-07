@@ -51,9 +51,12 @@ export interface EventSession {
   speakers: Array<Speaker>
   tags: Array<Tag>
   applicantsMessage: string
+  documentUrl?: string
+  movieUrl?: string
 }
 
 export interface ConnpassEvent {
+  // eslint-disable-next-line camelcase
   event_id: number
   accepted: number
   waiting: number
@@ -61,8 +64,26 @@ export interface ConnpassEvent {
 }
 
 export interface ConnpassResponse {
+  // eslint-disable-next-line camelcase
   results_returned: number
   events: ConnpassEvent[]
+}
+
+export interface SpeakerDeckInfo {
+  type: string
+  version: number
+  // eslint-disable-next-line camelcase
+  provider_name: string
+  // eslint-disable-next-line camelcase
+  provider_url: string
+  title: string
+  // eslint-disable-next-line camelcase
+  author_name: string
+  // eslint-disable-next-line camelcase
+  author_url: string
+  html: string
+  width: number
+  height: number
 }
 
 export enum RankEnum {
