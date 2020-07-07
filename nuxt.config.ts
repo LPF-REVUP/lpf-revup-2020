@@ -67,7 +67,10 @@ const nuxtConfig: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/liff.ts', ssr: false }],
+  plugins: [
+    { src: '~/plugins/liff.ts', ssr: false },
+    '~/plugins/vue-scrollto.js'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

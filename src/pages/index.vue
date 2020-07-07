@@ -15,12 +15,15 @@
         xs12
         sm8
         md6
+        id="speakers"
       )
         speaker-list(
           :speakers="speakers"
           :sessions="sessions"
         )
-      div
+      div(
+        id="timetable"
+      )
         timetable(
           :sessions="sessions"
         )
@@ -28,6 +31,7 @@
         xs12
         sm8
         md6
+        id="sponsors"
       )
         sponsor-List(
           :sponsors="sponsors"
@@ -134,6 +138,11 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   }
 
   async mounted() {
+    const hash = this.$route.hash
+    if (hash && hash.match(/^#.+$/)) {
+      consola.log('hash', hash)
+      this.$scrollTo(hash)
+    }
     consola.log('getting connpass event info')
     try {
       const connpassEventIds = this.sessions.map(
