@@ -11,6 +11,12 @@ export interface HeadInfo {
   ogImagePath?: string
 }
 
+export interface AppMenuItem {
+  title: string
+  icon: string
+  to: string
+}
+
 export interface Tag {
   id: string
   name: string

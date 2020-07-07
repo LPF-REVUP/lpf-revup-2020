@@ -1,13 +1,33 @@
 <template lang="pug">
-  v-app
+  //- v-app-bar(fixed app flat color="white")
+  v-app(id="inspire")
+    v-navigation-drawer.hidden-md-and-up(
+      v-model="drawer"
+      right
+      temporary
+      app
+    )
+      v-list(dense)
+        template(v-for="item in menuItems")
+          v-list-item(
+            :key="item.title"
+            :to="item.to"
+          )
+            v-list-item-action
+              v-icon {{ item.icon }}
+            v-list-item-content
+              | {{ item.title }}
     v-app-bar(fixed app flat color="white")
-      v-toolbar-title.black--text
+      v-toolbar-title.d-block.black--text
         nuxt-link(to="/") {{title}}
       v-spacer
-      v-btn.black--text(text small) SPEAKERS
-      v-btn.black--text(text small) SCHEDULE
-      v-btn.black--text(text small) SPONSORS
-      v-btn.registration-button.white-text.mr-2(
+      v-btn.black--text.hidden-sm-and-down(
+        v-for="item in menuItems"
+        :key="item.title"
+        text small
+        :to="item.to"
+      ) {{ item.title }}
+      v-btn.registration-button.white-text.mr-2.hidden-sm-and-down(
         tile dark color="#777676"
       ) 受付/REGISTRATION
       v-btn.ml-2(
@@ -25,6 +45,10 @@
             :src="profile.pictureUrl"
             :alt="profile.displayName"
           )
+      v-app-bar-nav-icon.hidden-md-and-up(
+        color="info"
+        @click.stop="drawer = !drawer"
+      )
     v-main
       //- show Friendship with bot dialog
       v-dialog(
@@ -74,10 +98,19 @@ import consola from 'consola'
 import { Profile } from '@line/bot-sdk'
 import { appStateStore } from '~/store'
 import LiffMixin from '~/mixins/LiffMixin'
+import { AppMenuItem } from '~/types'
 
 @Component({})
 export default class extends mixins(LiffMixin) {
   title: string = 'LPF REV UP 2020'
+  menuItems: Array<AppMenuItem> = [
+    { title: 'SPEAKERS', icon: 'mdi-account-circle', to: '/#speakers' },
+    { title: 'TIME TABLE', icon: 'mdi-table-clock', to: '/#timetable' },
+    { title: 'SPONSORS', icon: 'mdi-handshake', to: '/#sponsors' }
+  ]
+
+  drawer: boolean = false
+
   showMyPageDialog: boolean = false
   hasFriendship: boolean = false
   protected profile: Profile | null = appStateStore.lineProfile
