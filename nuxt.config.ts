@@ -85,9 +85,9 @@ const nuxtConfig: Configuration = {
     '@nuxtjs/proxy'
   ],
   proxy: {
-    '/.netlify/functions/connpass': {
+    '/.netlify/functions': {
       target: 'http://localhost:9000'
-    },
+    }
   },
   moment: {
     defaultTimezone: 'Asia/Tokyo',

@@ -44,6 +44,11 @@
           v-html="session.description"
         )
       v-card-text
+        div.mt-2(
+          v-if="speakerDeckInfo"
+          v-html="speakerDeckInfo.html"
+        )
+      v-card-text
         div(
           v-for="s in session.speakers"
             :key="s.id"
@@ -98,7 +103,13 @@ import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import { HeadInfo, EventSession, ConnpassResponse, Tag } from '~/types'
+import {
+  HeadInfo,
+  EventSession,
+  ConnpassResponse,
+  Tag,
+  SpeakerDeckInfo
+} from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 
@@ -117,6 +128,7 @@ export default class EventSessionPage extends mixins(
   connpassEventId!: string
   pageLink!: string
   applicantsMessage = '取得中'
+  speakerDeckInfo: SpeakerDeckInfo | null = null
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -199,6 +211,13 @@ export default class EventSessionPage extends mixins(
   }
 
   async mounted() {
+    await this.getConnpassEventInfo()
+    if (this.session.documentUrl) {
+      await this.getSpeakerDeckInfo()
+    }
+  }
+
+  async getConnpassEventInfo() {
     consola.log('getting connpass event info', this.connpassEventId)
     try {
       const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
@@ -217,6 +236,25 @@ export default class EventSessionPage extends mixins(
     } catch (error) {
       consola.error(error)
       this.applicantsMessage = '取得できませんでした'
+    }
+  }
+
+  async getSpeakerDeckInfo() {
+    consola.log('getting Speaker Deck event info', this.connpassEventId)
+    try {
+      const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
+        '/.netlify/functions/speakerDeck',
+        {
+          params: {
+            url: this.session.documentUrl
+          }
+        }
+      )
+      const deckInfo: SpeakerDeckInfo = sdResponse.data
+      consola.log('Speaker Deck info', deckInfo)
+      this.speakerDeckInfo = deckInfo
+    } catch (error) {
+      consola.error(error)
     }
   }
 
