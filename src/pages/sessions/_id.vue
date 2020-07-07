@@ -44,11 +44,19 @@
           v-html="session.description"
         )
       v-card-text
-        //- Show the Session's SpeakerDeck slide
-        iframe.deck_frame(
-          v-if="speakerDeckDisplaySource"
+        //- Show the Session's Movie
+        iframe.deck_frame.viewer_size(
+          v-if="sessionMovieDisplaysource"
+          :src="sessionMovieDisplaysource"
           frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        )
+      v-card-text
+        //- Show the Session's SpeakerDeck slide
+        iframe.deck_frame.viewer_size(
+          v-if="speakerDeckDisplaySource"
           :src="speakerDeckDisplaySource"
+          frameborder="0"
           allowfullscreen="true"
           mozallowfullscreen="true"
           webkitallowfullscreen="true"
@@ -202,6 +210,23 @@ export default class EventSessionPage extends mixins(
     }
     // Page link
     const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
+    // Youtube
+    let sessionMovieDisplaysource = null
+    if (session.movieUrl) {
+      try {
+        consola.log('building Youtube movie viewer', session.movieUrl)
+        const group: RegExpMatchArray | null = session.movieUrl.match(
+          /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+        )
+        consola.log('Extract youtube url', group)
+        if (group) {
+          consola.log('Extract youtube video id', group[0], group[7])
+          sessionMovieDisplaysource = `https://www.youtube.com/embed/${group[7]}`
+        }
+      } catch (error) {
+        consola.error('Could not get Youtube video id', error)
+      }
+    }
     // SpeakerDeck
     let speakerDeckDisplaySource = null
     if (session.documentUrl) {
@@ -233,7 +258,8 @@ export default class EventSessionPage extends mixins(
       relatedSessions,
       connpassEventId,
       pageLink,
-      speakerDeckDisplaySource
+      speakerDeckDisplaySource,
+      sessionMovieDisplaysource
     }
   }
 
@@ -295,6 +321,7 @@ export default class EventSessionPage extends mixins(
   padding: 0px
   border-radius: 6px
   box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px
+.viewer_size
   width: calc(80px + 66vw)
   height: calc((80px + 66vw) / 1.77777777778)
 </style>
