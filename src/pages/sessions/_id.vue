@@ -44,16 +44,15 @@
           v-html="session.description"
         )
       v-card-text
-        //- Show Session's SpeakerDeck slide
-        div.mt-2(
+        //- Show the Session's SpeakerDeck slide
+        iframe.deck_frame(
+          v-if="speakerDeckDisplaySource"
+          frameborder="0"
+          :src="speakerDeckDisplaySource"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
         )
-          script.speakerdeck-embed(
-            v-if="loaded"
-            async
-            :data-id="speakerDeckDataId"
-            data-ratio="1.77777777777778"
-            src="//speakerdeck.com/assets/embed.js"
-          )
       v-card-text
         div(
           v-for="s in session.speakers"
@@ -203,11 +202,38 @@ export default class EventSessionPage extends mixins(
     }
     // Page link
     const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
+    // SpeakerDeck
+    let speakerDeckDisplaySource = null
+    if (session.documentUrl) {
+      consola.log('getting Speaker Deck event info', session.documentUrl)
+      try {
+        const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
+          process.env.SD_OEMBED_API_PROXY_URL!,
+          {
+            params: {
+              url: session.documentUrl
+            }
+          }
+        )
+        const deckInfo: SpeakerDeckInfo = sdResponse.data
+        consola.log('Speaker Deck info', deckInfo)
+        // Extract deck display source
+        const group: RegExpMatchArray | null = deckInfo.html.match(
+          /\/\/speakerdeck.com\/player\/([a-zA-Z0-9]{6,})/
+        )
+        if (group) {
+          speakerDeckDisplaySource = group[0]
+        }
+      } catch (error) {
+        consola.error('Could not get SpeakerDeck info', error)
+      }
+    }
     return {
       session,
       relatedSessions,
       connpassEventId,
-      pageLink
+      pageLink,
+      speakerDeckDisplaySource
     }
   }
 
@@ -217,13 +243,8 @@ export default class EventSessionPage extends mixins(
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
-  async fetch() {}
-
   async mounted() {
     await this.getConnpassEventInfo()
-    if (this.session.documentUrl) {
-      await this.getSpeakerDeckInfo()
-    }
   }
 
   async getConnpassEventInfo() {
@@ -248,38 +269,6 @@ export default class EventSessionPage extends mixins(
     }
   }
 
-  async getSpeakerDeckInfo() {
-    consola.log('getting Speaker Deck event info', this.session.documentUrl)
-    try {
-      const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
-        '/.netlify/functions/speakerDeck',
-        {
-          params: {
-            url: this.session.documentUrl
-          }
-        }
-      )
-      const deckInfo: SpeakerDeckInfo = sdResponse.data
-      consola.log('Speaker Deck info', deckInfo)
-      this.loaded = true
-      this.speakerDeckDataId = this.extractSpeakerDeckDataId(deckInfo)
-    } catch (error) {
-      consola.error('Could not get SpeakerDeck info', error)
-    }
-  }
-
-  extractSpeakerDeckDataId(deck: SpeakerDeckInfo) {
-    // Extract data-id from embed html source
-    const group: RegExpMatchArray | null = deck.html.match(
-      /\/\/speakerdeck.com\/player\/([a-zA-Z0-9]{6,})/
-    )
-    let result: string | null = null
-    if (group) {
-      result = group[1]
-    }
-    return result
-  }
-
   async showShareTargetPicker() {
     consola.log('showShareTargetPicker called')
     // TODO 文言は仮
@@ -299,4 +288,13 @@ export default class EventSessionPage extends mixins(
   background-color #666666
 .session_header_text
   color #FFFFFF
+.deck_frame
+  border: 0px
+  background: padding-box rgba(0, 0, 0, 0.1)
+  margin: 0px
+  padding: 0px
+  border-radius: 6px
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px
+  width: calc(80px + 66vw)
+  height: calc((80px + 66vw) / 1.77777777778)
 </style>
