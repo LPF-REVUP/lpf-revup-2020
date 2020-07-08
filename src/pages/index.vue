@@ -11,27 +11,47 @@
       justify-center
       align-center
     )
+      div.mb-4(
+        id="about"
+      )
+        div.ml-2.text-h6.text-md-h3.section-header-text.text-left ABOUT
+        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
+      div(
+        id="speakers"
+      )
+        div.ml-2.text-h6.text-md-h3.section-header-text.text-left SPEAKERS
+        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
       v-flex(
         xs12
         sm8
         md6
-        id="speakers"
       )
         speaker-list(
           :speakers="speakers"
           :sessions="sessions"
         )
       div(
+        id="accessmap"
+      )
+        div.ml-2.text-h6.text-md-h3.section-header-text.text-left ACCESS MAP
+        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
+      div(
         id="timetable"
       )
+        div.ml-2.text-h6.text-md-h3.section-header-text.text-left TIME TABLE
+        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
         timetable(
           :sessions="sessions"
         )
+      div(
+        id="sponsors"
+      )
+        div.ml-2.text-h6.text-md-h3.section-header-text.text-left SPONSORS
+        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
       v-flex(
         xs12
         sm8
         md6
-        id="sponsors"
       )
         sponsor-List(
           :sponsors="sponsors"
@@ -141,7 +161,7 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
     const hash = this.$route.hash
     if (hash && hash.match(/^#.+$/)) {
       consola.log('hash', hash)
-      this.$scrollTo(hash)
+      this.$scrollTo(hash, 300, { offset: -100 })
     }
     consola.log('getting connpass event info')
     try {
@@ -210,4 +230,6 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   height 600px
 .notification
   background-color #F0F0F0
+.section-header-text
+  color #00B900
 </style>

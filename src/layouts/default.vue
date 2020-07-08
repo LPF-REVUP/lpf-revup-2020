@@ -27,13 +27,17 @@
         text small
         :to="item.to"
       ) {{ item.title }}
-      v-btn.registration-button.white-text.mr-2.hidden-sm-and-down(
-        tile dark color="#777676"
-      ) 受付/REGISTRATION
+      v-btn.ml-2(
+        v-if="!profile"
+        href="https://github.com"
+        target="_blank"
+        icon
+      )
+        v-icon(large) mdi-github
       v-btn.ml-2(
         v-if="!profile"
         @click="loginWithLineLogin()"
-        tile dark color="#777676"
+        tile dark color="primary"
       ) LINE Login
       v-btn.ml-2.mr-2(
         v-if="profile"
@@ -104,7 +108,9 @@ import { AppMenuItem } from '~/types'
 export default class extends mixins(LiffMixin) {
   title: string = 'LPF REV UP 2020'
   menuItems: Array<AppMenuItem> = [
-    { title: 'SPEAKERS', icon: 'mdi-account-circle', to: '/#speakers' },
+    { title: 'ABOUT', icon: 'mdi-information', to: '/#about' },
+    { title: 'SPEAKERS', icon: 'mdi-account-group', to: '/#speakers' },
+    { title: 'ACCESS MAP', icon: 'mdi-map-legend', to: '/#accessmap' },
     { title: 'TIME TABLE', icon: 'mdi-table-clock', to: '/#timetable' },
     { title: 'SPONSORS', icon: 'mdi-handshake', to: '/#sponsors' }
   ]

@@ -69,7 +69,7 @@ const nuxtConfig: Configuration = {
    */
   plugins: [
     { src: '~/plugins/liff.ts', ssr: false },
-    '~/plugins/vue-scrollto.js'
+    { src: '~/plugins/vue-scrollto', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -142,9 +142,9 @@ const nuxtConfig: Configuration = {
     theme: {
       dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+        light: {
+          primary: '#00B900',
+          accent: '#FF5252',
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
