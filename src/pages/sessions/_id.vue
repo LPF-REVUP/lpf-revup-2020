@@ -10,8 +10,8 @@
           //- Tag
           v-chip.ma-2.mt-4(
             label
-            text-color="white"
-            color="secondary"
+            text-color="primary"
+            color="white"
             v-for="tag in session.tags"
             :key="tag.id"
           )
@@ -33,7 +33,7 @@
                   | {{ applicantsMessage }}
           div.ma-0.mt-4
             v-btn(
-              color="primary"
+              color="accent"
               link
               :href="session.applicationPage"
               target="_blank"
@@ -265,7 +265,7 @@ export default class EventSessionPage extends mixins(
 
   get displaySessionTimePeriod() {
     return `${this.$moment(this.session.startsAt).format(
-      'M月D日 H:mm'
+      'H:mm'
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
@@ -311,7 +311,7 @@ export default class EventSessionPage extends mixins(
 
 <style lang="stylus">
 .session_header
-  background-color #666666
+  background-color #00B900
 .session_header_text
   color #FFFFFF
 .deck_frame
