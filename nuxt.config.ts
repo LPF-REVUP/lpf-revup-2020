@@ -74,7 +74,18 @@ const nuxtConfig: Configuration = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/moment'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        // id: process.env.GOOGLE_ANALYTICS_TRACKING_ID!
+        id: 'UA-171812172-2'
+      }
+    ]
+  ],
   /*
    ** Nuxt.js modules
    */

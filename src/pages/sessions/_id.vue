@@ -37,6 +37,7 @@
               link
               :href="session.applicationPage"
               target="_blank"
+              @click="gaEvent()"
             )
               | このセッションに申し込む
       v-card-text
@@ -305,6 +306,17 @@ export default class EventSessionPage extends mixins(
     )
     // ログイン後のリダイレクトURL はLINE ログインチャネルのコールバックURL に登録しておく必要がある
     await this.openShareTargetPicker(shareMessage, this.pageLink)
+  }
+
+  gaEvent() {
+    const event = {
+      eventCategory: 'session',
+      eventAction: 'link_to_connpass',
+      eventLabel: this.session.title,
+      eventValue: 1
+    }
+    consola.log('gaEvent called!!!', event)
+    this.$ga.event(event)
   }
 }
 </script>
