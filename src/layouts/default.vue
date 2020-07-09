@@ -1,5 +1,4 @@
 <template lang="pug">
-  //- v-app-bar(fixed app flat color="white")
   v-app(id="inspire")
     v-navigation-drawer.hidden-md-and-up(
       v-model="drawer"
@@ -27,8 +26,8 @@
         text small
         :to="item.to"
       ) {{ item.title }}
+      //- TODO Change repository URL
       v-btn.ml-2(
-        v-if="!profile"
         href="https://github.com"
         target="_blank"
         icon
@@ -60,31 +59,37 @@
         max-width="512"
       )
         v-card
-          v-card-title.headline Friendship with Bot
+          v-card-title.headline.font-weight-bold イベント公式アカウントとの友だち関係
           v-card-title
-            div.text-h5
-              p こちらのアカウントでLPF REV UP 2020 について、セッション・コンテンツ情報のアップデートなどをお知らせしていきます。
-              p また、イベント後も情報発信する予定です。開催までお楽しみにお待ち下さい。
+            div.text-body-1(v-if="hasFriendship === false")
+              p イベントに関するお問い合わせは公式アカウントでも行います。よろしければ友だち追加をお願いいたします。
           v-card-actions
             v-spacer
             div(v-if="hasFriendship === false")
               v-btn(
-                color="primary"
+                color="accent"
+                rounded
                 @click="openBeFriendWithBotWindow()"
-              ) 友だち追加する
+              )
+                v-icon(left dark) mdi-close-octagon
+                | 友だち追加する
             div(v-else)
-              | 友だち登録済みです
+              v-btn(
+                color="primary"
+                rounded
+                depressed
+              )
+                v-icon(left dark) mdi-checkbox-marked-circle
+                | 友だち登録済みです
             v-spacer
           v-card-actions
             v-spacer
             v-btn(
-              tile dark
-              color="secondary"
-              outlined
+              text large
+              color="primary"
               @click="showMyPageDialog = false"
             )
-              | OK
-            v-spacer
+              | 閉じる
       nuxt
     v-footer(padless)
       v-card.flex(flat tile)
