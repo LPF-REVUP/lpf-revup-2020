@@ -81,8 +81,7 @@ const nuxtConfig: Configuration = {
     [
       '@nuxtjs/google-analytics',
       {
-        // id: process.env.GOOGLE_ANALYTICS_TRACKING_ID!
-        id: 'UA-171812172-2'
+        id: process.env.GOOGLE_ANALYTICS_TRACKING_ID!
       }
     ]
   ],
