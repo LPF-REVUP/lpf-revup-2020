@@ -7,7 +7,8 @@
     v-card.mb-2(
       v-if="session.title"
       :height="cardHeight"
-      @click="openSessionPage()"
+      @click="moveToSessionPage()"
+      @mousedown.middle="openSessionPage()"
       dark
       color="#3cb371"
     )
@@ -18,7 +19,8 @@
             v-row.ps-8.mb-1(
               v-for="s in session.speakers"
               :key="s.id"
-              @click.stop="openSpeakerPage(s)"
+              @click.stop="moveToSpeakerPage(s)"
+              @mousedown.middle="openSpeakerPage(s)"
             )
               v-img.mr-2(
                 :src="getSpeakerAvatarImageUrl(s)"
@@ -73,8 +75,16 @@ export default class TimetableCellComponent extends Vue {
     return `${s.image.url}?w=${this.avatorSize}&h=${this.avatorSize}&corner-radius=100,100,100,100`
   }
 
+  moveToSessionPage() {
+    location.href = `/sessions/${this.session.id}/`
+  }
+
   openSessionPage() {
     return window.open(`/sessions/${this.session.id}/`)
+  }
+
+  moveToSpeakerPage(s: Speaker) {
+    location.href = `/speakers/${s.id}`
   }
 
   openSpeakerPage(s: Speaker) {
