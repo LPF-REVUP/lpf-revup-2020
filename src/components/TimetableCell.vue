@@ -9,7 +9,7 @@
       :height="cardHeight"
       @click="openSessionPage()"
       dark
-      color="#3cb371"
+      :color="session.color"
     )
       v-card-text.pa-2
         span.session_text {{ session.title }}
