@@ -138,7 +138,16 @@ const nuxtConfig: Configuration = {
             return '/sessions/' + session.id
           })
         })
-      return Promise.all([sessions]).then(values => {
+      const speakers = axios
+        .get(`${process.env.MC_API_BASE_URL}speakers`, {
+          headers: { 'X-API-KEY': process.env.MC_API_KEY }
+        })
+        .then(res => {
+          return res.data.contents.map((speaker: { id: string }) => {
+            return '/speakers/' + speaker.id
+          })
+        })
+      return Promise.all([sessions, speakers]).then(values => {
         return values.join().split(',')
       })
     }
