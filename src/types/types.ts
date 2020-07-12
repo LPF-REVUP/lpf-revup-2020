@@ -59,6 +59,7 @@ export interface EventSession {
   applicantsMessage: string
   documentUrl?: string
   movieUrl?: string
+  color?: string
 }
 
 export interface ConnpassEvent {

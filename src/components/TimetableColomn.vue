@@ -23,6 +23,14 @@ import { EventSession } from '~/types'
   }
 })
 export default class TimetableColomnComponent extends Vue {
+  private static readonly COLORS = [
+    '#2196F3',
+    '#23BCD4',
+    '#4CAF4F',
+    '#673AB7',
+    '#FD9800'
+  ]
+
   @Prop({ type: Array, required: true }) readonly sessions!: Array<EventSession>
   @Prop({ type: String, required: true }) readonly areaId!: string
   @Prop({ type: Number, required: true }) readonly heightByHour!: number
@@ -43,6 +51,7 @@ export default class TimetableColomnComponent extends Vue {
     }
     let fromIndex = this.from
     sortedSessions.forEach((s, index) => {
+      this.setRandomColor(s)
       const startAt = this.$moment(s.startsAt)
       if (fromIndex.isBefore(startAt)) {
         const dummyEventSession = {
@@ -59,6 +68,13 @@ export default class TimetableColomnComponent extends Vue {
     })
     console.log(ret)
     return ret
+  }
+
+  private setRandomColor(s: EventSession) {
+    s.color =
+      TimetableColomnComponent.COLORS[
+        Math.floor(Math.random() * TimetableColomnComponent.COLORS.length)
+      ]
   }
 
   get area() {

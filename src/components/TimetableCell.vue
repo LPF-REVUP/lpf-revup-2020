@@ -10,7 +10,7 @@
       @click="moveToSessionPage()"
       @mousedown.middle="openSessionPage()"
       dark
-      color="#3cb371"
+      :color="session.color"
     )
       v-card-text.pa-2
         span.session_text {{ session.title }}
