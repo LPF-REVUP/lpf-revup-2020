@@ -1,84 +1,81 @@
 <template lang="pug">
-  div
-    v-container.main-picture.white--text(fluid)
-      v-row(justify="center")
+  v-container(fluid)
+    v-row.pb-2.main-picture.white--text
+      v-layout(justify-center)
         div メイン画像が入ります
-    v-container.notification(fluid)
-      v-row(justify="center")
+    v-row.pa-2.notification
+      v-layout(justify-center)
         div 重要なお知らせお知らせがある場合に表示されます
-    v-layout(
-      column
-      justify-center
-      align-center
-    )
-      div.mb-4(
-        id="about"
+    v-row(no-gutters)
+      v-col()
+      v-col(
+        cols="12"
+        md="10"
       )
-        div.ml-2.text-h6.text-md-h3.section-header-text.text-left ABOUT
-        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
-      div(
-        id="speakers"
-      )
-        div.ml-2.text-h6.text-md-h3.section-header-text.text-left SPEAKERS
-        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
-      v-flex(
-        xs12
-        sm8
-        md6
-      )
-        speaker-list(
-          :speakers="speakers"
-          :sessions="sessions"
-        )
-      div(
-        id="accessmap"
-      )
-        div.ml-2.text-h6.text-md-h3.section-header-text.text-left ACCESS MAP
-        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
-      div(
-        id="timetable"
-      )
-        div.ml-2.text-h6.text-md-h3.section-header-text.text-left TIME TABLE
-        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
-        timetable(
-          :sessions="sessions"
-        )
-      div(
-        id="sponsors"
-      )
-        div.ml-2.text-h6.text-md-h3.section-header-text.text-left SPONSORS
-        div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
-      v-flex(
-        xs12
-        sm8
-        md6
-      )
-        sponsor-List(
-          :sponsors="sponsors"
-        )
-      span SHARE
-      v-row.ma-5
-        //- Facebook
-        span.mr-2
-          a(:href="facebookShareUrl" rel="nofollow" target="_blank")
-            v-icon(large) mdi-facebook
-        //- Twitter
-        span.mr-2
-          a(:href="twitterShareUrl" rel="nofollow" target="_blank")
-            v-icon(large) mdi-twitter
-        //- Hatena bookmark
-        span.mr-2
-          a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-            v-icon(large) icon-hatenabookmark
-        //- TODO Share Target Picker
-        span.mr-2
-          v-btn(
-            fab dark depressed
-            color="#888888"
-            @click="showShareTargetPicker"
-            small
+        //- Index contents start
+        //- About
+        v-row.pt-10.pb-10(id="about" cols="12")
+          div.mb-4()
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left ABOUT
+            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
+        //- Speakers
+        v-row.pt-10.pb-10(id="speakers" cols="12")
+          div.mb-4
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left SPEAKERS
+            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
+            speaker-list(
+              :speakers="speakers"
+            )
+        //- AccessMap
+        v-row.pt-10.pb-10(id="accessmap" cols="12")
+          div
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left ACCESS MAP
+            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
+        //- Time table
+        v-row.pt-10.pb-10(id="timetable" cols="12")
+          div
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left TIME TABLE
+            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
+            timetable(
+              :sessions="sessions"
+            )
+        //- Sponsors
+        v-row.mt-8(cols="12")
+          div(
+            id="sponsors"
           )
-            v-icon(large) icon-line
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left SPONSORS
+            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
+            sponsor-List(
+              :sponsors="sponsors"
+            )
+        //- SHARE
+        v-row.pt-10.pb-10(cols="12")
+          span SHARE
+          v-row.ma-5(justify-center)
+            //- Facebook
+            span.mr-2
+              a(:href="facebookShareUrl" rel="nofollow" target="_blank")
+                v-icon(large) mdi-facebook
+            //- Twitter
+            span.mr-2
+              a(:href="twitterShareUrl" rel="nofollow" target="_blank")
+                v-icon(large) mdi-twitter
+            //- Hatena bookmark
+            span.mr-2
+              a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+                v-icon(large) icon-hatenabookmark
+            //- TODO Share Target Picker
+            span.mr-2
+              v-btn(
+                fab dark depressed
+                color="#888888"
+                @click="showShareTargetPicker"
+                small
+              )
+                v-icon(large) icon-line
+        //- Index contents end
+      v-col()
 </template>
 
 <script lang="ts">

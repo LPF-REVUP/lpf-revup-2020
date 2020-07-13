@@ -4,19 +4,17 @@
       v-col(
         v-for="s in speakers"
         :key="s.id"
-        cols="12"
+        cols="4"
         md="3"
-        sm="6"
       )
-        speaker-box.mx-5(
+        speaker-box(
           :speaker="s"
-          :sessions="getSessionsBySpeaker(s)"
         )
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { Speaker, EventSession } from '~/types'
+import { Speaker } from '~/types'
 
 @Component({
   components: {
@@ -25,12 +23,5 @@ import { Speaker, EventSession } from '~/types'
 })
 export default class SpeakerListComponent extends Vue {
   @Prop({ type: Array, required: true }) readonly speakers!: Array<Speaker>
-  @Prop({ type: Array, required: true }) readonly sessions!: Array<EventSession>
-
-  getSessionsBySpeaker(s: Speaker): Array<EventSession> {
-    return this.sessions.filter(session =>
-      session.speakers.map(speaker => speaker.id).includes(s.id)
-    )
-  }
 }
 </script>
