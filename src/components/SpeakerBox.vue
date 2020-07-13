@@ -28,7 +28,7 @@ export default class SpeakerBoxComponent extends Vue {
   }
 
   moveToSpeakerPage() {
-    location.href = `/speakers/${this.speaker.id}/`
+    this.$router.push(`/speakers/${this.speaker.id}/`)
   }
 }
 </script>
