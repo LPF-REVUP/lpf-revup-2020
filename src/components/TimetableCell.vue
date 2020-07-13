@@ -76,7 +76,7 @@ export default class TimetableCellComponent extends Vue {
   }
 
   moveToSessionPage() {
-    location.href = `/sessions/${this.session.id}/`
+    this.$router.push(`/sessions/${this.session.id}/`)
   }
 
   openSessionPage() {
@@ -84,7 +84,7 @@ export default class TimetableCellComponent extends Vue {
   }
 
   moveToSpeakerPage(s: Speaker) {
-    location.href = `/speakers/${s.id}`
+    this.$router.push(`/speakers/${s.id}`)
   }
 
   openSpeakerPage(s: Speaker) {
