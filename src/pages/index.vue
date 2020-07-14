@@ -80,7 +80,6 @@
 
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
-import { createClient } from 'microcms-client/lib/client'
 import consola from 'consola'
 import axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
@@ -97,6 +96,7 @@ import {
 } from '~/types'
 import { appStateStore } from '~/store'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
+import { CMSResponse } from '~/types/microCMS'
 
 @Component({
   components: {
@@ -126,26 +126,37 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
     console.log('MC_API_BASE_URL', process.env.MC_API_BASE_URL)
     console.log('MC_API_KEY', process.env.MC_API_KEY)
     // Create microCMS API Client
-    const client = createClient({
-      baseUrl: process.env.MC_API_BASE_URL || '',
-      contentType: 'application/json; charset=utf-8',
-      X_API_KEY: process.env.MC_API_KEY || ''
-    })
+    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
+    const limit = 50
     // Get Speaker contents
-    const speakers = await client.getContents<Speaker>({ path: 'speakers' })
+    const speakersResponse: AxiosResponse<CMSResponse<
+      Array<Speaker>
+    >> = await axios.get(
+      `${process.env.MC_API_BASE_URL}/speakers/?limit=${limit}`,
+      { headers }
+    )
+    const speakers = speakersResponse.data.contents
     consola.log('Speakers', speakers)
     // Get Session contents
-    const sessions = await client.getContents<EventSession>({
-      path: 'sessions'
-    })
+    const sessionsResponse: AxiosResponse<CMSResponse<
+      Array<EventSession>
+    >> = await axios.get(
+      `${process.env.MC_API_BASE_URL}/sessions/?limit=${limit}`,
+      { headers }
+    )
+    const sessions = sessionsResponse.data.contents
     consola.log('Sessions', sessions)
     sessions.forEach(s => {
       s.applicantsMessage = '取得中'
     })
     // Get Sponsor contents
-    const sponsors = await client.getContents<Sponsor>({
-      path: 'sponsors'
-    })
+    const sponsorsResponse: AxiosResponse<CMSResponse<
+      Array<Sponsor>
+    >> = await axios.get(
+      `${process.env.MC_API_BASE_URL}/sponsors/?limit=${limit}`,
+      { headers }
+    )
+    const sponsors = await sponsorsResponse.data.contents
     consola.log('Sponsors', sponsors)
     return {
       speakers,
