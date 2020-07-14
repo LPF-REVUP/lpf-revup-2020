@@ -106,6 +106,9 @@ export default class SpeakerPage extends mixins(
       }
     )
     const speaker: Speaker = mcResponse.data
+    speaker.sessions.forEach(s => {
+      s.applicantsMessage = '取得中'
+    })
     consola.log('Speaker', speaker)
     return {
       speaker
@@ -113,18 +116,15 @@ export default class SpeakerPage extends mixins(
   }
 
   async mounted() {
-    this.speaker.sessions = await this.getEventApplicantInfo(
-      this.speaker.sessions
-    )
-    consola.log('Sessions', this.speaker.sessions)
-    // Change key to ReRender SessionList Component
-    this.randomForSessionListComponentKey = new Date().getTime()
+    if (this.speaker.sessions && this.speaker.sessions.length > 0) {
+      // Get speaker's session applicant information
+      this.speaker.sessions = await this.getEventApplicantInfo(
+        this.speaker.sessions
+      )
+      consola.log('Sessions', this.speaker.sessions)
+      // Change key to ReRender SessionList Component
+      this.randomForSessionListComponentKey = new Date().getTime()
+    }
   }
 }
 </script>
-
-<style lang="stylus">
-// Disable v-card border and shadow
-// .v-sheet.v-card:not(.v-sheet--outlined)
-//   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0);
-</style>
