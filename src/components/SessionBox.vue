@@ -12,7 +12,7 @@
           | {{ displaySessionTimePeriod }}
         span.group.mr-2.session_text.caption
           v-icon.mr-1(small) mdi-account
-          | 申込者数
+          | {{ session.applicantsMessage }}
 </template>
 
 <script lang="ts">

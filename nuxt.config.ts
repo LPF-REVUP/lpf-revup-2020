@@ -67,11 +67,24 @@ const nuxtConfig: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/liff.ts', ssr: false }],
+  plugins: [
+    { src: '~/plugins/liff.ts', ssr: false },
+    { src: '~/plugins/vue-scrollto', ssr: false }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify', '@nuxtjs/moment'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: process.env.GOOGLE_ANALYTICS_TRACKING_ID!
+      }
+    ]
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -87,7 +100,7 @@ const nuxtConfig: Configuration = {
   proxy: {
     '/.netlify/functions/connpass': {
       target: 'http://localhost:9000'
-    },
+    }
   },
   moment: {
     defaultTimezone: 'Asia/Tokyo',
@@ -106,24 +119,31 @@ const nuxtConfig: Configuration = {
     LIFF_ID: process.env.LIFF_ID || '',
     BOT_FRIENDSHIP_URL: process.env.BOT_FRIENDSHIP_URL || '',
     MC_API_BASE_URL: process.env.MC_API_BASE_URL || 'http://127.0.0.1:3000',
-    MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY'
+    MC_API_KEY: process.env.MC_API_KEY || 'DUMMY_API_KEY',
+    SD_OEMBED_API_PROXY_URL:
+      process.env.SD_OEMBED_API_PROXY_URL || 'http://localhost:9000'
   },
   /*
    * Generating page and routes
    */
   generate: {
     routes() {
-      console.log('MC_API_URL', `${process.env.MC_API_BASE_URL}sessions`)
+      const headers = { 'X-API-KEY': process.env.MC_API_KEY }
       const sessions = axios
-        .get(`${process.env.MC_API_BASE_URL}sessions`, {
-          headers: { 'X-API-KEY': process.env.MC_API_KEY }
-        })
+        .get(`${process.env.MC_API_BASE_URL}/sessions`, { headers })
         .then(res => {
           return res.data.contents.map((session: { id: string }) => {
             return '/sessions/' + session.id
           })
         })
-      return Promise.all([sessions]).then(values => {
+      const speakers = axios
+        .get(`${process.env.MC_API_BASE_URL}/speakers`, { headers })
+        .then(res => {
+          return res.data.contents.map((speaker: { id: string }) => {
+            return '/speakers/' + speaker.id
+          })
+        })
+      return Promise.all([sessions, speakers]).then(values => {
         return values.join().split(',')
       })
     }
@@ -137,9 +157,9 @@ const nuxtConfig: Configuration = {
     theme: {
       dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+        light: {
+          primary: '#00B900',
+          accent: '#FF5252',
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,

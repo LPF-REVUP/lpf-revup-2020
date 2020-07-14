@@ -10,8 +10,8 @@
           //- Tag
           v-chip.ma-2.mt-4(
             label
-            text-color="white"
-            color="secondary"
+            text-color="primary"
+            color="white"
             v-for="tag in session.tags"
             :key="tag.id"
           )
@@ -30,18 +30,37 @@
               v-col(cols="6" sm="4"  md="2" lg="1")
                 span.session_header_text
                   v-icon.mr-1(color="white") mdi-account
-                  | {{ applicants }}/{{ limit }}人
+                  | {{ applicantsMessage }}
           div.ma-0.mt-4
             v-btn(
-              color="primary"
+              color="accent"
               link
               :href="session.applicationPage"
               target="_blank"
+              @click="gaEvent()"
             )
               | このセッションに申し込む
       v-card-text
         span.mt-2(
           v-html="session.description"
+        )
+      v-card-text
+        //- Show the Session's Movie
+        iframe.deck_frame.viewer_size(
+          v-if="sessionMovieDisplaysource"
+          :src="sessionMovieDisplaysource"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        )
+      v-card-text
+        //- Show the Session's SpeakerDeck slide
+        iframe.deck_frame.viewer_size(
+          v-if="speakerDeckDisplaySource"
+          :src="speakerDeckDisplaySource"
+          frameborder="0"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
         )
       v-card-text
         div(
@@ -93,14 +112,21 @@
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
 import { FlexMessage } from '@line/bot-sdk'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import { HeadInfo, EventSession, Tag } from '~/types'
+import {
+  HeadInfo,
+  EventSession,
+  ConnpassResponse,
+  Tag,
+  SpeakerDeckInfo
+} from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
+import { CMSResponse } from '~/types/microCMS'
 
 @Component({
   components: {
@@ -116,8 +142,9 @@ export default class EventSessionPage extends mixins(
   session!: EventSession
   connpassEventId!: string
   pageLink!: string
-  applicants = 0
-  limit = 0
+  applicantsMessage = '取得中'
+  loaded: boolean = false
+  speakerDeckDataId: string | null = null
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -145,14 +172,13 @@ export default class EventSessionPage extends mixins(
     consola.log('asyncData called!!')
     const { params } = context
     consola.log('Session ID', params.id)
+    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
     // Get Session info
-    const { data } = await axios.get(
-      `${process.env.MC_API_BASE_URL}sessions/${params.id}`,
-      {
-        headers: { 'X-API-KEY': process.env.MC_API_KEY }
-      }
+    const sessionResponse: AxiosResponse<EventSession> = await axios.get(
+      `${process.env.MC_API_BASE_URL}/sessions/${params.id}`,
+      { headers }
     )
-    const session: EventSession = data
+    const session: EventSession = sessionResponse.data
     consola.log('Session', session)
     // Get related sessions
     let query = `filters=area[equals]${session.area.id}`
@@ -163,13 +189,12 @@ export default class EventSessionPage extends mixins(
       return q
     })
     consola.log('Related sessions query', query)
-    const { data: relatedData } = await axios.get(
-      `${process.env.MC_API_BASE_URL}sessions?${query}`,
-      {
-        headers: { 'X-API-KEY': process.env.MC_API_KEY }
-      }
-    )
-    const relatedSessions: Array<EventSession> = relatedData.contents.filter(
+    const relatedSessionsResponse: AxiosResponse<CMSResponse<
+      Array<EventSession>
+    >> = await axios.get(`${process.env.MC_API_BASE_URL}/sessions?${query}`, {
+      headers
+    })
+    const relatedSessions: Array<EventSession> = relatedSessionsResponse.data.contents.filter(
       (s: EventSession) => {
         return s.id !== params.id
       }
@@ -185,31 +210,89 @@ export default class EventSessionPage extends mixins(
     }
     // Page link
     const pageLink = `${process.env.BASE_URL}/sessions/${session.id}/`
+    // Youtube
+    let sessionMovieDisplaysource = null
+    if (session.movieUrl) {
+      try {
+        consola.log('building Youtube movie viewer', session.movieUrl)
+        const group: RegExpMatchArray | null = session.movieUrl.match(
+          /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+        )
+        consola.log('Extract youtube url', group)
+        if (group) {
+          consola.log('Extract youtube video id', group[0], group[7])
+          sessionMovieDisplaysource = `https://www.youtube.com/embed/${group[7]}`
+        }
+      } catch (error) {
+        consola.error('Could not get Youtube video id', error)
+      }
+    }
+    // SpeakerDeck
+    let speakerDeckDisplaySource = null
+    if (session.documentUrl) {
+      consola.log('getting Speaker Deck event info', session.documentUrl)
+      try {
+        const sdResponse: AxiosResponse<SpeakerDeckInfo> = await axios.get(
+          process.env.SD_OEMBED_API_PROXY_URL!,
+          {
+            params: {
+              url: session.documentUrl
+            }
+          }
+        )
+        const deckInfo: SpeakerDeckInfo = sdResponse.data
+        consola.log('Speaker Deck info', deckInfo)
+        // Extract deck display source
+        const group: RegExpMatchArray | null = deckInfo.html.match(
+          /\/\/speakerdeck.com\/player\/([a-zA-Z0-9]{6,})/
+        )
+        if (group) {
+          speakerDeckDisplaySource = group[0]
+        }
+      } catch (error) {
+        consola.error('Could not get SpeakerDeck info', error)
+      }
+    }
     return {
       session,
       relatedSessions,
       connpassEventId,
-      pageLink
+      pageLink,
+      speakerDeckDisplaySource,
+      sessionMovieDisplaysource
     }
   }
 
   get displaySessionTimePeriod() {
     return `${this.$moment(this.session.startsAt).format(
-      'M月D日 H:mm'
+      'H:mm'
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
   async mounted() {
+    await this.getConnpassEventInfo()
+  }
+
+  async getConnpassEventInfo() {
     consola.log('getting connpass event info', this.connpassEventId)
-    const axiosResponse = await axios.get('/.netlify/functions/connpass', {
-      params: {
-        event_id: this.connpassEventId
-      }
-    })
-    const event = axiosResponse.data.events[0]
-    this.applicants = event.accepted + event.waiting
-    this.limit = event.limit
-    consola.log(this.applicants, this.limit, event)
+    try {
+      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
+        '/.netlify/functions/connpass',
+        {
+          params: {
+            event_id: this.connpassEventId
+          }
+        }
+      )
+      const connpassEvent = connpassResponse.data.events[0]
+      const applicantCount = connpassEvent.accepted + connpassEvent.waiting
+      this.applicantsMessage = connpassEvent.limit
+        ? applicantCount + '/' + connpassEvent.limit + '人'
+        : applicantCount + '人'
+    } catch (error) {
+      consola.error('Could not get connpass event info', error)
+      this.applicantsMessage = '取得できませんでした'
+    }
   }
 
   async showShareTargetPicker() {
@@ -223,12 +306,33 @@ export default class EventSessionPage extends mixins(
     // ログイン後のリダイレクトURL はLINE ログインチャネルのコールバックURL に登録しておく必要がある
     await this.openShareTargetPicker(shareMessage, this.pageLink)
   }
+
+  gaEvent() {
+    const event = {
+      eventCategory: 'session',
+      eventAction: 'link_to_connpass',
+      eventLabel: this.session.title,
+      eventValue: 1
+    }
+    consola.log('gaEvent called!!!', event)
+    this.$ga.event(event)
+  }
 }
 </script>
 
 <style lang="stylus">
 .session_header
-  background-color #666666
+  background-color #00B900
 .session_header_text
   color #FFFFFF
+.deck_frame
+  border: 0px
+  background: padding-box rgba(0, 0, 0, 0.1)
+  margin: 0px
+  padding: 0px
+  border-radius: 6px
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px
+.viewer_size
+  width: calc(80px + 66vw)
+  height: calc((80px + 66vw) / 1.77777777778)
 </style>

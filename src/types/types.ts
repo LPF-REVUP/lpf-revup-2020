@@ -11,6 +11,12 @@ export interface HeadInfo {
   ogImagePath?: string
 }
 
+export interface AppMenuItem {
+  title: string
+  icon: string
+  to: string
+}
+
 export interface Tag {
   id: string
   name: string
@@ -50,6 +56,41 @@ export interface EventSession {
   applicationPage: string
   speakers: Array<Speaker>
   tags: Array<Tag>
+  applicantsMessage: string
+  documentUrl?: string
+  movieUrl?: string
+  color?: string
+}
+
+export interface ConnpassEvent {
+  // eslint-disable-next-line camelcase
+  event_id: number
+  accepted: number
+  waiting: number
+  limit: number
+}
+
+export interface ConnpassResponse {
+  // eslint-disable-next-line camelcase
+  results_returned: number
+  events: ConnpassEvent[]
+}
+
+export interface SpeakerDeckInfo {
+  type: string
+  version: number
+  // eslint-disable-next-line camelcase
+  provider_name: string
+  // eslint-disable-next-line camelcase
+  provider_url: string
+  title: string
+  // eslint-disable-next-line camelcase
+  author_name: string
+  // eslint-disable-next-line camelcase
+  author_url: string
+  html: string
+  width: number
+  height: number
 }
 
 export enum RankEnum {

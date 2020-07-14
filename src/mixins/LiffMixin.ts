@@ -21,6 +21,9 @@ import {
 @Component
 export default class LiffMixin extends Vue {
   public async initializeLiff(): Promise<void> {
+    if (process.env.SKIP_LIFF_INITIALIZE === 'true') {
+      return
+    }
     consola.log('initializeLiff called!')
     if (!appStateStore.liffInitialized) {
       const pageLiffId = process.env.LIFF_ID || ''

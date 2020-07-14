@@ -1,19 +1,42 @@
 <template lang="pug">
-  v-app
+  v-app(id="inspire")
+    v-navigation-drawer.hidden-md-and-up(
+      v-model="drawer"
+      right
+      temporary
+      app
+    )
+      v-list(dense)
+        template(v-for="item in menuItems")
+          v-list-item(
+            :key="item.title"
+            :to="item.to"
+          )
+            v-list-item-action
+              v-icon {{ item.icon }}
+            v-list-item-content
+              | {{ item.title }}
     v-app-bar(fixed app flat color="white")
-      v-toolbar-title.black--text
+      v-toolbar-title.d-block.black--text
         nuxt-link(to="/") {{title}}
       v-spacer
-      v-btn.black--text(text small) SPEAKERS
-      v-btn.black--text(text small) SCHEDULE
-      v-btn.black--text(text small) SPONSORS
-      v-btn.registration-button.white-text.mr-2(
-        tile dark color="#777676"
-      ) 受付/REGISTRATION
+      v-btn.black--text.hidden-sm-and-down(
+        v-for="item in menuItems"
+        :key="item.title"
+        text small
+        :to="item.to"
+      ) {{ item.title }}
+      //- TODO Change repository URL
+      v-btn.ml-2(
+        href="https://github.com"
+        target="_blank"
+        icon
+      )
+        v-icon(large) mdi-github
       v-btn.ml-2(
         v-if="!profile"
         @click="loginWithLineLogin()"
-        tile dark color="#777676"
+        tile dark color="primary"
       ) LINE Login
       v-btn.ml-2.mr-2(
         v-if="profile"
@@ -25,6 +48,10 @@
             :src="profile.pictureUrl"
             :alt="profile.displayName"
           )
+      v-app-bar-nav-icon.hidden-md-and-up(
+        color="info"
+        @click.stop="drawer = !drawer"
+      )
     v-main
       //- show Friendship with bot dialog
       v-dialog(
@@ -32,31 +59,37 @@
         max-width="512"
       )
         v-card
-          v-card-title.headline Friendship with Bot
+          v-card-title.headline.font-weight-bold イベント公式アカウントとの友だち関係
           v-card-title
-            div.text-h5
-              p こちらのアカウントでLPF REV UP 2020 について、セッション・コンテンツ情報のアップデートなどをお知らせしていきます。
-              p また、イベント後も情報発信する予定です。開催までお楽しみにお待ち下さい。
+            div.text-body-1(v-if="hasFriendship === false")
+              p イベントに関するお問い合わせは公式アカウントでも行います。よろしければ友だち追加をお願いいたします。
           v-card-actions
             v-spacer
             div(v-if="hasFriendship === false")
               v-btn(
-                color="primary"
+                color="accent"
+                rounded
                 @click="openBeFriendWithBotWindow()"
-              ) 友だち追加する
+              )
+                v-icon(left dark) mdi-close-octagon
+                | 友だち追加する
             div(v-else)
-              | 友だち登録済みです
+              v-btn(
+                color="primary"
+                rounded
+                depressed
+              )
+                v-icon(left dark) mdi-checkbox-marked-circle
+                | 友だち登録済みです
             v-spacer
           v-card-actions
             v-spacer
             v-btn(
-              tile dark
-              color="secondary"
-              outlined
+              text large
+              color="primary"
               @click="showMyPageDialog = false"
             )
-              | OK
-            v-spacer
+              | 閉じる
       nuxt
     v-footer(padless)
       v-card.flex(flat tile)
@@ -74,10 +107,21 @@ import consola from 'consola'
 import { Profile } from '@line/bot-sdk'
 import { appStateStore } from '~/store'
 import LiffMixin from '~/mixins/LiffMixin'
+import { AppMenuItem } from '~/types'
 
 @Component({})
 export default class extends mixins(LiffMixin) {
   title: string = 'LPF REV UP 2020'
+  menuItems: Array<AppMenuItem> = [
+    { title: 'ABOUT', icon: 'mdi-information', to: '/#about' },
+    { title: 'SPEAKERS', icon: 'mdi-account-group', to: '/#speakers' },
+    { title: 'ACCESS MAP', icon: 'mdi-map-legend', to: '/#accessmap' },
+    { title: 'TIME TABLE', icon: 'mdi-table-clock', to: '/#timetable' },
+    { title: 'SPONSORS', icon: 'mdi-handshake', to: '/#sponsors' }
+  ]
+
+  drawer: boolean = false
+
   showMyPageDialog: boolean = false
   hasFriendship: boolean = false
   protected profile: Profile | null = appStateStore.lineProfile
