@@ -100,7 +100,7 @@ export default class SpeakerPage extends mixins(
     const { params } = context
     consola.log('Speaker ID', params.id)
     const mcResponse: AxiosResponse<Speaker> = await axios.get(
-      `${process.env.MC_API_BASE_URL}speakers/${params.id}`,
+      `${process.env.MC_API_BASE_URL}/speakers/${params.id}`,
       {
         headers: { 'X-API-KEY': process.env.MC_API_KEY }
       }

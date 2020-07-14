@@ -128,20 +128,16 @@ const nuxtConfig: Configuration = {
    */
   generate: {
     routes() {
-      console.log('MC_API_URL', `${process.env.MC_API_BASE_URL}sessions`)
+      const headers = { 'X-API-KEY': process.env.MC_API_KEY }
       const sessions = axios
-        .get(`${process.env.MC_API_BASE_URL}sessions`, {
-          headers: { 'X-API-KEY': process.env.MC_API_KEY }
-        })
+        .get(`${process.env.MC_API_BASE_URL}/sessions`, { headers })
         .then(res => {
           return res.data.contents.map((session: { id: string }) => {
             return '/sessions/' + session.id
           })
         })
       const speakers = axios
-        .get(`${process.env.MC_API_BASE_URL}speakers`, {
-          headers: { 'X-API-KEY': process.env.MC_API_KEY }
-        })
+        .get(`${process.env.MC_API_BASE_URL}/speakers`, { headers })
         .then(res => {
           return res.data.contents.map((speaker: { id: string }) => {
             return '/speakers/' + speaker.id

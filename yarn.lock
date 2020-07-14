@@ -6038,14 +6038,6 @@ methods@~1.1.2:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
-microcms-client@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/microcms-client/-/microcms-client-0.0.8.tgz#151cf7293bf6aae28e5b1d9dbe9395ef46bc7660"
-  integrity sha512-Gjk7vd3tWaV/RdHr8/IpubbSNJjJTnjZaeXXONRKeCcN8AtH+jUf5/rQM/2zGkootbuQBMFkEsRuLVMRxV+Tpw==
-  dependencies:
-    axios "^0.19.2"
-    typescript "^3.9.5"
-
 microevent.ts@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/microevent.ts/-/microevent.ts-0.1.1.tgz#70b09b83f43df5172d0205a63025bce0f7357fa0"
@@ -9211,11 +9203,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typescript@^3.9.5:
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
-  integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
 
 typescript@~3.8:
   version "3.8.3"

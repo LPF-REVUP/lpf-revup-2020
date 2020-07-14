@@ -126,6 +126,7 @@ import {
 } from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
+import { CMSResponse } from '~/types/microCMS'
 
 @Component({
   components: {
@@ -171,14 +172,13 @@ export default class EventSessionPage extends mixins(
     consola.log('asyncData called!!')
     const { params } = context
     consola.log('Session ID', params.id)
+    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
     // Get Session info
-    const { data } = await axios.get(
-      `${process.env.MC_API_BASE_URL}sessions/${params.id}`,
-      {
-        headers: { 'X-API-KEY': process.env.MC_API_KEY }
-      }
+    const sessionResponse: AxiosResponse<EventSession> = await axios.get(
+      `${process.env.MC_API_BASE_URL}/sessions/${params.id}`,
+      { headers }
     )
-    const session: EventSession = data
+    const session: EventSession = sessionResponse.data
     consola.log('Session', session)
     // Get related sessions
     let query = `filters=area[equals]${session.area.id}`
@@ -189,13 +189,12 @@ export default class EventSessionPage extends mixins(
       return q
     })
     consola.log('Related sessions query', query)
-    const { data: relatedData } = await axios.get(
-      `${process.env.MC_API_BASE_URL}sessions?${query}`,
-      {
-        headers: { 'X-API-KEY': process.env.MC_API_KEY }
-      }
-    )
-    const relatedSessions: Array<EventSession> = relatedData.contents.filter(
+    const relatedSessionsResponse: AxiosResponse<CMSResponse<
+      Array<EventSession>
+    >> = await axios.get(`${process.env.MC_API_BASE_URL}/sessions?${query}`, {
+      headers
+    })
+    const relatedSessions: Array<EventSession> = relatedSessionsResponse.data.contents.filter(
       (s: EventSession) => {
         return s.id !== params.id
       }
