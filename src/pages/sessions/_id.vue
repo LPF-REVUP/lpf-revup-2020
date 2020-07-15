@@ -1,37 +1,39 @@
 <template lang="pug">
-  v-container
-    v-card.mx-auto(
-      max-width="100%"
+  v-container.pa-0(fluid)
+    v-row.mb-6(
+      no-gutters
     )
-      v-card-text.session_header
-        div
-          //- Title
-          h2.session_header_text {{ session.title }}
-          //- Tag
-          v-chip.ma-2.mt-4(
-            label
-            text-color="primary"
-            color="white"
-            v-for="tag in session.tags"
-            :key="tag.id"
-          )
-            v-icon.mr-1(left small) mdi-tag
-            | {{ tag.name }}
-          v-container.ma-0.pa-0
-            v-row(dense justify="start" align="center")
-              v-col(cols="8" sm="6" md="2" lg="2")
-                span.session_header_text
-                  v-icon.mr-1(color="white") mdi-calendar-month
-                  | {{ displaySessionTimePeriod }}
-              v-col(cols="4" sm="2" md="1" lg="1")
-                span.session_header_text
-                  v-icon.mr-1(color="white") mdi-map-marker
-                  | {{ session.area.name }}
-              v-col(cols="6" sm="4"  md="2" lg="1")
-                span.session_header_text
-                  v-icon.mr-1(color="white") mdi-account
-                  | {{ applicantsMessage }}
-          div.ma-0.mt-4
+      v-col.session_header()
+      v-col.session_header(
+        cols="12"
+        md="9"
+      )
+        v-container(fluid)
+          v-row
+            //- Title
+            h2.session_header_text {{ session.title }}
+          v-row
+            //- Tag
+            v-chip.ma-2.mt-4(
+              label
+              text-color="primary"
+              color="white"
+              v-for="tag in session.tags"
+              :key="tag.id"
+            )
+              v-icon.mr-1(left small) mdi-tag
+              | {{ tag.name }}
+          v-row.mt-2(dense justify="start" align="center")
+            span.mr-4.session_header_text
+              v-icon.mr-1(color="white") mdi-calendar-month
+              | {{ displaySessionTimePeriod }}
+            span.mr-4.session_header_text
+              v-icon.mr-1(color="white") mdi-map-marker
+              | {{ session.area.name }}
+            span.mr-4.session_header_text
+              v-icon.mr-1(color="white") mdi-account
+              | {{ applicantsMessage }}
+          v-row.ma-0.mt-4
             v-btn(
               color="accent"
               link
@@ -40,72 +42,88 @@
               @click="gaEvent()"
             )
               | このセッションに申し込む
-      v-card-text
-        span.mt-2(
-          v-html="session.description"
-        )
-      v-card-text
-        //- Show the Session's Movie
-        iframe.deck_frame.viewer_size(
-          v-if="sessionMovieDisplaysource"
-          :src="sessionMovieDisplaysource"
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        )
-      v-card-text
-        //- Show the Session's SpeakerDeck slide
-        iframe.deck_frame.viewer_size(
-          v-if="speakerDeckDisplaySource"
-          :src="speakerDeckDisplaySource"
-          frameborder="0"
-          allowfullscreen="true"
-          mozallowfullscreen="true"
-          webkitallowfullscreen="true"
-        )
-      v-card-text
-        div(
-          v-for="s in session.speakers"
-            :key="s.id"
-        )
-          speaker-item(
-            :speaker="s"
-          )
-      v-card-text
-        div(style="display:flex;")
-          //- Share buttons
-          div.mt-2(style="margin-left:auto;")
-            span.mr-4 SHARE
-            //- Facebook
-            span.mr-2
-              a(:href="facebookShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) mdi-facebook
-            //- Twitter
-            span.mr-2
-              a(:href="twitterShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) mdi-twitter
-            //- Hatena bookmark
-            span.mr-2
-              a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) icon-hatenabookmark
-            //- TODO Share Target Picker
-            span.mr-2
-              v-btn(
-                fab dark depressed
-                color="#888888"
-                @click="showShareTargetPicker"
-                small
-              )
-                v-icon(large) icon-line
-      v-card-text(
-        v-if="relatedSessions.length > 0"
+      v-col.session_header()
+    v-row.mb-6(
+      no-gutters
+    )
+      v-col()
+      v-col(
+        cols="12"
+        md="9"
       )
-        v-divider.mt-4.mb-4
-        div
-          h3.mb-2 その他のセッション
-          div
-            related-session-list(
-              :sessions="relatedSessions"
+        v-container(fluid)
+          v-row
+            span.mt-2.mb-4(
+              v-html="session.description"
             )
+          //- Show the Session's Movie
+          v-row.mt-2.mb-2
+            iframe.deck_frame.viewer_size(
+              v-if="sessionMovieDisplaysource"
+              :src="sessionMovieDisplaysource"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            )
+          //- Show the Session's SpeakerDeck slide
+          v-row.mt-2.mb-2
+            iframe.deck_frame.viewer_size(
+              v-if="speakerDeckDisplaySource"
+              :src="speakerDeckDisplaySource"
+              frameborder="0"
+              allowfullscreen="true"
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+            )
+          //- Speakers
+          v-row.mt-4.mb-4
+            div(
+              v-for="s in session.speakers"
+                :key="s.id"
+            )
+              speaker-item(
+                :speaker="s"
+              )
+          //- Share
+          v-row.mt-10.mb-10
+            v-layout(justify-end)
+              //- div(style="display:flex;")
+              //- Share buttons
+              div.mt-2(style="margin-left:auto;")
+                span.mr-4 SHARE
+                //- Facebook
+                span.mr-2
+                  a(:href="facebookShareUrl" rel="nofollow" target="_blank")
+                    v-icon(large) mdi-facebook
+                //- Twitter
+                span.mr-2
+                  a(:href="twitterShareUrl" rel="nofollow" target="_blank")
+                    v-icon(large) mdi-twitter
+                //- Hatena bookmark
+                span.mr-2
+                  a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+                    v-icon(large) icon-hatenabookmark
+                //- TODO Share Target Picker
+                span.mr-2
+                  v-btn(
+                    fab dark depressed
+                    color="#888888"
+                    @click="showShareTargetPicker"
+                    small
+                  )
+                    v-icon(large) icon-line
+          //- Related Sessions
+          v-row(
+            v-if="relatedSessions.length > 0"
+          )
+            v-divider.mt-4.mb-4
+            div
+              h3.mb-2 その他のセッション
+              div
+                related-session-list(
+                  :sessions="relatedSessions"
+                  :key="sessionListComponentKey"
+                )
+      v-col()
 </template>
 
 <script lang="ts">
@@ -114,19 +132,16 @@ import { Context } from '@nuxt/types'
 import { FlexMessage } from '@line/bot-sdk'
 import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
+import * as lodash from 'lodash'
 import HeadMixin from '~/mixins/HeadMixin'
 import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import {
-  HeadInfo,
-  EventSession,
-  ConnpassResponse,
-  Tag,
-  SpeakerDeckInfo
-} from '~/types'
+import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
+import { HeadInfo, EventSession, Tag, SpeakerDeckInfo } from '~/types'
 import '@/assets/icomoon/style.css'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 import { CMSResponse } from '~/types/microCMS'
+const _ = lodash
 
 @Component({
   components: {
@@ -137,14 +152,17 @@ import { CMSResponse } from '~/types/microCMS'
 export default class EventSessionPage extends mixins(
   HeadMixin,
   ShareMixin,
-  LiffMixin
+  LiffMixin,
+  ConnpassEventMixin
 ) {
   session!: EventSession
+  relatedSessions!: Array<EventSession>
   connpassEventId!: string
   pageLink!: string
   applicantsMessage = '取得中'
   loaded: boolean = false
   speakerDeckDataId: string | null = null
+  randomForSessionListComponentKey: number = 0
 
   validate(context: Context) {
     consola.log('validate called!!')
@@ -168,6 +186,14 @@ export default class EventSessionPage extends mixins(
     return this.session.title
   }
 
+  /**
+   * セッション情報更新時にSessionList を再描画するためのキーを取得する
+   * 再描画したい場合は `randomForSessionListComponentKey` の値を変更する
+   */
+  get sessionListComponentKey(): string {
+    return `key_${this.randomForSessionListComponentKey}`
+  }
+
   async asyncData(context: Context) {
     consola.log('asyncData called!!')
     const { params } = context
@@ -188,6 +214,7 @@ export default class EventSessionPage extends mixins(
       query = `${query}[or]${q}`
       return q
     })
+    session.applicantsMessage = '取得中'
     consola.log('Related sessions query', query)
     const relatedSessionsResponse: AxiosResponse<CMSResponse<
       Array<EventSession>
@@ -196,6 +223,7 @@ export default class EventSessionPage extends mixins(
     })
     const relatedSessions: Array<EventSession> = relatedSessionsResponse.data.contents.filter(
       (s: EventSession) => {
+        s.applicantsMessage = '取得中'
         return s.id !== params.id
       }
     )
@@ -265,34 +293,23 @@ export default class EventSessionPage extends mixins(
 
   get displaySessionTimePeriod() {
     return `${this.$moment(this.session.startsAt).format(
-      'H:mm'
+      'M月D日 H:mm'
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
   async mounted() {
-    await this.getConnpassEventInfo()
-  }
-
-  async getConnpassEventInfo() {
-    consola.log('getting connpass event info', this.connpassEventId)
-    try {
-      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
-        '/.netlify/functions/connpass',
-        {
-          params: {
-            event_id: this.connpassEventId
-          }
-        }
-      )
-      const connpassEvent = connpassResponse.data.events[0]
-      const applicantCount = connpassEvent.accepted + connpassEvent.waiting
-      this.applicantsMessage = connpassEvent.limit
-        ? applicantCount + '/' + connpassEvent.limit + '人'
-        : applicantCount + '人'
-    } catch (error) {
-      consola.error('Could not get connpass event info', error)
-      this.applicantsMessage = '取得できませんでした'
-    }
+    let sessions = _.cloneDeep(this.relatedSessions)
+    sessions.push(_.cloneDeep(this.session))
+    sessions = await this.getEventApplicantInfo(sessions)
+    this.relatedSessions = sessions.filter((s: EventSession) => {
+      if (s.id === this.session.id) {
+        this.session = s
+        this.applicantsMessage = s.applicantsMessage
+      }
+      return s.id !== this.session.id
+    })
+    // Change key to ReRender SessionList Component
+    this.randomForSessionListComponentKey = new Date().getTime()
   }
 
   async showShareTargetPicker() {
