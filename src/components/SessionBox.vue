@@ -4,15 +4,14 @@
   )
     v-card-title
       nuxt-link(:to="sessionPageLink")
-        h5.session_text {{ session.title }}
+        h5.session_text.session_title {{ session.title }}
     v-card-text
-      div
-        span.group.mr-2.session_text.caption
-          v-icon.mr-1(small) mdi-calendar-month
-          | {{ displaySessionTimePeriod }}
-        span.group.mr-2.session_text.caption
-          v-icon.mr-1(small) mdi-account
-          | {{ session.applicantsMessage }}
+      div.group.mr-2.session_text.caption
+        v-icon.mr-1(small) mdi-calendar-month
+        | {{ displaySessionTimePeriod }}
+      div.group.mr-2.session_text.caption
+        v-icon.mr-1(small) mdi-account
+        | {{ session.applicantsMessage }}
 </template>
 
 <script lang="ts">
@@ -36,6 +35,11 @@ export default class SpeakerBoxComponent extends Vue {
 </script>
 
 <style lang="stylus">
+.session_title
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 .session_text
   color #666666
 </style>
