@@ -16,12 +16,12 @@
         //- About
         v-row.pt-10.pb-10(id="about" cols="12")
           div.mb-4()
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left ABOUT
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
         //- Speakers
         v-row.pt-10.pb-10(id="speakers" cols="12")
           div.mb-4
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left SPEAKERS
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
             speaker-list(
               :speakers="speakers"
@@ -29,12 +29,12 @@
         //- AccessMap
         v-row.pt-10.pb-10(id="accessmap" cols="12")
           div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left ACCESS MAP
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
         //- Time table
         v-row.pt-10.pb-10(id="timetable" cols="12")
           div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left TIME TABLE
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
             timetable(
               :sessions="sessions"
@@ -44,7 +44,7 @@
           div(
             id="sponsors"
           )
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left SPONSORS
+            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
             sponsor-List(
               :sponsors="sponsors"
@@ -240,4 +240,6 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   background-color #F0F0F0
 .section-header-text
   color #00B900
+.section-header-text.font-biryani
+  font-family: 'Biryani', sans-serif !important;
 </style>

@@ -43,7 +43,8 @@ const nuxtConfig: Configuration = {
     script: scripts,
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'shortcut icon', href: '/favicon.ico' }
+      { rel: 'shortcut icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Biryani:wght@900&display=swap' }
     ]
   },
   manifest: {
