@@ -16,7 +16,7 @@
               v-icon {{ item.icon }}
             v-list-item-content
               | {{ item.title }}
-    v-app-bar(fixed app flat color="white")
+    v-app-bar(fixed app color="white" elevate-on-scroll)
       v-toolbar-title.d-block.black--text
         nuxt-link(to="/") {{title}}
       v-spacer

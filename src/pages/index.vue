@@ -14,12 +14,12 @@
       )
         //- Index contents start
         //- About
-        v-row.pt-10.pb-10(id="about" cols="12")
+        v-row.section-header(id="about" cols="12")
           div.mb-4()
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
         //- Speakers
-        v-row.pt-10.pb-10(id="speakers" cols="12")
+        v-row.section-header(id="speakers" cols="12")
           div.mb-4
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
@@ -27,12 +27,12 @@
               :speakers="speakers"
             )
         //- AccessMap
-        v-row.pt-10.pb-10(id="accessmap" cols="12")
+        v-row.section-header(id="accessmap" cols="12")
           div
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
         //- Time table
-        v-row.pt-10.pb-10(id="timetable" cols="12")
+        v-row.section-header(id="timetable" cols="12")
           div
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
@@ -40,10 +40,8 @@
               :sessions="sessions"
             )
         //- Sponsors
-        v-row.mt-8(cols="12")
-          div(
-            id="sponsors"
-          )
+        v-row.section-header(id="sponsors" cols="12")
+          div
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
             sponsor-List(
@@ -169,7 +167,7 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
     const hash = this.$route.hash
     if (hash && hash.match(/^#.+$/)) {
       consola.log('hash', hash)
-      this.$scrollTo(hash, 300, { offset: -100 })
+      this.$scrollTo(hash, 300)
     }
     consola.log('getting connpass event info')
     try {
@@ -238,6 +236,10 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   height 600px
 .notification
   background-color #F0F0F0
+.section-header
+  margin-top: -70px
+  padding-top: 80px
+  padding-bottom: 10px
 .section-header-text
   color #00B900
 .section-header-text.font-biryani
