@@ -43,9 +43,6 @@
         v-row.section-header(id="sponsors" cols="12")
           div
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
-        v-row.section-header(id="sponsors" cols="12")
-          div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left SPONSORS
             div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
             sponsor-List(
               :sponsors="sponsors"
