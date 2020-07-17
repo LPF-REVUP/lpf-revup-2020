@@ -11,6 +11,7 @@
           v-list-item(
             :key="item.title"
             :to="item.to"
+            :aria-label="item.title"
           )
             v-list-item-action
               v-icon {{ item.icon }}
@@ -18,30 +19,34 @@
               | {{ item.title }}
     v-app-bar(fixed app color="white" elevate-on-scroll)
       v-toolbar-title.d-block.black--text
-        nuxt-link(to="/") {{title}}
+        nuxt-link(to="/" :aria-label="title") {{title}}
       v-spacer
       v-btn.black--text.hidden-sm-and-down(
         v-for="item in menuItems"
         :key="item.title"
         text small
         :to="item.to"
+        :aria-label="item.title"
       ) {{ item.title }}
       //- TODO Change repository URL
       v-btn.ml-2(
         href="https://github.com"
         target="_blank"
         icon
+        aria-label="Repository"
       )
         v-icon(large) mdi-github
       v-btn.ml-2(
         v-if="!profile"
         @click="loginWithLineLogin()"
         tile dark color="primary"
+        aria-label="LINE Login"
       ) LINE Login
       v-btn.ml-2.mr-2(
         v-if="profile"
         fab small dark color="primary"
         @click="openFriendshipDialg()"
+        aria-label="Check bot friendship"
       )
         v-avatar
           v-img(
@@ -51,6 +56,7 @@
       v-app-bar-nav-icon.hidden-md-and-up(
         color="info"
         @click.stop="drawer = !drawer"
+        aria-label="Menu"
       )
     v-main
       //- show Friendship with bot dialog
@@ -70,6 +76,7 @@
                 color="accent"
                 rounded
                 @click="openBeFriendWithBotWindow()"
+                aria-label="友だち追加"
               )
                 v-icon(left dark) mdi-close-octagon
                 | 友だち追加する
@@ -78,6 +85,7 @@
                 color="primary"
                 rounded
                 depressed
+                aria-label="友だち登録済み"
               )
                 v-icon(left dark) mdi-checkbox-marked-circle
                 | 友だち登録済みです
@@ -88,16 +96,17 @@
               text large
               color="primary"
               @click="showMyPageDialog = false"
+              aria-label="閉じる"
             )
               | 閉じる
       nuxt
     v-footer(padless)
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
-          v-btn.footer-button.white--text(text small) 個人情報保護方針
-          v-btn.footer-button.white--text(text small) LINK1
-          v-btn.footer-button.white--text(text small) LINK2
-          v-btn.footer-button.white--text(text small) LINK3
+          v-btn.footer-button.white--text(text small aria-label="個人情報保護方針") 個人情報保護方針
+          v-btn.footer-button.white--text(text small aria-label="LINK1") LINK1
+          v-btn.footer-button.white--text(text small aria-label="LINK2") LINK2
+          v-btn.footer-button.white--text(text small aria-label="LINK3") LINK3
         v-card-text.copylight.text-center.white--text &copy; {{title}}
 </template>
 
