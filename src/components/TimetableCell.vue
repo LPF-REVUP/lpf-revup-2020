@@ -15,7 +15,7 @@
       v-card-text.pa-2
         span.session_text {{ session.title }}
         v-row.mt-1
-          v-col.pa-0.px-6(cols="12" md="5" lg="5" xl="5")
+          v-col.pa-0.px-6(cols="5")
             v-row.mb-1(
               v-for="s in session.speakers"
               :key="s.id"
@@ -28,7 +28,7 @@
                 :max-height="avatorSize"
               )
               span.session_text {{ getSpeakerName(s) }}
-          v-col.py-0.px-4(cols="12" md="7" lg="7" xl="7" align="right")
+          v-col.py-0.pr-4(cols="7" align="right")
             div.nobr
               v-btn(
                 v-if="session.movieUrl"
