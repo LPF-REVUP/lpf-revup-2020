@@ -17,12 +17,6 @@
       )
         v-icon.ma-2(color="#3cb371") mdi-map-marker
         | {{ area.name }}
-        timetable-colomn(
-          :areaId="area.id"
-          :sessions="sessions"
-          :heightByHour="heightByHour"
-          :from="minStartAt"
-        )
     v-row(
       v-if="showByTab"
       no-gutters
