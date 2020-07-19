@@ -36,6 +36,22 @@
         )
           v-icon.ma-2(color="#3cb371") mdi-map-marker
           | {{ area.name }}
+      v-tabs-items(
+        v-model="tab"
+      )
+        v-tab-item(
+          v-for="area in areas"
+          :key="area.id"
+        )
+          v-row
+            v-col(cols="1")
+              v-sheet.text-right(
+                v-for="(hourLabel, index) in hourLabels"
+                :key="hourLabel"
+                :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
+              ) {{ hourLabel }}
+            v-col
+              span {{ area.id }}:{{ area.name }}
 </template>
 
 <script lang="ts">
