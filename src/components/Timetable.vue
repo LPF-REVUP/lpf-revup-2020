@@ -1,7 +1,6 @@
 <template lang="pug">
   v-container
     v-row(
-      v-if="showByTab"
       no-gutters
     )
       v-tabs(
