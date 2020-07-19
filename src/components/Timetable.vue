@@ -1,5 +1,6 @@
 <template lang="pug">
   v-container
+    div
     v-row(
       v-if="showByTable"
       no-gutters
@@ -24,6 +25,7 @@
           :from="minStartAt"
         )
     v-row(
+      v-if="showByTab"
       no-gutters
     )
       v-tabs(
