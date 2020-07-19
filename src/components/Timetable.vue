@@ -51,7 +51,12 @@
                 :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
               ) {{ hourLabel }}
             v-col
-              span {{ area.id }}:{{ area.name }}
+              timetable-colomn(
+                :areaId="area.id"
+                :sessions="sessions"
+                :heightByHour="heightByHour"
+                :from="minStartAt"
+              )
 </template>
 
 <script lang="ts">

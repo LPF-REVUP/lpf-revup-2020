@@ -4,10 +4,7 @@
       v-for="s in sessionsToShow"
       :key="s.id"
     )
-      timetable-cell(
-        :session="s"
-        :height="getSessionLength(s)"
-      )
+      span {{ s.title }}
 </template>
 
 <script lang="ts">
