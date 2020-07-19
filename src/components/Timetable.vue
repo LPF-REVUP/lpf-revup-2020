@@ -34,7 +34,7 @@
                 :from="minStartAt"
               )
     v-row(
-      v-if="showByTable"
+      v-show="showByTable"
       no-gutters
     )
       v-col.mt-12(cols="1")
