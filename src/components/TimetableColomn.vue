@@ -1,7 +1,5 @@
 <template lang="pug">
   v-container
-    v-icon.ma-2(color="#3cb371") mdi-map-marker
-    | {{ area.name }}
     div(
       v-for="s in sessionsToShow"
       :key="s.id"
