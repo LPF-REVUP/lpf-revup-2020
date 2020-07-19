@@ -1,7 +1,8 @@
 <template lang="pug">
   v-container
+    // v-if not works here.
     v-row(
-      v-if="!showByTab"
+      v-show="!showByTab"
       no-gutters
     )
       v-col.mt-12(cols="1")
