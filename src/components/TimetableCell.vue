@@ -28,6 +28,11 @@
                 :max-height="avatorSize"
               )
               span.session_text {{ getSpeakerName(s) }}
+          v-col.py-0.pr-4(cols="7" align="right")
+            div.nobr
+              span.session_text
+                v-icon mdi-account
+                | {{ session.applicantsMessage }}
 </template>
 
 <script lang="ts">
