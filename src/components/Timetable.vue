@@ -1,6 +1,31 @@
 <template lang="pug">
   v-container
+    // v-if not works here.
     v-row(
+      v-show="!showByTab"
+      no-gutters
+    )
+      v-col.mt-12(cols="1")
+        v-sheet.text-right.mr-10(
+          v-for="(hourLabel, index) in hourLabels"
+          :key="hourLabel"
+          :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
+        ) {{ hourLabel }}
+      v-col(
+        v-for="area in areas"
+        :key="area.id"
+        no-gutters
+      )
+        v-icon.ma-2(color="#3cb371") mdi-map-marker
+        | {{ area.name }}
+        timetable-colomn(
+          :areaId="area.id"
+          :sessions="sessions"
+          :heightByHour="heightByHour"
+          :from="minStartAt"
+        )
+    v-row(
+      v-if="showByTable"
       no-gutters
     )
       v-tabs(
@@ -33,29 +58,6 @@
                 :heightByHour="heightByHour"
                 :from="minStartAt"
               )
-    v-row(
-      v-show="showByTable"
-      no-gutters
-    )
-      v-col.mt-12(cols="1")
-        v-sheet.text-right.mr-10(
-          v-for="(hourLabel, index) in hourLabels"
-          :key="hourLabel"
-          :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
-        ) {{ hourLabel }}
-      v-col(
-        v-for="area in areas"
-        :key="area.id"
-        no-gutters
-      )
-        v-icon.ma-2(color="#3cb371") mdi-map-marker
-        | {{ area.name }}
-        timetable-colomn(
-          :areaId="area.id"
-          :sessions="sessions"
-          :heightByHour="heightByHour"
-          :from="minStartAt"
-        )
 </template>
 
 <script lang="ts">
@@ -77,16 +79,6 @@ export default class TimetableComponent extends Vue {
         return 240
       default:
         return 190
-    }
-  }
-
-  get showByTable() {
-    switch (this.$vuetify.breakpoint.name) {
-      case 'xs':
-      case 'sm':
-        return false
-      default:
-        return true
     }
   }
 
