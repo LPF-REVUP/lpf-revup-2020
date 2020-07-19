@@ -30,6 +30,20 @@
               span.session_text {{ getSpeakerName(s) }}
           v-col.py-0.pr-4(cols="7" align="right")
             div.nobr
+              v-btn(
+                v-if="session.movieUrl"
+                icon
+                small
+                @click.stop="openMovie()"
+              )
+                v-icon.session_text mdi-arrow-right-drop-circle
+              v-btn(
+                v-if="session.documentUrl"
+                @click.stop="openDocument()"
+                icon
+                small
+              )
+                v-icon.session_text mdi-paperclip
               span.session_text
                 v-icon mdi-account
                 | {{ session.applicantsMessage }}
