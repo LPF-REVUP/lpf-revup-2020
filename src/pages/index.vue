@@ -164,11 +164,6 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   }
 
   async mounted() {
-    const hash = this.$route.hash
-    if (hash && hash.match(/^#.+$/)) {
-      consola.log('hash', hash)
-      this.$scrollTo(hash, 300)
-    }
     consola.log('getting connpass event info')
     try {
       const connpassEventIds = this.sessions.map(
@@ -209,6 +204,12 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
       })
     }
     consola.log('updated sessions', this.sessions)
+    // Scroll to page anchor
+    const hash = this.$route.hash
+    if (hash && hash.match(/^#.+$/)) {
+      consola.log('Scroll to page anchor:', hash)
+      this.$scrollTo(hash, 300)
+    }
   }
 
   get isLiffInitialized() {
