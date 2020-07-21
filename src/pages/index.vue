@@ -1,12 +1,22 @@
 <template lang="pug">
   .wrap
-    v-container(fluid)
-      v-row.pb-2.main-picture.white--text
-        v-layout(justify-center)
-          div メイン画像が入ります
-      v-row.pa-2.notification
+    .main-picture
+      v-container.py-0
+        v-row.py-8.white--text
+          v-col.mx-auto.text-center(cols="10" lg="6")
+            .main-picture-logo.pb-6.mb-6
+              img(src="/main-picture-logo.svg")
+            .date
+              span.year 2020.
+              span.day 8.10
+              span.week [MON]
+            .place
+              | @ TOKYO / OSAKA / FUKUOKA
+    v-row.pa-2.notification
+      v-container.py-0
         v-layout(justify-center)
           div 重要なお知らせお知らせがある場合に表示されます
+    v-container(fluid)
       v-row(no-gutters)
         v-col()
         v-col(
@@ -309,8 +319,15 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
 
 <style lang="stylus">
 .main-picture
-  background linear-gradient(247.38deg, #C4C4C4 0%, #5F5F5F 100%);
-  height 600px
+  background linear-gradient(247.38deg, #00B900 0%, #00AEB9 100%)
+  font-family 'Biryani', sans-serif !important
+  letter-spacing .1em
+  .main-picture-logo
+    border-bottom 1px solid #fff
+  .year
+    font-size 36px
+  .day
+    font-size 64px
 .notification
   background-color #F0F0F0
 .section-header
