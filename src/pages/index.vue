@@ -14,10 +14,38 @@
       )
         //- Index contents start
         //- About
-        v-row.section-header(id="about" cols="12")
+        .section-header.py-6(id="about")
           div.mb-4()
             div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
             div.ml-2.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
+          v-row(cols="12")
+            v-col.mx-auto.body-2(cols="12" md="8")
+              v-row.py-2.about-list(cols="12")
+                v-col.font-weight-bold(cols="12" md="3")
+                  | 開催日
+                v-col(cols="12" md="9")
+                  p
+                    | 11月20日(水)-21日(木)
+                    br
+                    | ・10:00 開場
+                    br
+                    | ・10:40 セッション開始
+                    br
+                    | ・12:40-13:40 昼食 *昼食配布は13:30まで
+                    br
+                    | ・18:50 セッション終了 *DAY-2（21日）は18:00にセッション終了予定
+                    br
+                    | ・19:00 懇親会 *懇親会はDAY-1（20日）のみ実施します。
+              v-row.py-2.about-list(cols="12")
+                v-col.font-weight-bold(cols="12" md="3")
+                  | 場所
+                v-col(cols="12" md="9")
+                  | グランドニッコー東京 台場
+              v-row.py-2.about-list(cols="12")
+                v-col.font-weight-bold(cols="12" md="3")
+                  | 参加費
+                v-col(cols="12" md="9")
+                  | 無料
         //- Speakers
         v-row.section-header(id="speakers" cols="12")
           div.mb-4
@@ -244,4 +272,6 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   color #00B900
 .section-header-text.font-biryani
   font-family: 'Biryani', sans-serif !important;
+.about-list
+  border-bottom 1px solid #ccc
 </style>
