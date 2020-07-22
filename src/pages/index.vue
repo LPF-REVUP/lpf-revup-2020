@@ -16,6 +16,25 @@
       v-container.py-0
         v-layout(justify-center)
           div 重要なお知らせお知らせがある場合に表示されます
+    //- Index contents start
+    .introduction.font-biryani(id="introduction")
+      v-container
+        v-row(cols="12")
+          v-col.py-15.mb-4(col="12")
+            h2.mb-8.text-md-h3.text-sm-h4.introduction-title.font-biryani
+              | LPF REV UP 2020
+            h3.text-center.color-green
+              | (仮)新しいプラットフォームの登場による人々の生活の劇的な変化、
+              br
+              | そしてそれを実現する開発者が活躍できる世界の到来(仮)
+        v-row(cols="12")
+          v-col.mx-auto(cols="12" md="6")
+            p.body-2
+              | (仮)「LINE DEVELOPER DAY」は、LINEが運営する様々なサービスの技術領域でのチャレンジや知見、これまでそして今後の取り組みを紹介する技術カンファレンスです。
+            p.body-2
+              | 今年の「LINE DEVELOPER DAY 2019」は2日間にわたって開催。1日目は「Engineering」をテーマに技術の深い話を、2日目は「Production」をテーマにWeb開発技術やUI/UX、プロジェクトマネジメントなど、プロダクト開発における実践的な話を幅広くご用意しています。
+              br
+              | また、今年からは日本や海外で活躍するゲストスピーカーも招待し、インフラやセキュリティなど様々なテーマでお話しいただきます。
     v-container(fluid)
       v-row(no-gutters)
         v-col()
@@ -23,7 +42,6 @@
           cols="12"
           md="10"
         )
-          //- Index contents start
           //- About
           .section-header.py-6(id="about")
             div.mb-4()
@@ -338,6 +356,17 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   color #00B900
 .section-header-text.font-biryani
   font-family: 'Biryani', sans-serif !important;
+.font-biryani
+  font-family: 'Biryani', sans-serif !important;
+.introduction
+  font-family: 'Biryani', sans-serif !important;
+  background-color: #F0FBF5
+.introduction-title
+  text-align center
+  font-family 'Biryani', sans-serif !important
+  color #00B900
+.color-green
+  color #00B900
 .about-list
   border-bottom 1px solid #ccc
 #accessmap iframe
