@@ -147,7 +147,7 @@
             :sponsors="sponsors"
           )
     //- SHARE
-    v-row.share.py-16(cols="12")
+    .share.py-16
       .container.py-8
         span.share-title SHARE!
         v-row.ma-5.justify-center
@@ -417,6 +417,7 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
 .share
   position relative
   background-color #F0FBF5
+  overflow hidden
 .share-title
   position: absolute;
   color rgba(0,153,73,.1)
@@ -425,6 +426,9 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   top 60%
   left 50%
   transform translate(-50%, -50%)
+  @media (max-width: 960px) {
+    font-size 97px
+  }
 .mdi-facebook
   color #3b5998 !important
 .mdi-twitter
