@@ -12,7 +12,7 @@
               span.week [MON]
             .place
               | @ TOKYO / OSAKA / FUKUOKA
-    v-row.pa-2.notification
+    .pa-2.notification
       v-container.py-0
         v-layout(justify-center)
           div 重要なお知らせお知らせがある場合に表示されます
