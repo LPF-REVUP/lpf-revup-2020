@@ -6,7 +6,7 @@ import axios from 'axios'
 require('dotenv').config()
 
 const siteTitle = 'LPF REV UP 2020'
-const twitterId: string = '@line_dc_jp'
+const twitterId: string = '@linedc_jp'
 
 const scripts = [{ src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' }]
 if (
@@ -44,7 +44,11 @@ const nuxtConfig: Configuration = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'shortcut icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Biryani:wght@900&display=swap' }
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Biryani:wght@900&display=swap'
+      }
     ]
   },
   manifest: {
