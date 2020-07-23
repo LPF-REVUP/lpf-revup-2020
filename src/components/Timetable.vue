@@ -1,6 +1,10 @@
 <template lang="pug">
   v-container
-    v-row(no-gutters)
+    // v-if not works here.
+    v-row(
+      v-show="!showByTab"
+      no-gutters
+    )
       v-col.mt-12(cols="1")
         v-sheet.text-right.mr-10(
           v-for="(hourLabel, index) in hourLabels"
@@ -8,16 +12,52 @@
           :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
         ) {{ hourLabel }}
       v-col(
-        v-for="areaid in areaIds"
-        :key="areaid"
+        v-for="area in areas"
+        :key="area.id"
         no-gutters
       )
+        v-icon.ma-2(color="#3cb371") mdi-map-marker
+        | {{ area.name }}
         timetable-colomn(
-          :areaId="areaid"
+          :areaId="area.id"
           :sessions="sessions"
           :heightByHour="heightByHour"
           :from="minStartAt"
         )
+    v-row(
+      v-if="showByTab"
+      no-gutters
+    )
+      v-tabs(
+        v-model="tab"
+      )
+        v-tab(
+          v-for="area in areas"
+          :key="area.id"
+        )
+          v-icon.ma-2(color="#3cb371") mdi-map-marker
+          | {{ area.name }}
+      v-tabs-items(
+        v-model="tab"
+      )
+        v-tab-item(
+          v-for="area in areas"
+          :key="area.id"
+        )
+          v-row
+            v-col(cols="1")
+              v-sheet.text-right(
+                v-for="(hourLabel, index) in hourLabels"
+                :key="hourLabel"
+                :height="(index !== hourLabels.length - 1) ? heightByHour + 'px' : ''"
+              ) {{ hourLabel }}
+            v-col
+              timetable-colomn(
+                :areaId="area.id"
+                :sessions="sessions"
+                :heightByHour="heightByHour"
+                :from="minStartAt"
+              )
 </template>
 
 <script lang="ts">
@@ -31,20 +71,31 @@ import { EventSession } from '~/types'
 })
 export default class TimetableComponent extends Vue {
   @Prop({ type: Array, required: true }) readonly sessions!: Array<EventSession>
+  tab = this.areas[0]
 
   get heightByHour() {
     switch (this.$vuetify.breakpoint.name) {
-      case 'xs':
-        return 240
-      case 'sm':
+      case 'md':
         return 240
       default:
-        return 120
+        return 190
     }
   }
 
-  get areaIds() {
-    return ['tokyo', 'osaka', 'fukuoka']
+  get showByTab() {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs':
+      case 'sm':
+        return true
+      default:
+        return false
+    }
+  }
+
+  get areas() {
+    return ['tokyo', 'osaka', 'fukuoka'].map(
+      id => this.sessions.filter(s => s.area.id === id)[0].area
+    )
   }
 
   get minStartAt() {
