@@ -1,53 +1,47 @@
 <template lang="pug">
   .wrap
-    v-container(fluid).pb-0
+    v-container.pb-0
       v-row.pb-2.main-picture.white--text
         v-layout(justify-center)
           div メイン画像が入ります
       v-row.pa-2.notification
         v-layout(justify-center)
           div 重要なお知らせお知らせがある場合に表示されます
-      v-row(no-gutters)
-        v-col()
-        v-col(
-          cols="12"
-          md="10"
-        )
-          //- Index contents start
-          //- About
-          v-row.section-header(id="about" cols="12")
-            div.mb-4()
-              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
-              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
-          //- Speakers
-          v-row.section-header(id="speakers" cols="12")
-            div.mb-4
-              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
-              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
-              speaker-list(
-                :speakers="speakers"
-              )
-          //- AccessMap
-          v-row.section-header(id="accessmap" cols="12")
-            div
-              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
-              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
-          //- Time table
-          v-row.section-header(id="timetable" cols="12")
-            v-col(cols="12" lg="8" md="6")
-              div.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
-              div.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
-              p.mt-8
-                | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            v-col(cols="12" lg="4" md="6")
-              v-img(src="/timetable__map.svg")
-            div
-              timetable(
-                :sessions="sessions"
-              )
+      //- Index contents start
+      //- About
+      v-row.section-header(id="about" cols="12")
+        div.mb-4()
+          div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
+          div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
+      //- Speakers
+      v-row.section-header(id="speakers" cols="12")
+        div.mb-4
+          div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
+          div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
+          speaker-list(
+            :speakers="speakers"
+          )
+      //- AccessMap
+      v-row.section-header(id="accessmap" cols="12")
+        div
+          div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
+          div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
+      //- Time table
+      v-row.section-header(id="timetable" cols="12")
+        v-col(cols="12" lg="8" md="6")
+          div.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
+          div.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
+          p.mt-8
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        v-col(cols="12" lg="4" md="6")
+          v-img(src="/timetable__map.svg")
+        div
+          timetable(
+            :sessions="sessions"
+          )
 
-          //- Sponsors
-          v-row.section-header(id="sponsors" cols="12")
+      //- Sponsors
+      v-row.section-header(id="sponsors" cols="12")
             div
               div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
               div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
