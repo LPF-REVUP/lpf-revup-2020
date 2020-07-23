@@ -1,79 +1,80 @@
 <template lang="pug">
-  v-container(fluid)
-    v-row.pb-2.main-picture.white--text
-      v-layout(justify-center)
-        div メイン画像が入ります
-    v-row.pa-2.notification
-      v-layout(justify-center)
-        div 重要なお知らせお知らせがある場合に表示されます
-    v-row(no-gutters)
-      v-col()
-      v-col(
-        cols="12"
-        md="10"
-      )
-        //- Index contents start
-        //- About
-        v-row.section-header(id="about" cols="12")
-          div.mb-4()
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
-            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
-        //- Speakers
-        v-row.section-header(id="speakers" cols="12")
-          div.mb-4
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
-            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
-            speaker-list(
-              :speakers="speakers"
-            )
-        //- AccessMap
-        v-row.section-header(id="accessmap" cols="12")
-          div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
-            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
-        //- Time table
-        v-row.section-header(id="timetable" cols="12")
-          div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
-            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
-            timetable(
-              :sessions="sessions"
-            )
-        //- Sponsors
-        v-row.section-header(id="sponsors" cols="12")
-          div
-            div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
-            div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
-            sponsor-List(
-              :sponsors="sponsors"
-            )
-        //- SHARE
-        v-row.pt-10.pb-10(cols="12")
-          span SHARE
-          v-row.ma-5(justify-center)
+  .wrap
+    v-container(fluid).pb-0
+      v-row.pb-2.main-picture.white--text
+        v-layout(justify-center)
+          div メイン画像が入ります
+      v-row.pa-2.notification
+        v-layout(justify-center)
+          div 重要なお知らせお知らせがある場合に表示されます
+      v-row(no-gutters)
+        v-col()
+        v-col(
+          cols="12"
+          md="10"
+        )
+          //- Index contents start
+          //- About
+          v-row.section-header(id="about" cols="12")
+            div.mb-4()
+              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ABOUT
+              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text LFP REV UP 2020 について
+          //- Speakers
+          v-row.section-header(id="speakers" cols="12")
+            div.mb-4
+              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPEAKERS
+              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text 登壇者一覧
+              speaker-list(
+                :speakers="speakers"
+              )
+          //- AccessMap
+          v-row.section-header(id="accessmap" cols="12")
+            div
+              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
+              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
+          //- Time table
+          v-row.section-header(id="timetable" cols="12")
+            div
+              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
+              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
+              timetable(
+                :sessions="sessions"
+              )
+          //- Sponsors
+          v-row.section-header(id="sponsors" cols="12")
+            div
+              div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani SPONSORS
+              div.ml-6.text-subtitle-2.text-md-subtitle-2.section-header-text スポンサー
+              sponsor-List(
+                :sponsors="sponsors"
+              )
+      //- SHARE
+      v-row.share.py-16(cols="12")
+        .container.py-8
+          span.share-title SHARE!
+          v-row.ma-5.justify-center
             //- Facebook
-            span.mr-2
-              a(:href="facebookShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) mdi-facebook
+            .mr-8
+              a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
+                v-icon(x-large) mdi-facebook
             //- Twitter
-            span.mr-2
-              a(:href="twitterShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) mdi-twitter
+            .mr-8
+              a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
+                v-icon(x-large) mdi-twitter
             //- Hatena bookmark
-            span.mr-2
-              a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-                v-icon(large) icon-hatenabookmark
+            .mr-8
+              a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+                v-icon(x-large) icon-hatenabookmark
             //- TODO Share Target Picker
-            span.mr-2
-              v-btn(
+            .mr-8
+              v-btn.text-decoration-none(
                 fab dark depressed
-                color="#888888"
+                color="#00c300"
                 @click="showShareTargetPicker"
                 small
               )
                 v-icon(large) icon-line
         //- Index contents end
-      v-col()
 </template>
 
 <script lang="ts">
@@ -245,4 +246,21 @@ export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
   color #00B900
 .section-header-text.font-biryani
   font-family: 'Biryani', sans-serif !important;
+.share
+  position relative
+  background-color #F0FBF5
+.share-title
+  position: absolute;
+  color rgba(0,153,73,.1)
+  font-size 194px
+  font-family 'Biryani', sans-serif !important
+  top 60%
+  left 50%
+  transform translate(-50%, -50%)
+.mdi-facebook
+  color #3b5998 !important
+.mdi-twitter
+  color #55ACEE !important
+.icon-hatenabookmark
+  color #008fde
 </style>

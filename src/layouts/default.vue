@@ -14,14 +14,15 @@
             :aria-label="item.title"
           )
             v-list-item-action
-              v-icon {{ item.icon }}
-            v-list-item-content
+              v-icon.c-green {{ item.icon }}
+            v-list-item-content.font-biryani
               | {{ item.title }}
     v-app-bar(fixed app color="white" elevate-on-scroll)
       v-toolbar-title.d-block.black--text
-        nuxt-link(to="/" :aria-label="title") {{title}}
+        nuxt-link(to="/" :aria-label="title")
+          img(src="@/assets/h__logo.svg")
       v-spacer
-      v-btn.black--text.hidden-sm-and-down(
+      v-btn.black--text.hidden-sm-and-down.font-biryani(
         v-for="item in menuItems"
         :key="item.title"
         text small
@@ -36,7 +37,15 @@
         aria-label="Repository"
       )
         v-icon(large) mdi-github
-      v-btn.ml-2(
+      img.d-md-none.c-green(
+        src="@/assets/h__line.svg"
+        width="30"
+        v-if="!profile"
+        @click="loginWithLineLogin()"
+        tile dark color="primary"
+        aria-label="LINE Login"
+      )
+      v-btn.ml-2.font-biryani.d-none.d-md-block(
         v-if="!profile"
         @click="loginWithLineLogin()"
         tile dark color="primary"
@@ -100,13 +109,13 @@
             )
               | 閉じる
       nuxt
-    v-footer(padless)
+    v-footer(
+      dark
+      padless
+    )
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
-          v-btn.footer-button.white--text(text small aria-label="個人情報保護方針") 個人情報保護方針
-          v-btn.footer-button.white--text(text small aria-label="LINK1") LINK1
-          v-btn.footer-button.white--text(text small aria-label="LINK2") LINK2
-          v-btn.footer-button.white--text(text small aria-label="LINK3") LINK3
+          v-btn.text-decoration-underline.footer-button.white--text(text small aria-label="個人情報保護方針") 個人情報保護方針
         v-card-text.copylight.text-center.white--text &copy; {{title}}
 </template>
 
@@ -209,11 +218,16 @@ export default class extends mixins(LiffMixin) {
 </script>
 
 <style scoped>
+.c-green {
+  color: #00c300 !important;
+}
 .v-btn {
   font-size: 14px;
   font-weight: normal;
 }
-
+.font-biryani {
+  font-family: 'Biryani', sans-serif !important;
+}
 .registration-button {
   margin-left: 31px;
   background: rgba(0, 0, 0, 0.25);
