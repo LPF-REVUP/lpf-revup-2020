@@ -51,15 +51,17 @@ const nuxtConfig: Configuration = {
       }
     ]
   },
-  manifest: {
-    name: siteTitle,
-    lang: 'ja',
-    short_name: siteTitle,
-    title: siteTitle,
-    description:
-      '新しいプラットフォームの登場による人々の生活の劇的な変化、そしてそれを実現する開発者が活躍できる世界の到来',
-    theme_color: '#ffffff',
-    background_color: '#ffffff'
+  pwa: {
+    manifest: {
+      name: siteTitle,
+      lang: 'ja',
+      short_name: siteTitle,
+      title: siteTitle,
+      description:
+        '新しいプラットフォームの登場による人々の生活の劇的な変化、そしてそれを実現する開発者が活躍できる世界の到来',
+      theme_color: '#ffffff',
+      background_color: '#ffffff'
+    }
   },
   /*
    ** Customize the progress-bar color
@@ -134,15 +136,20 @@ const nuxtConfig: Configuration = {
   generate: {
     routes() {
       const headers = { 'X-API-KEY': process.env.MC_API_KEY }
+      const limit = 50
       const sessions = axios
-        .get(`${process.env.MC_API_BASE_URL}/sessions`, { headers })
+        .get(`${process.env.MC_API_BASE_URL}/sessions?limit=${limit}`, {
+          headers
+        })
         .then(res => {
           return res.data.contents.map((session: { id: string }) => {
             return '/sessions/' + session.id
           })
         })
       const speakers = axios
-        .get(`${process.env.MC_API_BASE_URL}/speakers`, { headers })
+        .get(`${process.env.MC_API_BASE_URL}/speakers?limit=${limit}`, {
+          headers
+        })
         .then(res => {
           return res.data.contents.map((speaker: { id: string }) => {
             return '/speakers/' + speaker.id
