@@ -9,7 +9,7 @@
         md="9"
       )
         v-container(fluid)
-          v-row
+          v-row.mr-2.ml-2
             //- Title
             h2.session_header_text {{ session.title }}
           v-row
@@ -53,7 +53,7 @@
       )
         v-container(fluid)
           v-row
-            span.mt-2.mb-4(
+            span.mt-2.mb-4.mr-2.ml-2(
               v-html="session.description"
             )
           //- Show the Session's Movie
@@ -75,7 +75,7 @@
               webkitallowfullscreen="true"
             )
           //- Speakers
-          v-row.mt-4.mb-4
+          v-row.mt-4.mb-4.mr-2.ml-2
             div(
               v-for="s in session.speakers"
                 :key="s.id"
@@ -84,7 +84,7 @@
                 :speaker="s"
               )
           //- Share
-          v-row.mt-10.mb-10
+          v-row.mt-10.mb-10.mr-1.ml-1
             v-layout(justify-end)
               //- div(style="display:flex;")
               //- Share buttons
@@ -92,15 +92,15 @@
                 span.mr-4 SHARE
                 //- Facebook
                 span.mr-2
-                  a(:href="facebookShareUrl" rel="nofollow" target="_blank")
+                  a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
                     v-icon(large) mdi-facebook
                 //- Twitter
                 span.mr-2
-                  a(:href="twitterShareUrl" rel="nofollow" target="_blank")
+                  a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
                     v-icon(large) mdi-twitter
                 //- Hatena bookmark
                 span.mr-2
-                  a(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+                  a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
                     v-icon(large) icon-hatenabookmark
                 //- TODO Share Target Picker
                 span.mr-2
@@ -116,7 +116,7 @@
             v-if="relatedSessions.length > 0"
           )
             v-divider.mt-4.mb-4
-            div
+            div.mr-2.ml-2
               h3.mb-2 その他のセッション
               div
                 related-session-list(
