@@ -3,7 +3,7 @@
     outlined
   )
     v-card-title
-      nuxt-link(:to="sessionPageLink")
+      nuxt-link.text-decoration-none(:to="sessionPageLink")
         h5.session_text.session_title {{ session.title }}
     v-card-text
       div.group.mr-2.session_text.caption
