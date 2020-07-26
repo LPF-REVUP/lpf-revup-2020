@@ -117,7 +117,7 @@
           )
             v-divider.mt-4.mb-4
             div.mr-2.ml-2
-              h3.mb-2 その他のセッション
+              h3.mb-2 関連セッション
               div
                 related-session-list(
                   :sessions="relatedSessions"
