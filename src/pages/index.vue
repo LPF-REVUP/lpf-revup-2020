@@ -24,17 +24,15 @@
             h2.mb-8.text-md-h3.text-sm-h4.introduction-title.font-biryani
               | LPF REV UP 2020
             h3.text-center.color-green
-              | (仮)新しいプラットフォームの登場による人々の生活の劇的な変化、
-              br
-              | そしてそれを実現する開発者が活躍できる世界の到来(仮)
+              | 開発者が作り出すユーザーを支える新しいプラットフォーム
         v-row(cols="12")
           v-col.mx-auto(cols="12" md="6")
             p.body-2
-              | (仮)「LINE DEVELOPER DAY」は、LINEが運営する様々なサービスの技術領域でのチャレンジや知見、これまでそして今後の取り組みを紹介する技術カンファレンスです。
+              | LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは「開発者が作り出すユーザーを支える新しいプラットフォーム」。
             p.body-2
-              | 今年の「LINE DEVELOPER DAY 2019」は2日間にわたって開催。1日目は「Engineering」をテーマに技術の深い話を、2日目は「Production」をテーマにWeb開発技術やUI/UX、プロジェクトマネジメントなど、プロダクト開発における実践的な話を幅広くご用意しています。
+              | LINEの認定するLINE API Expertやテクノロジーパートナーを中心に、ミニアプリ、Messaging API、LINE Pay APIなど技術に関するセッションからwithコロナ時代に生まれている新しい体験やビジネスについてのセッションまで、幅広い内容のセッションをご用意しています。
               br
-              | また、今年からは日本や海外で活躍するゲストスピーカーも招待し、インフラやセキュリティなど様々なテーマでお話しいただきます。
+              | 視聴はオンラインです。是非お気軽にご参加下さい。
     v-container
       //- About
       .section-header(id="about")
@@ -131,7 +129,11 @@
           div.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
           div.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
           p.mt-8
-            | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            | セッションは東京、関西、福岡の3トラック同時開催で行われます。
+            br
+            | セッションへの参加登録はConnpassを利用しますので、視聴されたいセッションへの参加登録をお願いいたします。開始時刻前に配信URLをメールにてお知らせいたします。同時刻、複数セッションへの申込みも可能ですので、少しでも興味のあるセッションには参加登録をしておくことをおすすめいたします。
+            br
+            | また、各地のセッションとは別に、○○○ルームもオープンする予定です。ご期待下さい。
         v-col(cols="12" lg="4" md="6")
           v-img(src="/timetable__map.svg")
         div
