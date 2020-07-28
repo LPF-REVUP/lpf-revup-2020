@@ -121,6 +121,7 @@ const nuxtConfig: Configuration = {
     path: process.cwd()
   },
   env: {
+    TWITTER_ID: twitterId,
     BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     USE_VCONSOLE: process.env.USE_VCONSOLE || '',
     LIFF_ID: process.env.LIFF_ID || '',
