@@ -38,19 +38,18 @@
       )
         v-icon(large) mdi-github
       img.d-md-none.c-green(
-        src="@/assets/h__line.svg"
+        src="@/assets/h__login--sp.svg"
         width="30"
         v-if="!profile"
         @click="loginWithLineLogin()"
         tile dark color="primary"
         aria-label="LINE Login"
       )
-      v-btn.ml-2.font-biryani.d-none.d-md-block(
+      div.ml-2.d-none.d-md-block.h__login(
         v-if="!profile"
         @click="loginWithLineLogin()"
-        tile dark color="primary"
         aria-label="LINE Login"
-      ) LINE Login
+      )
       v-btn.ml-2.mr-2(
         v-if="profile"
         fab small dark color="primary"
@@ -217,7 +216,7 @@ export default class extends mixins(LiffMixin) {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .c-green {
   color: #00c300 !important;
 }
@@ -227,6 +226,18 @@ export default class extends mixins(LiffMixin) {
 }
 .font-biryani {
   font-family: 'Biryani', sans-serif !important;
+}
+.h__login {
+  cursor: pointer;
+  width: 152px;
+  height: 40px;
+  background: url('/h__login.png') no-repeat center;
+  &:hover {
+    background-image: url('/h__login--hover.png');
+  }
+  &:active {
+    background-image: url('/h__login--press.png');
+  }
 }
 .registration-button {
   margin-left: 31px;
