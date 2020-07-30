@@ -1,0 +1,85 @@
+<template lang="pug">
+  v-container(fluid)
+    .share.py-16
+      .container.py-8
+        span.share-title SHARE!
+        v-row.ma-5.justify-center
+          //- Facebook
+          .mr-8
+            a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
+              v-icon(x-large) mdi-facebook
+          //- Twitter
+          .mr-8
+            a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
+              v-icon(x-large) mdi-twitter
+          //- Hatena bookmark
+          .mr-8
+            a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
+              v-icon(x-large) icon-hatenabookmark
+          //- TODO Share Target Picker
+          .mr-8
+            v-btn.text-decoration-none(
+              fab dark depressed
+              color="#00c300"
+              @click="showShareTargetPicker()"
+              small
+            )
+              v-icon(large) icon-line
+</template>
+
+<script lang="ts">
+import { Component, Prop, mixins } from 'nuxt-property-decorator'
+import consola from 'consola'
+import { FlexMessage } from '@line/bot-sdk'
+import LiffMixin from '~/mixins/LiffMixin'
+import { generateShareMessage } from '~/utils/messages/shareMessage'
+
+@Component
+export default class ShareBoxComponent extends mixins(LiffMixin) {
+  @Prop({ type: String, required: true }) readonly shareUrl!: string
+  @Prop({ type: String, required: true }) readonly shareText!: string
+
+  get facebookShareUrl() {
+    return `http://www.facebook.com/share.php?u=${this.shareUrl}`
+  }
+
+  get twitterShareUrl() {
+    const twitterId = process.env.TWITTER_ID!
+    return `https://twitter.com/share?url=${this.shareUrl}&via=${twitterId}&related=${twitterId}&hashtags=linedc&text=${this.shareText}`
+  }
+
+  get hatenaShareUrl() {
+    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.shareUrl}&title=${this.shareText}`
+  }
+
+  async showShareTargetPicker() {
+    consola.log('showShareTargetPicker called')
+    // TODO 文言は仮
+    const message =
+      '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
+    const shareMessage: FlexMessage = generateShareMessage(
+      message,
+      this.getPermanentLink()
+    )
+    await this.openShareTargetPicker(shareMessage)
+  }
+}
+</script>
+
+<style lang="stylus">
+.share
+  position relative
+  background-color #F0FBF5
+  overflow hidden
+.share-title
+  position: absolute;
+  color rgba(0,153,73,.1)
+  font-size 194px
+  font-family 'Biryani', sans-serif !important
+  top 60%
+  left 50%
+  transform translate(-50%, -50%)
+  @media (max-width: 960px) {
+    font-size 97px
+  }
+</style>

@@ -83,75 +83,50 @@
               speaker-item(
                 :speaker="s"
               )
-          //- Share
-          v-row.mt-10.mb-10.mr-1.ml-1
-            v-layout(justify-end)
-              //- div(style="display:flex;")
-              //- Share buttons
-              div.mt-2(style="margin-left:auto;")
-                span.mr-4 SHARE
-                //- Facebook
-                span.mr-2
-                  a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
-                    v-icon(large) mdi-facebook
-                //- Twitter
-                span.mr-2
-                  a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
-                    v-icon(large) mdi-twitter
-                //- Hatena bookmark
-                span.mr-2
-                  a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-                    v-icon(large) icon-hatenabookmark
-                //- TODO Share Target Picker
-                span.mr-2
-                  v-btn(
-                    fab dark depressed
-                    color="#888888"
-                    @click="showShareTargetPicker"
-                    small
-                  )
-                    v-icon(large) icon-line
           //- Related Sessions
+          v-row
+            v-divider.mt-4.mb-4
           v-row(
             v-if="relatedSessions.length > 0"
           )
-            v-divider.mt-4.mb-4
             div.mr-2.ml-2
               h3.mb-2 関連セッション
-              div
-                related-session-list(
-                  :sessions="relatedSessions"
-                  :key="sessionListComponentKey"
-                )
+              related-session-list(
+                :sessions="relatedSessions"
+                :key="sessionListComponentKey"
+              )
       v-col()
+    v-row
+      //- SHARE
+      share-box(
+        :shareUrl="url"
+        :shareText="shareText"
+      )
 </template>
 
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
-import { FlexMessage } from '@line/bot-sdk'
 import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
 import * as lodash from 'lodash'
 import HeadMixin from '~/mixins/HeadMixin'
-import ShareMixin from '~/mixins/ShareMixin'
 import LiffMixin from '~/mixins/LiffMixin'
 import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
 import { HeadInfo, EventSession, Tag, SpeakerDeckInfo } from '~/types'
 import '@/assets/icomoon/style.css'
-import { generateShareMessage } from '~/utils/messages/shareMessage'
 import { CMSResponse } from '~/types/microCMS'
 const _ = lodash
 
 @Component({
   components: {
     SpeakerItem: () => import('@/components/SpeakerItem.vue'),
-    RelatedSessionList: () => import('@/components/RelatedSessionList.vue')
+    RelatedSessionList: () => import('@/components/RelatedSessionList.vue'),
+    ShareBox: () => import('@/components/ShareBox.vue')
   }
 })
 export default class EventSessionPage extends mixins(
   HeadMixin,
-  ShareMixin,
   LiffMixin,
   ConnpassEventMixin
 ) {
@@ -310,18 +285,6 @@ export default class EventSessionPage extends mixins(
     })
     // Change key to ReRender SessionList Component
     this.randomForSessionListComponentKey = new Date().getTime()
-  }
-
-  async showShareTargetPicker() {
-    consola.log('showShareTargetPicker called')
-    // TODO 文言は仮
-    const message = this.shareText
-    const shareMessage: FlexMessage = generateShareMessage(
-      message,
-      this.getPermanentLink()
-    )
-    // ログイン後のリダイレクトURL はLINE ログインチャネルのコールバックURL に登録しておく必要がある
-    await this.openShareTargetPicker(shareMessage, this.pageLink)
   }
 
   gaEvent() {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container.pa-0.ma-0(fluid)
     v-row.mb-6(
       no-gutters
     )
@@ -35,6 +35,12 @@
               :key="sessionListComponentKey"
             )
       v-col()
+    v-row
+      //- SHARE
+      share-box(
+        :shareUrl="url"
+        :shareText="shareText"
+      )
 </template>
 
 <script lang="ts">
@@ -43,22 +49,19 @@ import { Context } from '@nuxt/types'
 import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
-import ShareMixin from '~/mixins/ShareMixin'
 import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
 import { HeadInfo, Speaker } from '~/types'
 
 @Component({
   components: {
-    SessionList: () => import('@/components/SessionList.vue')
+    SessionList: () => import('@/components/SessionList.vue'),
+    ShareBox: () => import('@/components/ShareBox.vue')
   }
 })
-export default class SpeakerPage extends mixins(
-  HeadMixin,
-  ShareMixin,
-  ConnpassEventMixin
-) {
+export default class SpeakerPage extends mixins(HeadMixin, ConnpassEventMixin) {
   speaker!: Speaker
   randomForSessionListComponentKey: number = 0
+  pageLink!: string
 
   public headInfo(): HeadInfo {
     return {
@@ -68,7 +71,7 @@ export default class SpeakerPage extends mixins(
   }
 
   get url(): string {
-    return ''
+    return this.pageLink
   }
 
   get shareText(): string {
@@ -110,8 +113,11 @@ export default class SpeakerPage extends mixins(
       s.applicantsMessage = '取得中'
     })
     consola.log('Speaker', speaker)
+    // Page link
+    const pageLink = `${process.env.BASE_URL}/speakers/${speaker.id}/`
     return {
-      speaker
+      speaker,
+      pageLink
     }
   }
 
