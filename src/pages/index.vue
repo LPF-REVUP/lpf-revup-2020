@@ -149,31 +149,10 @@
             :sponsors="sponsors"
           )
     //- SHARE
-    .share.py-16
-      .container.py-8
-        span.share-title SHARE!
-        v-row.ma-5.justify-center
-          //- Facebook
-          .mr-8
-            a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
-              v-icon(x-large) mdi-facebook
-          //- Twitter
-          .mr-8
-            a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
-              v-icon(x-large) mdi-twitter
-          //- Hatena bookmark
-          .mr-8
-            a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-              v-icon(x-large) icon-hatenabookmark
-          //- TODO Share Target Picker
-          .mr-8
-            v-btn.text-decoration-none(
-              fab dark depressed
-              color="#00c300"
-              @click="showShareTargetPicker"
-              small
-            )
-              v-icon(large) icon-line
+    share-box(
+      :shareUrl="url"
+      :shareText="shareText"
+    )
       //- Index contents end
 </template>
 
@@ -185,7 +164,6 @@ import qs from 'qs'
 import { FlexMessage } from '@line/bot-sdk'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import ShareMixin from '~/mixins/ShareMixin'
 import {
   HeadInfo,
   Speaker,
@@ -201,10 +179,11 @@ import { CMSResponse } from '~/types/microCMS'
   components: {
     SpeakerList: () => import('@/components/SpeakerList.vue'),
     Timetable: () => import('@/components/Timetable.vue'),
-    SponsorList: () => import('@/components/SponsorList.vue')
+    SponsorList: () => import('@/components/SponsorList.vue'),
+    ShareBox: () => import('@/components/ShareBox.vue')
   }
 })
-export default class Index extends mixins(HeadMixin, LiffMixin, ShareMixin) {
+export default class Index extends mixins(HeadMixin, LiffMixin) {
   speakers: Array<Speaker> = []
   sessions: Array<EventSession> = []
 
