@@ -46,11 +46,11 @@
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
-import axios, { AxiosResponse } from 'axios'
 import consola from 'consola'
 import HeadMixin from '~/mixins/HeadMixin'
 import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
 import { HeadInfo, Speaker } from '~/types'
+import { MicroCmsAPI } from '~/plugins/microCmsApi'
 
 @Component({
   components: {
@@ -100,15 +100,10 @@ export default class SpeakerPage extends mixins(HeadMixin, ConnpassEventMixin) {
 
   async asyncData(context: Context) {
     consola.log('asyncData called!!')
+    const api: MicroCmsAPI = context.app.$microCmsApi
     const { params } = context
     consola.log('Speaker ID', params.id)
-    const mcResponse: AxiosResponse<Speaker> = await axios.get(
-      `${process.env.MC_API_BASE_URL}/speakers/${params.id}`,
-      {
-        headers: { 'X-API-KEY': process.env.MC_API_KEY }
-      }
-    )
-    const speaker: Speaker = mcResponse.data
+    const speaker = await api.getSpeaker(params.id)
     speaker.sessions.forEach(s => {
       s.applicantsMessage = '取得中'
     })

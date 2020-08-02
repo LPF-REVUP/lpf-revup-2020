@@ -162,18 +162,13 @@ import consola from 'consola'
 import axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 import { FlexMessage } from '@line/bot-sdk'
+import { Context } from '@nuxt/types'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import {
-  HeadInfo,
-  Speaker,
-  EventSession,
-  ConnpassResponse,
-  Sponsor
-} from '~/types'
+import { HeadInfo, Speaker, EventSession, ConnpassResponse } from '~/types'
 import { appStateStore } from '~/store'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
-import { CMSResponse } from '~/types/microCMS'
+import { MicroCmsAPI } from '~/plugins/microCmsApi'
 
 @Component({
   components: {
@@ -199,42 +194,14 @@ export default class Index extends mixins(HeadMixin, LiffMixin) {
     return 'LPF REV UP 2020' // TODO 文言を決定し変更する
   }
 
-  async asyncData() {
+  async asyncData(context: Context) {
     consola.log('asyncData called!!')
-    console.log('MC_API_BASE_URL', process.env.MC_API_BASE_URL)
-    console.log('MC_API_KEY', process.env.MC_API_KEY)
-    // Create microCMS API Client
-    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
-    const limit = 50
-    // Get Speaker contents
-    const speakersResponse: AxiosResponse<CMSResponse<
-      Array<Speaker>
-    >> = await axios.get(
-      `${process.env.MC_API_BASE_URL}/speakers/?limit=${limit}`,
-      { headers }
-    )
-    const speakers = speakersResponse.data.contents
+    const api: MicroCmsAPI = context.app.$microCmsApi
+    const speakers = await api.getSpeakers()
     consola.log('Speakers', speakers)
-    // Get Session contents
-    const sessionsResponse: AxiosResponse<CMSResponse<
-      Array<EventSession>
-    >> = await axios.get(
-      `${process.env.MC_API_BASE_URL}/sessions/?limit=${limit}`,
-      { headers }
-    )
-    const sessions = sessionsResponse.data.contents
+    const sessions = await api.getEventSessions()
     consola.log('Sessions', sessions)
-    sessions.forEach(s => {
-      s.applicantsMessage = '取得中'
-    })
-    // Get Sponsor contents
-    const sponsorsResponse: AxiosResponse<CMSResponse<
-      Array<Sponsor>
-    >> = await axios.get(
-      `${process.env.MC_API_BASE_URL}/sponsors/?limit=${limit}`,
-      { headers }
-    )
-    const sponsors = await sponsorsResponse.data.contents
+    const sponsors = await api.getSponsors()
     consola.log('Sponsors', sponsors)
     return {
       speakers,

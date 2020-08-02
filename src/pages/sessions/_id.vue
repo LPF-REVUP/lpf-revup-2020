@@ -113,9 +113,9 @@ import * as lodash from 'lodash'
 import HeadMixin from '~/mixins/HeadMixin'
 import LiffMixin from '~/mixins/LiffMixin'
 import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
-import { HeadInfo, EventSession, Tag, SpeakerDeckInfo } from '~/types'
+import { HeadInfo, EventSession, SpeakerDeckInfo } from '~/types'
 import '@/assets/icomoon/style.css'
-import { CMSResponse } from '~/types/microCMS'
+import { MicroCmsAPI } from '~/plugins/microCmsApi'
 const _ = lodash
 
 @Component({
@@ -171,38 +171,17 @@ export default class EventSessionPage extends mixins(
 
   async asyncData(context: Context) {
     consola.log('asyncData called!!')
+    const api: MicroCmsAPI = context.app.$microCmsApi
     const { params } = context
     consola.log('Session ID', params.id)
-    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
-    // Get Session info
-    const sessionResponse: AxiosResponse<EventSession> = await axios.get(
-      `${process.env.MC_API_BASE_URL}/sessions/${params.id}`,
-      { headers }
-    )
-    const session: EventSession = sessionResponse.data
+    const session = await api.getEventSession(params.id)
     consola.log('Session', session)
-    // Get related sessions
-    let query = `filters=area[equals]${session.area.id}`
-    // Create filter to get related sessions
-    session.tags.map((tag: Tag) => {
-      const q = `tags[contains]${tag.id}`
-      query = `${query}[or]${q}`
-      return q
-    })
     session.applicantsMessage = '取得中'
-    consola.log('Related sessions query', query)
-    const relatedSessionsResponse: AxiosResponse<CMSResponse<
-      Array<EventSession>
-    >> = await axios.get(`${process.env.MC_API_BASE_URL}/sessions?${query}`, {
-      headers
-    })
-    const relatedSessions: Array<EventSession> = relatedSessionsResponse.data.contents.filter(
-      (s: EventSession) => {
-        s.applicantsMessage = '取得中'
-        return s.id !== params.id
-      }
-    )
+    const relatedSessions = await api.getRelatedEventSessions(session)
     consola.log('Related sessions', relatedSessions)
+    relatedSessions.forEach(s => {
+      s.applicantsMessage = '取得中'
+    })
     // Get connpass event ID
     let connpassEventId: string = ''
     if (session.applicationPage) {
