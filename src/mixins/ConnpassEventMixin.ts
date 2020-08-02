@@ -6,12 +6,10 @@ import { EventSession } from '~/types'
 @Component
 export default class ConnpassEventMixin extends Vue {
   /**
-   * セッションの申込者数を取得し、申込者メッセージに変換する
+   * セッションの申込者数を取得し、申込者メッセージとして付与する
    * @param sessions 取得対象のセッション一覧
    */
-  public async getEventApplicantInfo(
-    sessions: Array<EventSession>
-  ): Promise<Array<EventSession>> {
+  public async updateApplicantMessage(sessions: Array<EventSession>) {
     consola.log('getConnpassEventInfo called!', sessions)
     try {
       const connpassResponse = await this.$connpassApi.getConnpassEventInfo(sessions)

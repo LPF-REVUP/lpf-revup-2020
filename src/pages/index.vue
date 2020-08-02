@@ -215,7 +215,7 @@ export default class Index extends mixins(
 
   async mounted() {
     consola.log('getting connpass event info')
-    this.sessions = await this.getEventApplicantInfo(this.sessions)
+    await this.updateApplicantMessage(this.sessions)
     consola.log('updated sessions', this.sessions)
     // Scroll to page anchor
     const hash = this.$route.hash

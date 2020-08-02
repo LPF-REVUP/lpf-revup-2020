@@ -252,9 +252,9 @@ export default class EventSessionPage extends mixins(
   }
 
   async mounted() {
-    let sessions = _.cloneDeep(this.relatedSessions)
+    const sessions = _.cloneDeep(this.relatedSessions)
     sessions.push(_.cloneDeep(this.session))
-    sessions = await this.getEventApplicantInfo(sessions)
+    await this.updateApplicantMessage(sessions)
     this.relatedSessions = sessions.filter((s: EventSession) => {
       if (s.id === this.session.id) {
         this.session = s
