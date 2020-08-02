@@ -77,7 +77,8 @@ const nuxtConfig: Configuration = {
   plugins: [
     { src: '~/plugins/liff.ts', ssr: false },
     { src: '~/plugins/vue-scrollto', ssr: false },
-    { src: '~/plugins/microCmsApi' }
+    { src: '~/plugins/microCmsApi' },
+    { src: '~/plugins/connpassApi', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules

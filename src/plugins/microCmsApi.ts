@@ -4,9 +4,6 @@ import consola from 'consola'
 import { Speaker, EventSession, Sponsor } from '~/types'
 
 const myPlugin: Plugin = ({ $axios }, inject) => {
-  $axios.onRequest(config => {
-    config.headers.common['X-API-KEY'] = process.env.MC_API_KEY
-  })
   inject('microCmsApi', new MicroCmsAPI($axios))
 }
 export default myPlugin
@@ -16,31 +13,31 @@ export class MicroCmsAPI {
 
   constructor(private axios: NuxtAxiosInstance) {}
 
-  async getSpeakers(): Promise<Array<Speaker>> {
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/speakers/?limit=${this.limit}`
+  private get(path: string) {
+    const headers = { 'X-API-KEY': process.env.MC_API_KEY }
+    return this.axios.get(
+      `${process.env.MC_API_BASE_URL}/${path}`,
+      { headers }
     )
+  }
+
+  async getSpeakers(): Promise<Array<Speaker>> {
+    const response = await this.get(`speakers/?limit=${this.limit}`)
     return response.data.contents
   }
 
   async getSpeaker(id: string): Promise<Speaker> {
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/speakers/${id}`
-    )
+    const response = await this.get(`speakers/${id}`)
     return response.data
   }
 
   async getEventSessions(): Promise<Array<EventSession>> {
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/sessions/?limit=${this.limit}`
-    )
+    const response = await this.get(`sessions/?limit=${this.limit}`)
     return response.data.contents
   }
 
   async getEventSession(id: string): Promise<EventSession> {
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/sessions/${id}`
-    )
+    const response = await this.get(`sessions/${id}`)
     return response.data
   }
 
@@ -54,16 +51,12 @@ export class MicroCmsAPI {
     })
     const query = 'filters=' + filters.join('[or]')
     consola.log('Related sessions query', query)
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/sessions?${query}`
-    )
+    const response = await this.get(`sessions?${query}`)
     return (<Array<EventSession>> response.data.contents).filter(s => s.id !== session.id)
   }
 
   async getSponsors(): Promise<Array<Sponsor>> {
-    const response = await this.axios.get(
-      `${process.env.MC_API_BASE_URL}/sponsors/?limit=${this.limit}`
-    )
+    const response = await this.get(`sponsors/?limit=${this.limit}`)
     return response.data.contents
   }
 }

@@ -159,13 +159,12 @@
 <script lang="ts">
 import { Component, mixins } from 'nuxt-property-decorator'
 import consola from 'consola'
-import axios, { AxiosResponse } from 'axios'
-import qs from 'qs'
 import { FlexMessage } from '@line/bot-sdk'
 import { Context } from '@nuxt/types'
 import HeadMixin from '~/mixins/HeadMixin'
+import ConnpassEventMixin from '~/mixins/ConnpassEventMixin'
 import LiffMixin from '~/mixins/LiffMixin'
-import { HeadInfo, Speaker, EventSession, ConnpassResponse } from '~/types'
+import { HeadInfo, Speaker, EventSession } from '~/types'
 import { appStateStore } from '~/store'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
 import { MicroCmsAPI } from '~/plugins/microCmsApi'
@@ -178,7 +177,11 @@ import { MicroCmsAPI } from '~/plugins/microCmsApi'
     ShareBox: () => import('@/components/ShareBox.vue')
   }
 })
-export default class Index extends mixins(HeadMixin, LiffMixin) {
+export default class Index extends mixins(
+  HeadMixin,
+  ConnpassEventMixin,
+  LiffMixin
+) {
   speakers: Array<Speaker> = []
   sessions: Array<EventSession> = []
 
@@ -212,44 +215,7 @@ export default class Index extends mixins(HeadMixin, LiffMixin) {
 
   async mounted() {
     consola.log('getting connpass event info')
-    try {
-      const connpassEventIds = this.sessions.map(
-        s => new URL(s.applicationPage).pathname.split('/')[2]
-      )
-      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
-        '/.netlify/functions/connpass',
-        {
-          params: {
-            count: connpassEventIds.length,
-            event_id: connpassEventIds
-          },
-          paramsSerializer: params =>
-            qs.stringify(params, { arrayFormat: 'repeat' })
-        }
-      )
-      consola.log('ConnpassResponse', connpassResponse)
-
-      this.sessions.forEach(eventSession => {
-        const url = new URL(eventSession.applicationPage)
-        const connpasEventId = url.pathname.split('/')[2]
-        const connpassEvent = connpassResponse.data.events.find(
-          connpassEvent => connpasEventId === connpassEvent.event_id.toString()
-        )
-        if (connpassEvent) {
-          const applicantCount = connpassEvent.accepted + connpassEvent.waiting
-          eventSession.applicantsMessage = connpassEvent.limit
-            ? applicantCount + '/' + connpassEvent.limit + '人'
-            : applicantCount + '人'
-        } else {
-          eventSession.applicantsMessage = '取得できませんでした'
-        }
-      })
-    } catch (error) {
-      consola.error(error)
-      this.sessions.forEach(s => {
-        s.applicantsMessage = '取得できませんでした'
-      })
-    }
+    this.sessions = await this.getEventApplicantInfo(this.sessions)
     consola.log('updated sessions', this.sessions)
     // Scroll to page anchor
     const hash = this.$route.hash
