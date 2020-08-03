@@ -119,9 +119,7 @@ export default class SpeakerPage extends mixins(HeadMixin, ConnpassEventMixin) {
   async mounted() {
     if (this.speaker.sessions && this.speaker.sessions.length > 0) {
       // Get speaker's session applicant information
-      this.speaker.sessions = await this.getEventApplicantInfo(
-        this.speaker.sessions
-      )
+      await this.updateApplicantMessage(this.speaker.sessions)
       consola.log('Sessions', this.speaker.sessions)
       // Change key to ReRender SessionList Component
       this.randomForSessionListComponentKey = new Date().getTime()
