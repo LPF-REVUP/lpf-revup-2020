@@ -203,6 +203,9 @@ export default class Index extends mixins(
     const speakers = await api.getSpeakers()
     consola.log('Speakers', speakers)
     const sessions = await api.getEventSessions()
+    sessions.forEach(s => {
+      s.applicantsMessage = '取得中'
+    })
     consola.log('Sessions', sessions)
     const sponsors = await api.getSponsors()
     consola.log('Sponsors', sponsors)

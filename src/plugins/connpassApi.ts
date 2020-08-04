@@ -14,19 +14,21 @@ export class ConnpassAPI {
   async getConnpassEventInfo(
     session: EventSession | Array<EventSession>
   ): Promise<ConnpassResponse> {
-
     const connpassEventIds = Array.isArray(session)
       ? session.map(s => this.getConnpassEventId(s))
       : [this.getConnpassEventId(session)]
 
-    const response = await this.axios.get('/.netlify/functions/connpass', {
-      params: {
-        count: connpassEventIds.length,
-        event_id: connpassEventIds
-      },
-      paramsSerializer: params =>
-        qs.stringify(params, { arrayFormat: 'repeat' })
-    })
+    const response = await this.axios.get(
+      `${process.env.BASE_URL}/.netlify/functions/connpass`,
+      {
+        params: {
+          count: connpassEventIds.length,
+          event_id: connpassEventIds
+        },
+        paramsSerializer: params =>
+          qs.stringify(params, { arrayFormat: 'repeat' })
+      }
+    )
     return response.data
   }
 
