@@ -1,7 +1,6 @@
 <template lang="pug">
   v-container(fluid)
     v-row.mt-5(v-if="goldSponsors.length")
-      div.text-h6 ゴールドスポンサー
     v-row.mt-5
       v-col.ml-4(
         v-for="s in goldSponsors"
@@ -16,7 +15,6 @@
           max-width="500"
         )
     v-row.mt-5(v-if="silverSponsors.length")
-      div.text-h6 シルバースポンサー
     v-row.mt-5
       v-col.ml-4(
         v-for="s in silverSponsors"
