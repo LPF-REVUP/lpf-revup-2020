@@ -8,10 +8,10 @@
               img(src="/main-picture-logo.svg")
             .date
               span.year 2020.
-              span.day 8.10
-              span.week [MON]
+              span.day 11.15
+              span.week [SAT]
             .place
-              | @ TOKYO / OSAKA / FUKUOKA
+              | @ ONLINE
     .pa-2.notification
       v-container.py-0
         v-layout(justify-center)
@@ -258,6 +258,8 @@ export default class Index extends mixins(
     font-size 36px
   .day
     font-size 64px
+  .place
+    font-size 24px
 .notification
   background-color #F0F0F0
 .section-header
