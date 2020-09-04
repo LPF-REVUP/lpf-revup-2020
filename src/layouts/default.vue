@@ -31,7 +31,7 @@
       ) {{ item.title }}
       //- TODO Change repository URL
       v-btn.ml-2(
-        href="https://github.com"
+        href="https://github.com/LPF-REVUP/lpf-revup-2020"
         target="_blank"
         icon
         aria-label="Repository"
