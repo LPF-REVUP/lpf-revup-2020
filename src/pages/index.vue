@@ -46,7 +46,7 @@
                 | 開催日
               v-col(cols="12" md="9")
                 p
-                  | 11月20日(水)-21日(木)
+                  | 11月14日(土)
                   br
                   | ・10:00 開場
                   br
@@ -61,7 +61,7 @@
               v-col.font-weight-bold(cols="12" md="3")
                 | 場所
               v-col(cols="12" md="9")
-                | グランドニッコー東京 台場
+                | オンライン
             v-row.py-2.about-list(cols="12")
               v-col.font-weight-bold(cols="12" md="3")
                 | 参加費
