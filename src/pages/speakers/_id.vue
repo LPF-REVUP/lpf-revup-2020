@@ -6,27 +6,28 @@
       v-col()
       v-col(
         cols="12"
+        lg="6"
         md="8"
       )
         v-container(fluid)
           v-row.mb-6.mt-2.mt-md-10(
-            no-gutters
-            justify="center" align-content="center"
+            justify="center"
+            align-content="center"
           )
             v-col.mb-4(cols="12" md="4")
               v-layout(justify-center)
-                v-img(:src="speaker.image.url" max-width="128" :alt="speakerFullName")
+                v-img.rounded-lg(:src="speaker.image.url" width="272" max-width="100%" :alt="speakerFullName" :aspect-ratio="1/1")
             v-col(cols="12" md="8")
               div.headline.font-weight-black.text-center.text-md-left {{ speakerFullName }}
               div.text-subtitle-1.text-center.text-md-left {{ speaker.affiliation }} {{ speaker.title }}
               div.text-body-2.mt-2
                 span(v-html="speaker.profile")
               div.mt-2
-                span.mr-2(v-if="speaker.facebook")
-                  a(:href="speakerFacebookUrl" rel="nofollow" target="_blank")
+                span.mr-2.text-decoration-none(v-if="speaker.facebook")
+                  a.transparent--text(:href="speakerFacebookUrl" rel="nofollow" target="_blank")
                     v-icon(large) mdi-facebook
-                span.mr-2(v-if="speaker.twitter")
-                  a(:href="speakerTwitterUrl" rel="nofollow" target="_blank")
+                span.mr-2.text-decoration-none(v-if="speaker.twitter")
+                  a.transparent--text(:href="speakerTwitterUrl" rel="nofollow" target="_blank")
                     v-icon(large) mdi-twitter
           v-row.mt-10
             div.text-h6.ml-4 登壇セッション

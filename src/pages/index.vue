@@ -8,10 +8,10 @@
               img(src="/main-picture-logo.svg")
             .date
               span.year 2020.
-              span.day 8.10
-              span.week [MON]
+              span.day 11.15
+              span.week [SAT]
             .place
-              | @ TOKYO / OSAKA / FUKUOKA
+              | @ ONLINE
     .pa-2.notification
       v-container.py-0
         v-layout(justify-center)
@@ -24,7 +24,7 @@
             h2.mb-8.text-md-h3.text-sm-h4.introduction-title.font-biryani
               | LPF REV UP 2020
             h3.text-center.color-green
-              | 開発者が作り出すユーザーを支える新しいプラットフォーム
+              | 開発者と共に。ユーザーを支えるLINEプラットフォーム
         v-row(cols="12")
           v-col.mx-auto(cols="12" md="6")
             p.body-2
@@ -46,7 +46,7 @@
                 | 開催日
               v-col(cols="12" md="9")
                 p
-                  | 11月20日(水)-21日(木)
+                  | 11月14日(土)
                   br
                   | ・10:00 開場
                   br
@@ -61,7 +61,7 @@
               v-col.font-weight-bold(cols="12" md="3")
                 | 場所
               v-col(cols="12" md="9")
-                | グランドニッコー東京 台場
+                | オンライン
             v-row.py-2.about-list(cols="12")
               v-col.font-weight-bold(cols="12" md="3")
                 | 参加費
@@ -80,49 +80,30 @@
         div
           div.ml-2.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani ACCESS MAP
           div.ml-2.text-subtitle-2.text-md-subtitle-2.section-header-text アクセスマップ
-        v-row(cols="12")
+        v-row(cols="12").map-unit
           v-col(cols="12" md="4")
             h3.text-h6.font-weight-bold.mb-3
               v-icon.ma-2(color="#3cb371") mdi-map-marker
               | 東京会場
-            iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479754683745!2d139.7432442152582!3d35.65858048019946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188bbd9009ec09%3A0x481a93f0d2a409dd!2z5p2x5Lqs44K_44Ov44O8!5e0!3m2!1sja!2sjp!4v1595311993824!5m2!1sja!2sjp" width="400" height="250" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0")
-            .text-center
-              v-btn(
-                outlined
-                link
-                color="green"
-                href="https://goo.gl/maps/xT9dMXCYDA7frsg5A"
-                target="_blank"
-              )
-                | Google Map
+            img.map-photo(
+              src="@/assets/map-tokyo.png"
+            )
           v-col(cols="12" md="4")
             h3.text-h6.font-weight-bold.mb-3
               v-icon.ma-2(color="#3cb371") mdi-map-marker
               | 大阪会場
-            iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.087259007763!2d135.50411711522483!3d34.65249918044693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e76077e042ff%3A0xe5cbcf56def44557!2z6YCa5aSp6Zaj!5e0!3m2!1sja!2sjp!4v1595312128549!5m2!1sja!2sjp" width="400" height="250" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0")
-            .text-center
-              v-btn(
-                outlined
-                link
-                color="green"
-                href="https://goo.gl/maps/ZQicym5JJExnJoZ27"
-                target="_blank"
-              )
-                | Google Map
+            img.map-photo(
+              src="@/assets/map-osaka.png"
+            )
           v-col(cols="12" md="4")
             h3.text-h6.font-weight-bold.mb-3
               v-icon.ma-2(color="#3cb371") mdi-map-marker
               | 福岡会場
-            iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.463185999777!2d130.34932131519702!3d33.59328458073337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x354193aa23040001%3A0xf9743b36617a912d!2z56aP5bKh44K_44Ov44O8!5e0!3m2!1sja!2sjp!4v1595312276653!5m2!1sja!2sjp" width="400" height="250" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0")
-            .text-center
-              v-btn(
-                outlined
-                link
-                color="green"
-                href="https://goo.gl/maps/Ej7oJN546LncMUiv7"
-                target="_blank"
-              )
-                | Google Map
+            img.map-photo(
+              src="@/assets/map-fukuoka.png"
+            )
+        p
+          b ※ オンラインに変更
       //- Time table
       v-row.section-header(id="timetable" cols="12")
         v-col(cols="12" lg="8" md="6")
@@ -132,8 +113,6 @@
             | セッションは東京、関西、福岡の3トラック同時開催で行われます。
             br
             | セッションへの参加登録はConnpassを利用しますので、視聴されたいセッションへの参加登録をお願いいたします。開始時刻前に配信URLをメールにてお知らせいたします。同時刻、複数セッションへの申込みも可能ですので、少しでも興味のあるセッションには参加登録をしておくことをおすすめいたします。
-            br
-            | また、各地のセッションとは別に、○○○ルームもオープンする予定です。ご期待下さい。
         v-col(cols="12" lg="4" md="6")
           v-img(src="/timetable__map.svg")
         div
@@ -258,6 +237,8 @@ export default class Index extends mixins(
     font-size 36px
   .day
     font-size 64px
+  .place
+    font-size 24px
 .notification
   background-color #F0F0F0
 .section-header
@@ -294,6 +275,10 @@ export default class Index extends mixins(
   color #00B900
 .about-list
   border-bottom 1px solid #ccc
+.map-photo
+  max-width: 100%;
+.map-unit
+  opacity: .3;
 #accessmap iframe
   max-width 100%
 @-webkit-keyframes scroll {

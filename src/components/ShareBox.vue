@@ -15,16 +15,15 @@
           //- Hatena bookmark
           .mr-8
             a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
-              v-icon(x-large) icon-hatenabookmark
+              v-icon(x-large).icon-hatenabookmark icon-hatenabookmark
           //- TODO Share Target Picker
           .mr-8
             v-btn.text-decoration-none(
-              fab dark depressed
-              color="#00c300"
+              fab depressed
               @click="showShareTargetPicker()"
               small
             )
-              v-icon(large) icon-line
+              v-icon(large).icon-line icon-line
 </template>
 
 <script lang="ts">
@@ -33,6 +32,7 @@ import consola from 'consola'
 import { FlexMessage } from '@line/bot-sdk'
 import LiffMixin from '~/mixins/LiffMixin'
 import { generateShareMessage } from '~/utils/messages/shareMessage'
+import '@/assets/icomoon/style.css'
 
 @Component
 export default class ShareBoxComponent extends mixins(LiffMixin) {
@@ -82,4 +82,10 @@ export default class ShareBoxComponent extends mixins(LiffMixin) {
   @media (max-width: 960px) {
     font-size 97px
   }
+.icon-line
+  &::before
+    color #00c300
+.icon-hatenabookmark
+  &::before
+    color #00A4DE
 </style>
