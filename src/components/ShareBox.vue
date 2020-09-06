@@ -5,19 +5,19 @@
         span.share-title SHARE!
         v-row.ma-5.justify-center
           //- Facebook
-          .mr-8
+          .mr-6
             a.text-decoration-none(:href="facebookShareUrl" rel="nofollow" target="_blank")
               v-icon(x-large) mdi-facebook
           //- Twitter
-          .mr-8
+          .mr-6
             a.text-decoration-none(:href="twitterShareUrl" rel="nofollow" target="_blank")
               v-icon(x-large) mdi-twitter
           //- Hatena bookmark
-          .mr-8
+          .mr-6
             a.text-decoration-none(:href="hatenaShareUrl" rel="nofollow" target="_blank")
               v-icon(x-large).icon-hatenabookmark icon-hatenabookmark
-          //- TODO Share Target Picker
-          .mr-8
+          //- Share Target Picker
+          .mr-6
             v-btn.text-decoration-none(
               fab depressed
               @click="showShareTargetPicker()"
