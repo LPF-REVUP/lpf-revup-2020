@@ -12,10 +12,10 @@
               span.week [SAT]
             .place
               | @ ONLINE
-    .pa-2.notification
-      v-container.py-0
-        v-layout(justify-center)
-          div 重要なお知らせお知らせがある場合に表示されます
+    //- .pa-2.notification
+    //-   v-container.py-0
+    //-     v-layout(justify-center)
+    //-       div 重要なお知らせお知らせがある場合に表示されます
     //- Index contents start
     .introduction.font-biryani(id="introduction")
       v-container
@@ -45,18 +45,7 @@
               v-col.font-weight-bold(cols="12" md="3")
                 | 開催日
               v-col(cols="12" md="9")
-                p
-                  | 11月14日(土)
-                  br
-                  | ・10:00 開場
-                  br
-                  | ・10:40 セッション開始
-                  br
-                  | ・12:40-13:40 昼食 *昼食配布は13:30まで
-                  br
-                  | ・18:50 セッション終了 *DAY-2（21日）は18:00にセッション終了予定
-                  br
-                  | ・19:00 懇親会 *懇親会はDAY-1（20日）のみ実施します。
+                | 11月14日(土)
             v-row.py-2.about-list(cols="12")
               v-col.font-weight-bold(cols="12" md="3")
                 | 場所
