@@ -8,7 +8,7 @@
         cols="10"
         md="5"
       )
-        v-img(
+        v-img.ma-2(
           :src="getSponsorImageUrl(s)"
           :title="s.name"
           :width="calcSponsorImageWidth(s)"
@@ -16,13 +16,13 @@
         )
     v-row.mt-5(v-if="silverSponsors.length")
     v-row.mt-5
-      v-col.ml-4(
+      v-col.ml-2(
         v-for="s in silverSponsors"
         :key="s.id"
-        cols="5"
-        md="3"
+        cols="6"
+        md="4"
       )
-        v-img(
+        v-img.pa-lg-4.ma-8(
           :src="getSponsorImageUrl(s)"
           :title="s.name"
           :width="calcSponsorImageWidth(s)"
@@ -65,7 +65,7 @@ export default class SponsorListComponent extends Vue {
       if (width < 960) cols = 1
     } else if (s.rank === RankEnum.SILVER) {
       if (width < 960) {
-        cols = 2
+        cols = 1
       } else {
         cols = 3
       }
