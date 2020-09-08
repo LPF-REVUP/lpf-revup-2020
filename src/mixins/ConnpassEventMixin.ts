@@ -28,13 +28,13 @@ export default class ConnpassEventMixin extends Vue {
             ? applicantCount + '/' + connpassEvent.limit + '人'
             : applicantCount + '人'
         } else {
-          eventSession.applicantsMessage = ''
+          eventSession.applicantsMessage = '取得できませんでした'
         }
       })
     } catch (error) {
       consola.error('Could not get Connpass event info', error)
       sessions.forEach(s => {
-        s.applicantsMessage = ''
+        s.applicantsMessage = '取得できませんでした'
       })
     }
     return sessions
