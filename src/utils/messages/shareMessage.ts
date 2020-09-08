@@ -31,9 +31,10 @@ const messageBubble: FlexBubble = {
   type: 'bubble',
   hero: {
     type: 'image',
-    url: 'https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png',
+    url:
+      'https://images.microcms-assets.io/protected/ap-northeast-1:6183ed17-e50b-4bde-828c-32380c032323/service/lpfrevup2020/media/REVUP_LOGO_640x640.png',
     size: 'full',
-    aspectRatio: '20:13',
+    aspectRatio: '1:1',
     aspectMode: 'cover'
   },
   body: {
@@ -55,7 +56,7 @@ const messageBubble: FlexBubble = {
           {
             type: 'text',
             text:
-              '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)',
+              'LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは 「開発者が作り出すユーザーを支える新しいプラットフォーム」 。',
             size: 'md',
             wrap: true
           }

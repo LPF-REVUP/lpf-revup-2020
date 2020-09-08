@@ -58,7 +58,7 @@ const nuxtConfig: Configuration = {
       short_name: siteTitle,
       title: siteTitle,
       description:
-        '新しいプラットフォームの登場による人々の生活の劇的な変化、そしてそれを実現する開発者が活躍できる世界の到来',
+        'LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは 「開発者が作り出すユーザーを支える新しいプラットフォーム」 。',
       theme_color: '#ffffff',
       background_color: '#ffffff'
     }
@@ -78,7 +78,7 @@ const nuxtConfig: Configuration = {
     { src: '~/plugins/liff.ts', ssr: false },
     { src: '~/plugins/vue-scrollto', ssr: false },
     { src: '~/plugins/microCmsApi' },
-    { src: '~/plugins/connpassApi', ssr: false },
+    { src: '~/plugins/connpassApi', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
