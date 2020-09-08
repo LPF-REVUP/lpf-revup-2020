@@ -2,7 +2,7 @@
   v-container(fluid)
     v-row(dense)
       v-col(
-        v-for="s in speakers"
+        v-for="s in speakersToShow"
         :key="s.id"
         cols="4"
         md="3"
@@ -23,5 +23,9 @@ import { Speaker } from '~/types'
 })
 export default class SpeakerListComponent extends Vue {
   @Prop({ type: Array, required: true }) readonly speakers!: Array<Speaker>
+
+  get speakersToShow() {
+    return this.speakers.filter(s => !s.hideInSpeakerList)
+  }
 }
 </script>

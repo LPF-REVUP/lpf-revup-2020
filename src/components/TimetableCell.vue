@@ -13,10 +13,10 @@
       :color="session.color"
     )
       v-card-text.pa-2
-        span.session_text {{ session.title }}
+        span.timetable_cell_text {{ session.title }}
         v-row.mt-1
-          v-col.pa-0(cols="12" md="7" lg="7" xl="7")
-            v-row.ps-8.mb-1(
+          v-col.pa-0.px-6(cols="5")
+            v-row.mb-1(
               v-for="s in session.speakers"
               :key="s.id"
               @click.stop="moveToSpeakerPage(s)"
@@ -27,25 +27,26 @@
                 :max-width="avatorSize"
                 :max-height="avatorSize"
               )
-              span.session_text {{ getSpeakerName(s) }}
-          v-col.pa-0(cols="12" md="5" lg="5" xl="5" align="right")
-            v-btn(
-              v-if="session.movieUrl"
-              icon
-              small
-              @click.stop="openMovie()"
-            )
-              v-icon.session_text mdi-arrow-right-drop-circle
-            v-btn(
-              v-if="session.documentUrl"
-              @click.stop="openDocument()"
-              icon
-              small
-            )
-              v-icon.session_text mdi-paperclip
-            span.mr-4.session_text
-              v-icon.mr-1 mdi-account
-              | {{ session.applicantsMessage }}
+              span.timetable_cell_text {{ getSpeakerName(s) }}
+          v-col.py-0.pr-4(cols="7" align="right")
+            div.nobr
+              v-btn(
+                v-if="session.movieUrl"
+                icon
+                small
+                @click.stop="openMovie()"
+              )
+                v-icon.timetable_cell_text mdi-arrow-right-drop-circle
+              v-btn(
+                v-if="session.documentUrl"
+                @click.stop="openDocument()"
+                icon
+                small
+              )
+                v-icon.timetable_cell_text mdi-paperclip
+              span.timetable_cell_text
+                v-icon mdi-account
+                | {{ session.applicantsMessage }}
 </template>
 
 <script lang="ts">
@@ -102,8 +103,10 @@ export default class TimetableCellComponent extends Vue {
 </script>
 
 <style lang="stylus">
-.session_link
+.timetable_cell_link
   text-decoration: none
-.session_text
+.timetable_cell_text
   color white
+.nobr
+  white-space: nowrap
 </style>

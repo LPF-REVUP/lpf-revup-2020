@@ -1,6 +1,6 @@
 <template lang="pug">
-  v-layout
-    v-card.mr-2(
+  v-layout.speaker-layout
+    v-card.mr-2.mb-3(
       @click="moveToSpeakerPage()"
     )
       v-img(
@@ -32,3 +32,7 @@ export default class SpeakerBoxComponent extends Vue {
   }
 }
 </script>
+<style lang="stylus">
+.speaker-layout
+  height 100%
+</style>

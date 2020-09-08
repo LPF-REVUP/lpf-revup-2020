@@ -44,6 +44,7 @@ export interface Speaker {
   sessions: Array<EventSession>
   twitter: string
   facebook: string
+  hideInSpeakerList: boolean
 }
 
 export interface EventSession {

@@ -6,7 +6,7 @@ import axios from 'axios'
 require('dotenv').config()
 
 const siteTitle = 'LPF REV UP 2020'
-const twitterId: string = '@line_dc_jp'
+const twitterId: string = '@linedc_jp'
 
 const scripts = [{ src: 'https://static.line-scdn.net/liff/edge/2.1/sdk.js' }]
 if (
@@ -43,18 +43,25 @@ const nuxtConfig: Configuration = {
     script: scripts,
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'shortcut icon', href: '/favicon.ico' }
+      { rel: 'shortcut icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Biryani:wght@900&display=swap'
+      }
     ]
   },
-  manifest: {
-    name: siteTitle,
-    lang: 'ja',
-    short_name: siteTitle,
-    title: siteTitle,
-    description:
-      '新しいプラットフォームの登場による人々の生活の劇的な変化、そしてそれを実現する開発者が活躍できる世界の到来',
-    theme_color: '#ffffff',
-    background_color: '#ffffff'
+  pwa: {
+    manifest: {
+      name: siteTitle,
+      lang: 'ja',
+      short_name: siteTitle,
+      title: siteTitle,
+      description:
+        'LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは 「開発者が作り出すユーザーを支える新しいプラットフォーム」 。',
+      theme_color: '#ffffff',
+      background_color: '#ffffff'
+    }
   },
   /*
    ** Customize the progress-bar color
@@ -69,7 +76,9 @@ const nuxtConfig: Configuration = {
    */
   plugins: [
     { src: '~/plugins/liff.ts', ssr: false },
-    { src: '~/plugins/vue-scrollto', ssr: false }
+    { src: '~/plugins/vue-scrollto', ssr: false },
+    { src: '~/plugins/microCmsApi' },
+    { src: '~/plugins/connpassApi', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -114,6 +123,7 @@ const nuxtConfig: Configuration = {
     path: process.cwd()
   },
   env: {
+    TWITTER_ID: twitterId,
     BASE_URL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     USE_VCONSOLE: process.env.USE_VCONSOLE || '',
     LIFF_ID: process.env.LIFF_ID || '',
@@ -129,15 +139,20 @@ const nuxtConfig: Configuration = {
   generate: {
     routes() {
       const headers = { 'X-API-KEY': process.env.MC_API_KEY }
+      const limit = 50
       const sessions = axios
-        .get(`${process.env.MC_API_BASE_URL}/sessions`, { headers })
+        .get(`${process.env.MC_API_BASE_URL}/sessions?limit=${limit}`, {
+          headers
+        })
         .then(res => {
           return res.data.contents.map((session: { id: string }) => {
             return '/sessions/' + session.id
           })
         })
       const speakers = axios
-        .get(`${process.env.MC_API_BASE_URL}/speakers`, { headers })
+        .get(`${process.env.MC_API_BASE_URL}/speakers?limit=${limit}`, {
+          headers
+        })
         .then(res => {
           return res.data.contents.map((speaker: { id: string }) => {
             return '/speakers/' + speaker.id
@@ -154,6 +169,7 @@ const nuxtConfig: Configuration = {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     theme: {
       dark: false,
       themes: {

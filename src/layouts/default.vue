@@ -11,37 +11,50 @@
           v-list-item(
             :key="item.title"
             :to="item.to"
+            :aria-label="item.title"
           )
             v-list-item-action
-              v-icon {{ item.icon }}
-            v-list-item-content
+              v-icon.c-green {{ item.icon }}
+            v-list-item-content.font-biryani
               | {{ item.title }}
-    v-app-bar(fixed app flat color="white")
+    v-app-bar(fixed app color="white" elevate-on-scroll)
       v-toolbar-title.d-block.black--text
-        nuxt-link(to="/") {{title}}
+        nuxt-link(to="/" :aria-label="title")
+          img(src="@/assets/h__logo.svg")
       v-spacer
-      v-btn.black--text.hidden-sm-and-down(
+      v-btn.black--text.hidden-sm-and-down.font-biryani(
         v-for="item in menuItems"
         :key="item.title"
         text small
         :to="item.to"
+        :aria-label="item.title"
       ) {{ item.title }}
       //- TODO Change repository URL
       v-btn.ml-2(
-        href="https://github.com"
+        href="https://github.com/LPF-REVUP/lpf-revup-2020"
         target="_blank"
         icon
+        aria-label="Repository"
       )
         v-icon(large) mdi-github
-      v-btn.ml-2(
+      img.d-md-none.c-green(
+        src="@/assets/h__login--sp.svg"
+        width="30"
         v-if="!profile"
         @click="loginWithLineLogin()"
         tile dark color="primary"
-      ) LINE Login
+        aria-label="LINE Login"
+      )
+      div.ml-2.d-none.d-md-block.h__login(
+        v-if="!profile"
+        @click="loginWithLineLogin()"
+        aria-label="LINE Login"
+      )
       v-btn.ml-2.mr-2(
         v-if="profile"
         fab small dark color="primary"
         @click="openFriendshipDialg()"
+        aria-label="Check bot friendship"
       )
         v-avatar
           v-img(
@@ -51,6 +64,7 @@
       v-app-bar-nav-icon.hidden-md-and-up(
         color="info"
         @click.stop="drawer = !drawer"
+        aria-label="Menu"
       )
     v-main
       //- show Friendship with bot dialog
@@ -70,6 +84,7 @@
                 color="accent"
                 rounded
                 @click="openBeFriendWithBotWindow()"
+                aria-label="友だち追加"
               )
                 v-icon(left dark) mdi-close-octagon
                 | 友だち追加する
@@ -78,6 +93,7 @@
                 color="primary"
                 rounded
                 depressed
+                aria-label="友だち登録済み"
               )
                 v-icon(left dark) mdi-checkbox-marked-circle
                 | 友だち登録済みです
@@ -88,16 +104,17 @@
               text large
               color="primary"
               @click="showMyPageDialog = false"
+              aria-label="閉じる"
             )
               | 閉じる
       nuxt
-    v-footer(padless)
+    v-footer(
+      dark
+      padless
+    )
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
-          v-btn.footer-button.white--text(text small) 個人情報保護方針
-          v-btn.footer-button.white--text(text small) LINK1
-          v-btn.footer-button.white--text(text small) LINK2
-          v-btn.footer-button.white--text(text small) LINK3
+          v-btn.text-decoration-underline.footer-button.white--text(text small aria-label="個人情報保護方針") 個人情報保護方針
         v-card-text.copylight.text-center.white--text &copy; {{title}}
 </template>
 
@@ -141,7 +158,7 @@ export default class extends mixins(LiffMixin) {
   }
 
   async mounted() {
-    // TODO LIFF login あたりの実装は整理したい
+    // LIFF login
     this.initVconsole()
     await this.initializeLiff()
     this.showLiffInfo()
@@ -199,12 +216,29 @@ export default class extends mixins(LiffMixin) {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.c-green {
+  color: #00c300 !important;
+}
 .v-btn {
   font-size: 14px;
   font-weight: normal;
 }
-
+.font-biryani {
+  font-family: 'Biryani', sans-serif !important;
+}
+.h__login {
+  cursor: pointer;
+  width: 152px;
+  height: 40px;
+  background: url('/h__login.png') no-repeat center;
+  &:hover {
+    background-image: url('/h__login--hover.png');
+  }
+  &:active {
+    background-image: url('/h__login--press.png');
+  }
+}
 .registration-button {
   margin-left: 31px;
   background: rgba(0, 0, 0, 0.25);

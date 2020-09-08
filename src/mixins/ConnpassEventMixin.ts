@@ -1,52 +1,21 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import consola from 'consola'
-import axios, { AxiosResponse } from 'axios'
-import qs from 'qs'
-import { EventSession, ConnpassResponse } from '~/types'
+import { EventSession } from '~/types'
 
 @Component
 export default class ConnpassEventMixin extends Vue {
   /**
-   * セッション情報にあるConnpass イベントURL からEventId を取得する
-   * @param session EventSession
-   */
-  public getConnpassEventIdFromEventSession(session: EventSession): string {
-    const url = new URL(session.applicationPage)
-    const connpassEventId = url.pathname.split('/')[2]
-    return connpassEventId
-  }
-
-  /**
-   * セッションの申込者数を取得し、申込者メッセージに変換する
+   * セッションの申込者数を取得し、申込者メッセージとして付与する
    * @param sessions 取得対象のセッション一覧
    */
-  public async getEventApplicantInfo(
-    sessions: Array<EventSession>
-  ): Promise<Array<EventSession>> {
+  public async updateApplicantMessage(sessions: Array<EventSession>) {
     consola.log('getConnpassEventInfo called!', sessions)
     try {
-      // Get Connpass EventID for each EventSession
-      const connpassEventIds = sessions.map(s =>
-        this.getConnpassEventIdFromEventSession(s)
-      )
-      const connpassResponse: AxiosResponse<ConnpassResponse> = await axios.get(
-        '/.netlify/functions/connpass',
-        {
-          params: {
-            count: connpassEventIds.length,
-            event_id: connpassEventIds
-          },
-          paramsSerializer: params =>
-            qs.stringify(params, { arrayFormat: 'repeat' })
-        }
-      )
-      consola.log('ConnpassResponse', connpassResponse)
+      const connpassResponse = await this.$connpassApi.getConnpassEventInfo(sessions)
       sessions.forEach(eventSession => {
-        const connpassEventId = this.getConnpassEventIdFromEventSession(
-          eventSession
-        )
-        const connpassEvent = connpassResponse.data.events.find(
+        const connpassEventId = this.$connpassApi.getConnpassEventId(eventSession)
+        const connpassEvent = connpassResponse.events.find(
           connpassEvent => connpassEventId === connpassEvent.event_id.toString()
         )
         if (connpassEvent) {

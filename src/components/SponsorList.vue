@@ -1,7 +1,6 @@
 <template lang="pug">
   v-container(fluid)
     v-row.mt-5(v-if="goldSponsors.length")
-      div.text-h6 ゴールドスポンサー
     v-row.mt-5
       v-col.ml-4(
         v-for="s in goldSponsors"
@@ -9,27 +8,28 @@
         cols="10"
         md="5"
       )
-        v-img(
-          :src="getSponsorImageUrl(s)"
-          :title="s.name"
-          :width="calcSponsorImageWidth(s)"
-          max-width="500"
-        )
+        a.text-decoration-none(:href="s.link" rel="nofollow" target="_blank")
+          v-img.ma-2(
+            :src="getSponsorImageUrl(s)"
+            :title="s.name"
+            :width="calcSponsorImageWidth(s)"
+            max-width="480"
+          )
     v-row.mt-5(v-if="silverSponsors.length")
-      div.text-h6 シルバースポンサー
     v-row.mt-5
-      v-col.ml-4(
+      v-col.ml-2(
         v-for="s in silverSponsors"
         :key="s.id"
-        cols="5"
-        md="3"
+        cols="6"
+        md="4"
       )
-        v-img(
-          :src="getSponsorImageUrl(s)"
-          :title="s.name"
-          :width="calcSponsorImageWidth(s)"
-          max-width="300"
-        )
+        a.text-decoration-none(:href="s.link" rel="nofollow" target="_blank")
+          v-img.pa-lg-4.ma-8(
+            :src="getSponsorImageUrl(s)"
+            :title="s.name"
+            :width="calcSponsorImageWidth(s)"
+            max-width="300"
+          )
 </template>
 
 <script lang="ts">
@@ -67,7 +67,7 @@ export default class SponsorListComponent extends Vue {
       if (width < 960) cols = 1
     } else if (s.rank === RankEnum.SILVER) {
       if (width < 960) {
-        cols = 2
+        cols = 1
       } else {
         cols = 3
       }
