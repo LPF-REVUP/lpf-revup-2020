@@ -54,9 +54,8 @@ export default class ShareBoxComponent extends mixins(LiffMixin) {
 
   async showShareTargetPicker() {
     consola.log('showShareTargetPicker called')
-    // TODO 文言は仮
-    const message =
-      '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
+    // メッセージ文言
+    const message = this.shareText
     const shareMessage: FlexMessage = generateShareMessage(
       message,
       this.getPermanentLink()

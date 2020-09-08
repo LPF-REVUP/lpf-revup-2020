@@ -158,7 +158,7 @@ export default class extends mixins(LiffMixin) {
   }
 
   async mounted() {
-    // TODO LIFF login あたりの実装は整理したい
+    // LIFF login
     this.initVconsole()
     await this.initializeLiff()
     this.showLiffInfo()

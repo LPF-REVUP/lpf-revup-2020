@@ -164,7 +164,7 @@ export default class Index extends mixins(
   }
 
   get shareText(): string {
-    return 'LPF REV UP 2020' // TODO 文言を決定し変更する
+    return 'LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは 「開発者が作り出すユーザーを支える新しいプラットフォーム」 。'
   }
 
   async asyncData(context: Context) {
@@ -205,9 +205,9 @@ export default class Index extends mixins(
 
   async showShareTargetPicker() {
     consola.log('showShareTargetPicker called')
-    // TODO 文言は仮
+    // メッセージ文言
     const message =
-      '(仮)新しいプラットフォームの登場による人々の生活の劇的な変化、 そしてそれを実現する開発者が活躍できる世界の到来(仮)'
+      'LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは 「開発者が作り出すユーザーを支える新しいプラットフォーム」 。'
     const shareMessage: FlexMessage = generateShareMessage(
       message,
       this.getPermanentLink()

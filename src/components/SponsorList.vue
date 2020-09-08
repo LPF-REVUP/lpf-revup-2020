@@ -8,12 +8,13 @@
         cols="10"
         md="5"
       )
-        v-img.ma-2(
-          :src="getSponsorImageUrl(s)"
-          :title="s.name"
-          :width="calcSponsorImageWidth(s)"
-          max-width="500"
-        )
+        a.text-decoration-none(:href="s.link" rel="nofollow" target="_blank")
+          v-img.ma-2(
+            :src="getSponsorImageUrl(s)"
+            :title="s.name"
+            :width="calcSponsorImageWidth(s)"
+            max-width="480"
+          )
     v-row.mt-5(v-if="silverSponsors.length")
     v-row.mt-5
       v-col.ml-2(
@@ -22,12 +23,13 @@
         cols="6"
         md="4"
       )
-        v-img.pa-lg-4.ma-8(
-          :src="getSponsorImageUrl(s)"
-          :title="s.name"
-          :width="calcSponsorImageWidth(s)"
-          max-width="300"
-        )
+        a.text-decoration-none(:href="s.link" rel="nofollow" target="_blank")
+          v-img.pa-lg-4.ma-8(
+            :src="getSponsorImageUrl(s)"
+            :title="s.name"
+            :width="calcSponsorImageWidth(s)"
+            max-width="300"
+          )
 </template>
 
 <script lang="ts">
