@@ -16,7 +16,7 @@
           )
             v-col.mb-4(cols="12" md="4")
               v-layout(justify-center)
-                v-img.rounded-lg(:src="speaker.image.url" width="272" max-width="100%" :alt="speakerFullName" :aspect-ratio="1/1")
+                v-img.rounded-circle(:src="speaker.image.url" width="272" max-width="100%" :alt="speakerFullName" :aspect-ratio="1/1")
             v-col(cols="12" md="8")
               div.headline.font-weight-black.text-center.text-md-left {{ speakerFullName }}
               div.text-subtitle-1.text-center.text-md-left {{ speaker.affiliation }} {{ speaker.title }}
