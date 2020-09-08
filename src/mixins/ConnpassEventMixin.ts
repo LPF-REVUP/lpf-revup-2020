@@ -12,9 +12,13 @@ export default class ConnpassEventMixin extends Vue {
   public async updateApplicantMessage(sessions: Array<EventSession>) {
     consola.log('getConnpassEventInfo called!', sessions)
     try {
-      const connpassResponse = await this.$connpassApi.getConnpassEventInfo(sessions)
+      const connpassResponse = await this.$connpassApi.getConnpassEventInfo(
+        sessions
+      )
       sessions.forEach(eventSession => {
-        const connpassEventId = this.$connpassApi.getConnpassEventId(eventSession)
+        const connpassEventId = this.$connpassApi.getConnpassEventId(
+          eventSession
+        )
         const connpassEvent = connpassResponse.events.find(
           connpassEvent => connpassEventId === connpassEvent.event_id.toString()
         )
@@ -24,13 +28,13 @@ export default class ConnpassEventMixin extends Vue {
             ? applicantCount + '/' + connpassEvent.limit + '人'
             : applicantCount + '人'
         } else {
-          eventSession.applicantsMessage = '取得できませんでした'
+          eventSession.applicantsMessage = ''
         }
       })
     } catch (error) {
       consola.error('Could not get Connpass event info', error)
       sessions.forEach(s => {
-        s.applicantsMessage = '取得できませんでした'
+        s.applicantsMessage = ''
       })
     }
     return sessions
