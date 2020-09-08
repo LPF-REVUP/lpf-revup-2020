@@ -11,7 +11,10 @@
       )
       v-card-text.text-center
         div.pb-4.text-subtitle-2.text-md-h6 {{ speaker.familyNameJp }} {{ speaker.firstNameJp }}
-        div.text-body-2.text-md-subtitle-2 {{ speaker.affiliation }} {{ speaker.title }}
+        div.text-body-2.text-md-subtitle-2
+        | {{ speaker.affiliation }}
+        br
+        | {{ speaker.title }}
 </template>
 
 <script lang="ts">

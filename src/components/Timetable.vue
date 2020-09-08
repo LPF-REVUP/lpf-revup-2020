@@ -76,9 +76,9 @@ export default class TimetableComponent extends Vue {
   get heightByHour() {
     switch (this.$vuetify.breakpoint.name) {
       case 'md':
-        return 240
+        return 300
       default:
-        return 190
+        return 240
     }
   }
 
