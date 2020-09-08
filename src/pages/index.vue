@@ -8,7 +8,7 @@
               img(src="/main-picture-logo.svg")
             .date
               span.year 2020.
-              span.day 11.15
+              span.day 11.14
               span.week [SAT]
             .place
               | @ ONLINE
