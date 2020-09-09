@@ -1,17 +1,19 @@
 <template lang="pug">
   .wrap
-    .main-picture
-      v-container.py-0
-        v-row.py-8.white--text
-          v-col.mx-auto.text-center(cols="10" lg="6")
-            .main-picture-logo.pb-6.mb-6
-              img(src="/main-picture-logo.svg")
-            .date
-              span.year 2020.
-              span.day 11.14
-              span.week [SAT]
-            .place
-              | @ ONLINE
+    .main-picture-logo.pb-6.mb-3
+      img(src="/main-picture-logo.svg")
+    .sponsored.d-flex.justify-center.align-center.mb-3
+      span.mr-2
+        | Sponsored by
+      img.map-photo(
+        src="@/assets/hero__line.png"
+      )
+    .date
+      span.year 2020.
+      span.day 11.14
+      span.week [SAT]
+    .place
+      | @ ONLINE
     //- .pa-2.notification
     //-   v-container.py-0
     //-     v-layout(justify-center)
@@ -222,8 +224,12 @@ export default class Index extends mixins(
   background linear-gradient(247.38deg, #00B900 0%, #00AEB9 100%)
   font-family 'Biryani', sans-serif !important
   letter-spacing .1em
-  .main-picture-logo
-    border-bottom 1px solid #fff
+  .sponsored
+    background-color #fff
+    color #888
+    line-height 1
+    padding: 10px;
+    font-family: 'Biryani', sans-serif !important;
   .year
     font-size 36px
   .day
