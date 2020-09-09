@@ -12,9 +12,13 @@ export default class ConnpassEventMixin extends Vue {
   public async updateApplicantMessage(sessions: Array<EventSession>) {
     consola.log('getConnpassEventInfo called!', sessions)
     try {
-      const connpassResponse = await this.$connpassApi.getConnpassEventInfo(sessions)
+      const connpassResponse = await this.$connpassApi.getConnpassEventInfo(
+        sessions
+      )
       sessions.forEach(eventSession => {
-        const connpassEventId = this.$connpassApi.getConnpassEventId(eventSession)
+        const connpassEventId = this.$connpassApi.getConnpassEventId(
+          eventSession
+        )
         const connpassEvent = connpassResponse.events.find(
           connpassEvent => connpassEventId === connpassEvent.event_id.toString()
         )

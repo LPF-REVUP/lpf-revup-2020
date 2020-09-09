@@ -15,20 +15,21 @@
       v-card-text.pa-2
         span.timetable_cell_text {{ session.title }}
         v-row.mt-1
-          v-col.pa-0.px-6(cols="5")
+          v-col.pa-0.px-6
             v-row.mb-1(
               v-for="s in session.speakers"
               :key="s.id"
               @click.stop="moveToSpeakerPage(s)"
               @mousedown.middle="openSpeakerPage(s)"
             )
-              v-img.mr-2(
+              v-img.mr-1.rounded-circle(
                 :src="getSpeakerAvatarImageUrl(s)"
                 :max-width="avatorSize"
                 :max-height="avatorSize"
               )
               span.timetable_cell_text {{ getSpeakerName(s) }}
-          v-col.py-0.pr-4(cols="7" align="right")
+        v-row.mt-1
+          v-col.py-0.pr-4(align="right")
             div.nobr
               v-btn(
                 v-if="session.movieUrl"
@@ -44,7 +45,9 @@
                 small
               )
                 v-icon.timetable_cell_text mdi-paperclip
-              span.timetable_cell_text
+              span.timetable_cell_text(
+                v-if="session.applicantsMessage"
+              )
                 v-icon mdi-account
                 | {{ session.applicantsMessage }}
 </template>

@@ -9,7 +9,9 @@
       div.group.mr-2.session_text.caption
         v-icon.mr-1(small) mdi-calendar-month
         | {{ displaySessionTimePeriod }}
-      div.group.mr-2.session_text.caption
+      div.group.mr-2.session_text.caption(
+        v-if="session.applicantsMessage"
+      )
         v-icon.mr-1(small) mdi-account
         | {{ session.applicantsMessage }}
 </template>

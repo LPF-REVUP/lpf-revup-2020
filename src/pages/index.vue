@@ -4,11 +4,17 @@
       v-container.py-0
         v-row.py-8.white--text
           v-col.mx-auto.text-center(cols="10" lg="6")
-            .main-picture-logo.pb-6.mb-6
+            .main-picture-logo.pb-6.mb-3
               img(src="/main-picture-logo.svg")
+            .sponsored.d-flex.justify-center.align-center.mb-3
+              span.mr-2
+                | Sponsored by
+              img.map-photo(
+                src="@/assets/hero__line.png"
+              )
             .date
               span.year 2020.
-              span.day 11.15
+              span.day 11.14
               span.week [SAT]
             .place
               | @ ONLINE
@@ -28,7 +34,7 @@
         v-row(cols="12")
           v-col.mx-auto(cols="12" md="6")
             p.body-2
-              | LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、福岡のコミュニティが合同で主催するカンファレンスです。2020のテーマは「開発者が作り出すユーザーを支える新しいプラットフォーム」。
+              | LPF REV UP 2020は普段LINEのAPIに関する勉強会や情報交換を行っている東京、関西、九州のコミュニティが合同で主催するカンファレンスです。2020のテーマは「開発者と共に。ユーザーを支えるLINEプラットフォーム」。
             p.body-2
               | LINEの認定するLINE API Expertやテクノロジーパートナーを中心に、ミニアプリ、Messaging API、LINE Pay APIなど技術に関するセッションからwithコロナ時代に生まれている新しい体験やビジネスについてのセッションまで、幅広い内容のセッションをご用意しています。
               br
@@ -99,11 +105,13 @@
           div.text-h6.text-md-h3.font-weight-black.section-header-text.text-left.font-biryani TIME TABLE
           div.text-subtitle-2.text-md-subtitle-2.section-header-text タイムテーブル
           p.mt-8
-            | セッションは東京、関西、福岡の3トラック同時開催で行われます。
-            br
-            | また、各地のセッションとは別に、○○○ルームもオープンする予定です。ご期待下さい。
+            | セッションは東京、関西、九州の3トラック同時開催で行われます。
             br
             | セッションへの参加登録はConnpassを利用しますので、視聴されたいセッションへの参加登録をお願いいたします。開始時刻前に配信URLをメールにてお知らせいたします。同時刻、複数セッションへの申込みも可能ですので、少しでも興味のあるセッションには参加登録をしておくことをおすすめいたします。
+            ul.session-list.mt-4
+              li.case-study.mb-1 事例/APIセッション
+              li.tech-session.mb-1 テクニカルセッション
+              li.line-session.mb-1 LINE社によるセッション
         v-col(cols="12" lg="4" md="6")
           v-img(src="/timetable__map.svg")
         div
@@ -222,8 +230,12 @@ export default class Index extends mixins(
   background linear-gradient(247.38deg, #00B900 0%, #00AEB9 100%)
   font-family 'Biryani', sans-serif !important
   letter-spacing .1em
-  .main-picture-logo
-    border-bottom 1px solid #fff
+  .sponsored
+    background-color #fff
+    color #888
+    line-height 1
+    padding 10px
+    font-family: 'Biryani', sans-serif !important;
   .year
     font-size 36px
   .day
@@ -328,4 +340,15 @@ export default class Index extends mixins(
   color #55ACEE !important
 .icon-hatenabookmark
   color #008fde
+ul.session-list
+  list-style: none
+li.case-study:before
+  content: "■ "
+  color: #673BB7
+li.tech-session:before
+  content: "■ "
+  color: #2296F3
+li.line-session:before
+  content: "■ "
+  color: #4CAF4F
 </style>
