@@ -114,7 +114,11 @@
     )
       v-card.flex(flat tile)
         v-card-text.footer-link-area.text-center
-          v-btn.text-decoration-underline.footer-button.white--text(text small aria-label="個人情報保護方針") 個人情報保護方針
+          v-btn.text-decoration-underline.footer-button.white--text(
+            text small aria-label="個人情報保護方針"
+            to="/privacy"
+          )
+            | 個人情報保護方針
         v-card-text.copylight.text-center.white--text &copy; {{title}}
 </template>
 
