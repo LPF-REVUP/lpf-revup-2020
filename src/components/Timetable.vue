@@ -25,7 +25,7 @@
           :from="minStartAt"
         )
     v-row(
-      v-if="showByTab"
+      v-if="showByTab === true"
       no-gutters
     )
       v-tabs(
