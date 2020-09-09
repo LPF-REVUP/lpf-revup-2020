@@ -108,6 +108,10 @@
             | セッションは東京、関西、九州の3トラック同時開催で行われます。
             br
             | セッションへの参加登録はConnpassを利用しますので、視聴されたいセッションへの参加登録をお願いいたします。開始時刻前に配信URLをメールにてお知らせいたします。同時刻、複数セッションへの申込みも可能ですので、少しでも興味のあるセッションには参加登録をしておくことをおすすめいたします。
+            ul.session-list.mt-4
+              li.case-study.mb-1 事例/APIセッション
+              li.tech-session.mb-1 テクニカルセッション
+              li.line-session.mb-1 LINE社によるセッション
         v-col(cols="12" lg="4" md="6")
           v-img(src="/timetable__map.svg")
         div
@@ -336,4 +340,15 @@ export default class Index extends mixins(
   color #55ACEE !important
 .icon-hatenabookmark
   color #008fde
+ul.session-list
+  list-style: none
+li.case-study:before
+  content: "■ "
+  color: #673BB7
+li.tech-session:before
+  content: "■ "
+  color: #2296F3
+li.line-session:before
+  content: "■ "
+  color: #4CAF4F
 </style>
