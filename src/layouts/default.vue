@@ -136,8 +136,8 @@ export default class extends mixins(LiffMixin) {
   menuItems: Array<AppMenuItem> = [
     { title: 'ABOUT', icon: 'mdi-information', to: '/#about' },
     { title: 'SPEAKERS', icon: 'mdi-account-group', to: '/#speakers' },
-    { title: 'ACCESS MAP', icon: 'mdi-map-legend', to: '/#accessmap' },
     { title: 'TIME TABLE', icon: 'mdi-table-clock', to: '/#timetable' },
+    { title: 'ACCESS MAP', icon: 'mdi-map-legend', to: '/#accessmap' },
     { title: 'SPONSORS', icon: 'mdi-handshake', to: '/#sponsors' }
   ]
 
