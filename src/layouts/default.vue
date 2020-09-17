@@ -235,12 +235,13 @@ export default class extends mixins(LiffMixin) {
   cursor: pointer;
   width: 152px;
   height: 40px;
-  background: url('/h__login.png') no-repeat center;
+  background: url('/h__login@2x.png') no-repeat center;
+  background-size: contain;
   &:hover {
-    background-image: url('/h__login--hover.png');
+    background-image: url('/h__login--hover@2x.png');
   }
   &:active {
-    background-image: url('/h__login--press.png');
+    background-image: url('/h__login--press@2x.png');
   }
 }
 .registration-button {
