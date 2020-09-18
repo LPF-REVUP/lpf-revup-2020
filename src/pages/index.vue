@@ -11,6 +11,7 @@
                 | Sponsored by
               img.map-photo(
                 src="@/assets/hero__line.png"
+                srcset="@/assets/hero__line@2x.png 2x"
               )
             .date
               span.year 2020.
