@@ -9,7 +9,7 @@
             .sponsored.mb-3.p-5.text-center
               p.mt-2
                 | Sponsor
-              img.mt-4.mb-7.map-photo(
+              img.mt-6.mb-7.map-photo(
                 src="@/assets/hero__line.png"
                 srcset="@/assets/hero__line@2x.png 2x"
               )
