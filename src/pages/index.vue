@@ -6,10 +6,10 @@
           v-col.mx-auto.text-center(cols="10" lg="6")
             .main-picture-logo.pb-6.mb-3
               img(src="/main-picture-logo.svg")
-            .sponsored.d-flex.justify-center.align-center.mb-3
-              span.mr-2
-                | Sponsored by
-              img.map-photo(
+            .sponsored.mb-3.p-5.text-center
+              p.mt-2
+                | Sponsor
+              img.mt-6.mb-7.map-photo(
                 src="@/assets/hero__line.png"
                 srcset="@/assets/hero__line@2x.png 2x"
               )
@@ -233,7 +233,7 @@ export default class Index extends mixins(
   letter-spacing .1em
   .sponsored
     background-color #fff
-    color #888
+    color: #4CAF4F
     line-height 1
     padding 10px
     font-family: 'Biryani', sans-serif !important;
