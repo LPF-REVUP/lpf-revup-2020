@@ -19,10 +19,13 @@
               span.week [SAT]
             .place
               | @ ONLINE
-    //- .pa-2.notification
-    //-   v-container.py-0
-    //-     v-layout(justify-center)
-    //-       div 重要なお知らせお知らせがある場合に表示されます
+    .pa-2.notification
+      v-container.py-0
+        v-layout(justify-center)
+          div
+            | 11/6(金)、REV UPをより楽しめる
+            a(href="https://linedevelopercommunity.connpass.com/event/193506/" target="_blank") プレイベント
+            | を開催します！
     //- Index contents start
     .introduction.font-biryani(id="introduction")
       v-container
