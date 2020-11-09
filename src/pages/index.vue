@@ -23,9 +23,10 @@
       v-container.py-0
         v-layout(justify-center)
           div
-            | 11/6(金)、REV UPをより楽しめる
-            a(href="https://linedevelopercommunity.connpass.com/event/193506/" target="_blank") プレイベント
-            | を開催します！
+            a(href="https://book.mynavi.jp/ec/products/detail/id=117310" target="_blank") LINE API 実践ガイド
+            | が50名様に当たる
+            a(href="https://twitter.com/linedc_jp/status/1323918060839866369" target="_blank") Twitterキャンペーン
+            | 実施中です！
     //- Index contents start
     .introduction.font-biryani(id="introduction")
       v-container
