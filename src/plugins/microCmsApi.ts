@@ -15,10 +15,7 @@ export class MicroCmsAPI {
 
   private get(path: string) {
     const headers = { 'X-API-KEY': process.env.MC_API_KEY }
-    return this.axios.get(
-      `${process.env.MC_API_BASE_URL}/${path}`,
-      { headers }
-    )
+    return this.axios.get(`${process.env.MC_API_BASE_URL}/${path}`, { headers })
   }
 
   async getSpeakers(): Promise<Array<Speaker>> {
@@ -41,9 +38,11 @@ export class MicroCmsAPI {
     return response.data
   }
 
-  async getRelatedEventSessions(session: EventSession): Promise<Array<EventSession>> {
-    let filters = []
-    // same area 
+  async getRelatedEventSessions(
+    session: EventSession
+  ): Promise<Array<EventSession>> {
+    const filters = []
+    // same area
     filters.push(`area[equals]${session.area.id}`)
     // contains same tag
     session.tags.forEach(tag => {
@@ -52,7 +51,9 @@ export class MicroCmsAPI {
     const query = 'filters=' + filters.join('[or]')
     consola.log('Related sessions query', query)
     const response = await this.get(`sessions?${query}`)
-    return (<Array<EventSession>> response.data.contents).filter(s => s.id !== session.id)
+    return (<Array<EventSession>>response.data.contents).filter(
+      s => s.id !== session.id
+    )
   }
 
   async getSponsors(): Promise<Array<Sponsor>> {
