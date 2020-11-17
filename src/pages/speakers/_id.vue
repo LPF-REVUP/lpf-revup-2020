@@ -106,7 +106,11 @@ export default class SpeakerPage extends mixins(HeadMixin, ConnpassEventMixin) {
     consola.log('Speaker ID', params.id)
     const speaker = await api.getSpeaker(params.id)
     speaker.sessions.forEach(s => {
-      s.applicantsMessage = '取得中'
+      if (s.applicantCount) {
+        s.applicantsMessage = `${s.applicantCount}人`
+      } else {
+        s.applicantsMessage = ''
+      }
     })
     consola.log('Speaker', speaker)
     // Page link
@@ -117,10 +121,8 @@ export default class SpeakerPage extends mixins(HeadMixin, ConnpassEventMixin) {
     }
   }
 
-  async mounted() {
+  mounted() {
     if (this.speaker.sessions && this.speaker.sessions.length > 0) {
-      // Get speaker's session applicant information
-      await this.updateApplicantMessage(this.speaker.sessions)
       consola.log('Sessions', this.speaker.sessions)
       // Change key to ReRender SessionList Component
       this.randomForSessionListComponentKey = new Date().getTime()

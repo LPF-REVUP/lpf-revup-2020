@@ -61,6 +61,7 @@ export interface EventSession {
   documentUrl?: string
   movieUrl?: string
   color?: string
+  applicantCount?: number
 }
 
 export interface ConnpassEvent {

@@ -187,7 +187,11 @@ export default class Index extends mixins(
     consola.log('Speakers', speakers)
     const sessions = await api.getEventSessions()
     sessions.forEach(s => {
-      s.applicantsMessage = '取得中'
+      if (s.applicantCount) {
+        s.applicantsMessage = `${s.applicantCount}人`
+      } else {
+        s.applicantsMessage = ''
+      }
     })
     consola.log('Sessions', sessions)
     const sponsors = await api.getSponsors()
@@ -199,10 +203,7 @@ export default class Index extends mixins(
     }
   }
 
-  async mounted() {
-    consola.log('getting connpass event info')
-    await this.updateApplicantMessage(this.sessions)
-    consola.log('updated sessions', this.sessions)
+  mounted() {
     // Scroll to page anchor
     const hash = this.$route.hash
     if (hash && hash.match(/^#.+$/)) {
