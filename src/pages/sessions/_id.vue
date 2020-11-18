@@ -134,7 +134,7 @@ export default class EventSessionPage extends mixins(
   relatedSessions!: Array<EventSession>
   connpassEventId!: string
   pageLink!: string
-  applicantsMessage = '取得中'
+  applicantsMessage = ''
   loaded: boolean = false
   speakerDeckDataId: string | null = null
   randomForSessionListComponentKey: number = 0
@@ -176,11 +176,17 @@ export default class EventSessionPage extends mixins(
     consola.log('Session ID', params.id)
     const session = await api.getEventSession(params.id)
     consola.log('Session', session)
-    session.applicantsMessage = '取得中'
+    if (session.applicantCount) {
+      session.applicantsMessage = `${session.applicantCount}人`
+    } else {
+      session.applicantsMessage = ''
+    }
     const relatedSessions = await api.getRelatedEventSessions(session)
     consola.log('Related sessions', relatedSessions)
     relatedSessions.forEach(s => {
-      s.applicantsMessage = '取得中'
+      if (s.applicantCount) {
+        s.applicantsMessage = `${s.applicantCount}人`
+      }
     })
     // Get connpass event ID
     let connpassEventId: string = ''
@@ -251,10 +257,9 @@ export default class EventSessionPage extends mixins(
     )} - ${this.$moment(this.session.endsAt).format('H:mm')}`
   }
 
-  async mounted() {
+  mounted() {
     const sessions = _.cloneDeep(this.relatedSessions)
     sessions.push(_.cloneDeep(this.session))
-    await this.updateApplicantMessage(sessions)
     this.relatedSessions = sessions.filter((s: EventSession) => {
       if (s.id === this.session.id) {
         this.session = s

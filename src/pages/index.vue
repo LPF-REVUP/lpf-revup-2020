@@ -19,14 +19,15 @@
               span.week [SAT]
             .place
               | @ ONLINE
-    .pa-2.notification
-      v-container.py-0
-        v-layout(justify-center)
-          div
-            a(href="https://book.mynavi.jp/ec/products/detail/id=117310" target="_blank") LINE API 実践ガイド
-            | が50名様に当たる
-            a(href="https://twitter.com/linedc_jp/status/1323918060839866369" target="_blank") Twitterキャンペーン
-            | 実施中です！
+    //- お知らせ用エリア
+    //- .pa-2.notification
+    //-   v-container.py-0
+    //-     v-layout(justify-center)
+    //-       div
+    //-         a(href="https://book.mynavi.jp/ec/products/detail/id=117310" target="_blank") LINE API 実践ガイド
+    //-         | が50名様に当たる
+    //-         a(href="https://twitter.com/linedc_jp/status/1323918060839866369" target="_blank") Twitterキャンペーン
+    //-         | 実施中です！
     //- Index contents start
     .introduction.font-biryani(id="introduction")
       v-container
@@ -187,7 +188,11 @@ export default class Index extends mixins(
     consola.log('Speakers', speakers)
     const sessions = await api.getEventSessions()
     sessions.forEach(s => {
-      s.applicantsMessage = '取得中'
+      if (s.applicantCount) {
+        s.applicantsMessage = `${s.applicantCount}人`
+      } else {
+        s.applicantsMessage = ''
+      }
     })
     consola.log('Sessions', sessions)
     const sponsors = await api.getSponsors()
@@ -199,10 +204,7 @@ export default class Index extends mixins(
     }
   }
 
-  async mounted() {
-    consola.log('getting connpass event info')
-    await this.updateApplicantMessage(this.sessions)
-    consola.log('updated sessions', this.sessions)
+  mounted() {
     // Scroll to page anchor
     const hash = this.$route.hash
     if (hash && hash.match(/^#.+$/)) {
